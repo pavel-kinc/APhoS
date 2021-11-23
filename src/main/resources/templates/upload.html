@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="layout :: head"></head>
+
+    <body>
+        <nav th:replace="layout :: navbar"></nav>
+        <div class="container-fluid">
+            <div class="my-3" style="width: 200px;">
+                <h3>Upload</h3>
+            </div>
+            <div class="row">
+                <div class="col-md-6" >
+                    <div>
+                        <label for="formFileMultiple" class="form-label">
+                            Select all the files you wish to upload:
+                        </label>
+                        <form method="POST" th:action="@{/upload/save}" enctype="multipart/form-data" >
+                            <input class="form-control" type="file" name="files" id="formFileMultiple" multiple>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary"> Upload Files </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div th:if="${message}">
+                        <p th:text="${message}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{js/highlightActive.js}"></script>
+    </body>
+
+</html>
