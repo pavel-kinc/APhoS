@@ -32,14 +32,11 @@ public class UploadController {
     }
 
     @PostMapping("/save")
-    public String saveFiles(@RequestParam(name = "files") List<MultipartFile> files,
+    public String saveFiles(@RequestParam(name = "file") MultipartFile file,
                             RedirectAttributes redirectAttributes) {
-        StringBuilder fileNames = new StringBuilder();
-        for (MultipartFile file : files) {
-            fileNames.append(file.getOriginalFilename()).append("\n");
-        }
+        redirectAttributes.addAttribute("testMessage", "test");
         redirectAttributes.addFlashAttribute("message",
-                "Files uploaded successfully: " + fileNames);
+                file.getName() + " uploaded successfully");
         return "redirect:/upload";
     }
 }
