@@ -12,19 +12,22 @@
             </div>
             <div class="row">
                 <div class="col-md-6" >
-                    <div>
-                        <label for="fileSubmitter" class="form-label">
-                            Select all the files you wish to upload:
-                        </label>
-                            <div class="mb-3">
-                                <input id="fileSubmitter" class="form-control" type="file" name="file" multiple>
-                            </div>
-<!--                            <button class="btn btn-primary"> Upload Files </button>-->
+                    <label for="fileSubmitter" class="form-label">
+                        Select all the files you wish to upload:
+                    </label>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <input id="fileSubmitter" class="form-control" type="file" name="file" multiple>
+                        </div>
+                        <div class="col-auto">
+                            <button class="btn btn-primary" id="submitButton" onclick="uploadFiles()" disabled> Upload Files </button>
+                        </div>
                     </div>
-                    <div class="progress mb-3" id="progressBar" style="visibility: hidden">
+                    <div class="progress" id="progressBar" style="visibility: hidden">
                         <div class="progress-bar" id="uploadProgress" role="progressbar" style="width: 0"
                              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
+                    <p th:text="${modelMsg}">
                     <div th:if="${testMessage}">
                         <p th:text="${testMessage}"/>
                     </div>
@@ -36,6 +39,7 @@
         </div>
         <script th:src="@{js/highlightActive.js}"></script>
         <script th:src="@{js/uploadFiles.js}"></script>
+        <script th:src="@{js/enableSubmitButton.js}"></script>
     </body>
 
 </html>

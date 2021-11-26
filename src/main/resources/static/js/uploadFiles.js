@@ -1,8 +1,6 @@
-const inputElement = document.getElementById("fileSubmitter");
-inputElement.addEventListener("change", uploadFiles, false);
-
 function uploadFiles() {
-    const files = this.files;
+    const inputElement = document.getElementById("fileSubmitter");
+    const files = inputElement.files;
     document.getElementById("progressBar").style.visibility = "visible";
     const uploadProgress = document.getElementById("uploadProgress");
     uploadProgress.style.width = "0";
@@ -18,4 +16,5 @@ function uploadFiles() {
         uploadProgress.ariaValueNow = progress;
         uploadProgress.style.width = progress + "%";
     }
+    document.getElementById("submitButton").disabled = true;
 }

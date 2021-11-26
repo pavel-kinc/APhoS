@@ -33,10 +33,11 @@ public class UploadController {
 
     @PostMapping("/save")
     public String saveFiles(@RequestParam(name = "file") MultipartFile file,
-                            RedirectAttributes redirectAttributes) {
+                            RedirectAttributes redirectAttributes, Model model) {
         redirectAttributes.addAttribute("testMessage", "test");
         redirectAttributes.addFlashAttribute("message",
                 file.getName() + " uploaded successfully");
+        model.addAttribute("modelMsg", "success");
         return "redirect:/upload";
     }
 }
