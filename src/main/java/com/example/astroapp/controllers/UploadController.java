@@ -1,7 +1,5 @@
 package com.example.astroapp.controllers;
 
-import com.example.astroapp.services.StorageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
-import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/upload")
@@ -33,11 +30,9 @@ public class UploadController {
 
     @PostMapping("/save")
     public String saveFiles(@RequestParam(name = "file") MultipartFile file,
-                            RedirectAttributes redirectAttributes, Model model) {
-        redirectAttributes.addAttribute("testMessage", "test");
+                            RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message",
-                file.getName() + " uploaded successfully");
-        model.addAttribute("modelMsg", "success");
+                file.getOriginalFilename() + " uploaded successfully");
         return "redirect:/upload";
     }
 }

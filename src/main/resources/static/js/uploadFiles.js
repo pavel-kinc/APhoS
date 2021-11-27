@@ -1,4 +1,8 @@
+let uploadedFilesCount;
+
 function uploadFiles() {
+    uploadedFilesCount = 0;
+    const uploadMessageArea = createScrollPanel();
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
     document.getElementById("progressBar").style.visibility = "visible";
@@ -11,10 +15,33 @@ function uploadFiles() {
         formData.append("file", file);
         fetch('/upload/save', {method: "POST", body: formData})
             .then(response => response.ok)
-            .then(success => console.log(success ? "OK" : "NOK"));
-        let progress = Math.ceil((i+1) / (filesLength / 100)).toString();
-        uploadProgress.ariaValueNow = progress;
-        uploadProgress.style.width = progress + "%";
+            .then(success => printMessages(success, file.name, uploadProgress, filesLength, uploadMessageArea));
     }
     document.getElementById("submitButton").disabled = true;
+}
+
+function printMessages(success, fileName, uploadProgress, filesLength, uploadMessageArea) {
+    const paragraph = document.createElement("p");
+    const message = document.createTextNode(
+        success ?
+             fileName + " uploaded successfully" :
+             "There's been an error uploading " + fileName);
+    paragraph.appendChild(message);
+    let progress = Math.ceil((++uploadedFilesCount) / (filesLength / 100)).toString();
+    uploadMessageArea.appendChild(paragraph);
+    uploadProgress.ariaValueNow = progress;
+    uploadProgress.style.width = progress + "%";
+}
+
+function createScrollPanel() {
+    let oldPanel = document.getElementById("uploadMessages");
+    if (oldPanel != null) {
+        oldPanel.remove();
+    }
+    const mainColumn = document.getElementById("mainColumn");
+    const scrollPanel = document.createElement("div");
+    scrollPanel.classList.add("scrollable", "mt-4");
+    scrollPanel.id="uploadMessages";
+    mainColumn.appendChild(scrollPanel);
+    return scrollPanel;
 }
