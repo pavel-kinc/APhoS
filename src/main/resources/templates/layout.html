@@ -39,13 +39,13 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link active" href="#" role="button" data-bs-toggle="dropdown">
+                    <a  class="nav-link active" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-person-circle" style="font-size: 1rem; margin-right: 3px;"></i>
-                        User
+                        <span id="userDropDown"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Sign-in</a></li>
+                        <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
+                        <li><a id="signInOutButton" class="dropdown-item" th:href="@{/logout}"></a></li>
                     </ul>
                 </li>
             </ul>

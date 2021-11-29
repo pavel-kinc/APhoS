@@ -5,7 +5,7 @@
     <head th:replace="layout :: head"></head>
 
     <body>
-        <nav th:replace="layout :: navbar"></nav>
+        <nav id="navbar" th:replace="layout :: navbar"></nav>
         <div class="container-fluid">
             <div class="my-3" style="width: 200px;">
                 <h3>Upload</h3>
@@ -36,6 +36,7 @@
                 </div>
             </div>
         </div>
+        <script th:src="@{js/signedInContent.js}"></script>
         <script th:src="@{js/highlightActive.js}"></script>
         <script th:src="@{js/uploadFiles.js}"></script>
         <script th:src="@{js/enableSubmitButton.js}"></script>
