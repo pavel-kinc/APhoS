@@ -21,8 +21,8 @@ public class UploadController {
     }
 
     @PostMapping("/save")
-    public String saveFiles(@RequestParam(name = "file") MultipartFile file,
-                            RedirectAttributes redirectAttributes) {
+    public String handleFileUpload(@RequestParam(name = "file") MultipartFile file,
+                                   RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("message",
                 file.getOriginalFilename() + " uploaded successfully");
         return "redirect:/upload";

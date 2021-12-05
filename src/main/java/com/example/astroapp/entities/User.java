@@ -2,7 +2,9 @@ package com.example.astroapp.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table(name="users", schema = "public")
@@ -13,6 +15,8 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
+    @OneToMany(mappedBy = "user")
+    private List<Flux> fluxes;
 
     public User(String googleSub, String email, String firstName, String lastName) {
         this.googleSub = googleSub;
