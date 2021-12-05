@@ -5,16 +5,25 @@ function signedInContent() {
             return response.json()
         })
         .then(body => displayName(body.name))
+        .catch(err => console.log(err));
 }
 
 function displayName(userName) {
     let userDropDown = document.getElementById("userDropDown");
-    userDropDown.innerText = userName == null ? "User" : userName;
+    if (userDropDown.innerText !== userName) {
+        userDropDown.innerText = userName;
+    }
 }
 
 function displayLogInOut(signedIn) {
     let signInOutButton = document.getElementById("signInOutButton");
-    signInOutButton.innerText = signedIn ? "Sign-out" : "Sign-in";
+    if (!signedIn) {
+        signInOutButton.innerText = "Sign-in";
+        signInOutButton.href = "/oauth2/authorization/google";
+    } else {
+        signInOutButton.innerText = "Sign-out";
+        signInOutButton.href = "/logout";
+    }
 }
 
 signedInContent();
