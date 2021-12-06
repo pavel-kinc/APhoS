@@ -10,6 +10,7 @@ public class SpaceObject {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "object_generator")
     @SequenceGenerator(name = "object_generator", sequenceName = "object_id_seq", allocationSize = 1)
     private Long id;
+    private String name;
     private String catalog;
     private String catalogRec;
     private String catalogDec;

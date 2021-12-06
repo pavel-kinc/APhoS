@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS object
 (
     id          SERIAL NOT NULL,
+    name        VARCHAR(20),
     catalog     VARCHAR(20),
     catalog_id  VARCHAR(30),
     catalog_rec earth,
@@ -28,8 +29,8 @@ CREATE TABLE IF NOT EXISTS object
 CREATE TABLE IF NOT EXISTS photo_properties
 (
     id             SERIAL NOT NULL,
-    exposure_begin date   NOT NULL,
-    exposure_end   date   NOT NULL,
+    exposure_begin timestamp   NOT NULL,
+    exposure_end   timestamp   NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -49,7 +50,7 @@ CREATE TABLE IF NOT EXISTS aperture
 (
     id     SERIAL NOT NULL,
     value  float8,
-    fluxid int4   NOT NULL REFERENCES flux (id),
+    flux_id int4   NOT NULL REFERENCES flux (id),
     PRIMARY KEY (id)
 );
 

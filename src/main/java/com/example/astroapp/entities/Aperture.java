@@ -11,7 +11,7 @@ public class Aperture {
     @SequenceGenerator(name = "aperture_generator", sequenceName = "apeture_id_seq", allocationSize = 1)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "fluxid")
+    @JoinColumn(name = "flux_id")
     private Flux flux;
     private Float value;
 
