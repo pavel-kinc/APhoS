@@ -2,3 +2,8 @@ DROP TABLE IF EXISTS aperture;
 DROP TABLE IF EXISTS flux;
 DROP TABLE IF EXISTS object;
 DROP TABLE IF EXISTS photo_properties;
+
+DROP SEQUENCE IF EXISTS aperture_id_seq;
+DROP SEQUENCE IF EXISTS flux_id_seq;
+DROP SEQUENCE IF EXISTS object_id_seq;
+DROP SEQUENCE IF EXISTS photo_properties_id_seq;

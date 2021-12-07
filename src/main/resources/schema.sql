@@ -17,11 +17,12 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS object
 (
     id          SERIAL NOT NULL,
-    name        VARCHAR(20),
+    name        VARCHAR(40),
     catalog     VARCHAR(20),
     catalog_id  VARCHAR(30),
-    catalog_rec earth,
-    catalog_dec earth,
+    catalog_rec float4,
+    catalog_dec float4,
+    coordinates earth,
     catalog_mag float4,
     PRIMARY KEY (id)
 );
