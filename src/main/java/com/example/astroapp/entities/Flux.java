@@ -10,9 +10,10 @@ public class Flux {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "flux_generator")
     @SequenceGenerator(name = "flux_generator", sequenceName = "flux_id_seq", allocationSize = 1)
     private Long id;
-    private String rec;
-    private String dec;
-    private Float apertureAuto;
+    private Float rec;
+    private Float dec;
+    @Column(name = "ap_auto")
+    private String apertureAuto;
     @OneToMany(mappedBy = "flux")
     private Set<Aperture> apertures;
     @ManyToOne
@@ -36,27 +37,27 @@ public class Flux {
         this.id = id;
     }
 
-    public String getRec() {
+    public Float getRec() {
         return rec;
     }
 
-    public void setRec(String rec) {
+    public void setRec(Float rec) {
         this.rec = rec;
     }
 
-    public String getDec() {
+    public Float getDec() {
         return dec;
     }
 
-    public void setDec(String dec) {
+    public void setDec(Float dec) {
         this.dec = dec;
     }
 
-    public Float getApertureAuto() {
+    public String getApertureAuto() {
         return apertureAuto;
     }
 
-    public void setApertureAuto(Float apertureAuto) {
+    public void setApertureAuto(String apertureAuto) {
         this.apertureAuto = apertureAuto;
     }
 

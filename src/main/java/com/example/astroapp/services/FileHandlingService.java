@@ -9,6 +9,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -17,6 +18,8 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
+
+import static org.springframework.transaction.annotation.Isolation.*;
 
 @Service
 public class FileHandlingService {
@@ -28,7 +31,13 @@ public class FileHandlingService {
     ObjectRepo objectRepo;
 
     @Autowired
+    FluxRepo fluxRepo;
+
+    @Autowired
     RowDataParserService rowDataParser;
+
+    @Autowired
+    UserService userService;
 
     public void store(MultipartFile multipartFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
@@ -41,6 +50,7 @@ public class FileHandlingService {
     private void parseCsv(List<String> schemaRow, Integer startingLine,
                           File file, PhotoProperties photoProperties) throws IOException {
         rowDataParser.setPhotoProperties(photoProperties);
+        rowDataParser.setUploadingUser(userService.getCurrentUser());
         CsvMapper csvMapper = new CsvMapper();
         try (Reader fileReader = new FileReader(file, StandardCharsets.ISO_8859_1)) {
             CsvSchema.Builder csvBuilder = CsvSchema.builder();
@@ -61,9 +71,12 @@ public class FileHandlingService {
             }
             while (iterator.hasNextValue()) {
                 Map<String, String> row = iterator.nextValue();
-                rowDataParser.saveRow(row);
+                if (!row.get("CatalogId").equals("")) {
+                    rowDataParser.saveRow(row);
+                }
             }
             objectRepo.updateCoordinates();
+            fluxRepo.updateCoordinates();
         } catch (ParseException e) {
             e.printStackTrace();
         }

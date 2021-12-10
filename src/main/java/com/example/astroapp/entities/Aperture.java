@@ -8,14 +8,19 @@ public class Aperture {
 
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "aperture_generator")
-    @SequenceGenerator(name = "aperture_generator", sequenceName = "apeture_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "aperture_generator", sequenceName = "aperture_id_seq", allocationSize = 1)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "flux_id")
     private Flux flux;
-    private Float value;
+    private String value;
 
     public Aperture() {
+    }
+
+    public Aperture(Flux flux, String value) {
+        this.flux = flux;
+        this.value = value;
     }
 
     public Long getId() {
@@ -34,11 +39,11 @@ public class Aperture {
         this.flux = flux;
     }
 
-    public Float getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(Float value) {
+    public void setValue(String value) {
         this.value = value;
     }
 }

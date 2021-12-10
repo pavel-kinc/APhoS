@@ -10,10 +10,10 @@ public class SpaceObject {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "object_generator")
     @SequenceGenerator(name = "object_generator", sequenceName = "object_id_seq", allocationSize = 1)
     private Long id;
-    private String name;
-    private String catalog;
     @Column(name = "catalog_id")
     private String catalogID;
+    private String name;
+    private String catalog;
     @Column(name = "catalog_dec")
     private Float catalogDec;
     @Column(name = "catalog_rec")
@@ -24,16 +24,6 @@ public class SpaceObject {
     private List<Flux> fluxes;
 
     public SpaceObject() {
-    }
-
-    public SpaceObject(String name, String catalog, String catalogID,
-                       Float catalogDec, Float catalogRec, float catalogMag) {
-        this.name = name;
-        this.catalog = catalog;
-        this.catalogID = catalogID;
-        this.catalogRec = catalogRec;
-        this.catalogDec = catalogDec;
-        this.catalogMag = catalogMag;
     }
 
     public Long getId() {
