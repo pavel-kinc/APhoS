@@ -4,7 +4,7 @@ function signedInContent() {
             displayLogInOut(response.ok)
             return response.json()
         })
-        .then(body => displayName(body.name))
+        //.then(body => displayName(body.name))
         .catch(err => console.log(err));
 }
 

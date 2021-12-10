@@ -32,9 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                     .logoutSuccessUrl("/")
                     .and()
-                .exceptionHandling(e -> e
-                        .authenticationEntryPoint(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login().permitAll()
                     .userInfoEndpoint()
                         .userService(oAuth2UserService)

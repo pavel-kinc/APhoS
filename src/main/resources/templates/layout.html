@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
     <meta charset="utf-8">
@@ -41,11 +41,19 @@
                 <li class="nav-item dropdown">
                     <a  class="nav-link active" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-person-circle" style="font-size: 1rem; margin-right: 3px;"></i>
-                        <span id="userDropDown">User</span>
+                            <span sec:authentication="principal.attributes[name]" sec:authorize="isAuthenticated()"></span>
+                            <span sec:authorize="isAnonymous()">User</span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
-                        <li><a id="signInOutButton" class="dropdown-item" href="/logout"></a></li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/profile}" sec:authorize="isAuthenticated()">Profile</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a class="dropdown-item" href="/logout">Sign-out</a>
+                        </li>
+                        <li sec:authorize="isAnonymous()">
+                            <a class="dropdown-item" href="/oauth2/authorization/google">Sign-in</a>
+                        </li>
                     </ul>
                 </li>
             </ul>
