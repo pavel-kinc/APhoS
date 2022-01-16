@@ -1,8 +1,9 @@
 package com.example.astroapp.services;
 
 import com.example.astroapp.dao.*;
-import com.example.astroapp.entities.PhotoProperties;
+import com.example.astroapp.entities.*;
 import com.example.astroapp.exceptions.CsvContentException;
+import com.example.astroapp.utils.UnitConversions;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -34,10 +35,16 @@ public class FileHandlingService {
     FluxRepo fluxRepo;
 
     @Autowired
-    RowDataParserService rowDataParser;
+    UserService userService;
 
     @Autowired
-    UserService userService;
+    ApertureRepo apertureRepo;
+
+    @Autowired
+    UserRepo userRepo;
+
+    @Autowired
+    ObjectService objectService;
 
     public void store(MultipartFile multipartFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
@@ -49,8 +56,7 @@ public class FileHandlingService {
 
     private void parseCsv(List<String> schemaRow, Integer startingLine,
                           File file, PhotoProperties photoProperties) throws IOException {
-        rowDataParser.setPhotoProperties(photoProperties);
-        rowDataParser.setUploadingUser(userService.getCurrentUser());
+        User uploadingUser = userService.getCurrentUser();
         CsvMapper csvMapper = new CsvMapper();
         try (Reader fileReader = new FileReader(file, StandardCharsets.ISO_8859_1)) {
             CsvSchema.Builder csvBuilder = CsvSchema.builder();
@@ -72,7 +78,7 @@ public class FileHandlingService {
             while (iterator.hasNextValue()) {
                 Map<String, String> row = iterator.nextValue();
                 if (!row.get("CatalogId").equals("")) {
-                    rowDataParser.saveRow(row);
+                    saveRow(row, photoProperties, uploadingUser);
                 }
             }
             objectRepo.updateCoordinates();
@@ -112,4 +118,57 @@ public class FileHandlingService {
         return normalFile;
     }
 
+    public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser) throws ParseException {
+        SpaceObject spaceObject = saveObject(row.get("Name"), row.get("Catalog"),
+                row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
+        Flux flux = saveFlux(row.get("RA"), row.get("Dec"),
+                row.get("ApAuto"), spaceObject, photoProperties, uploadingUser);
+//        int i = 1;
+//        String aperture;
+//        List<Aperture> apertures = new ArrayList<>();
+//        // getting all columns in form of Ap1..Apn
+//        while ((aperture = row.get("Ap"+i)) != null) {
+//            apertures.add(new Aperture(flux, aperture));
+//            i++;
+//        }
+//        apertureRepo.saveAll(apertures);
+    }
+
+    public SpaceObject saveObject(String name, String catalog, String catalogID,
+                                  String catalogRec, String catalogDec, String catalogMag) throws ParseException {
+        SpaceObject spaceObject = new SpaceObject();
+        spaceObject.setName(name);
+        spaceObject.setCatalog(catalog);
+        spaceObject.setCatalogID(catalogID);
+        float dec = UnitConversions.angleToFloatForm(catalogDec);
+        spaceObject.setCatalogDec(dec);
+        float rec = UnitConversions.hourAngleToDegrees(catalogRec);
+        spaceObject.setCatalogRec(rec);
+        spaceObject.setCatalogMag(Float.parseFloat(catalogMag));
+        return objectService.checkIfExistsAndSave(spaceObject);
+    }
+
+    public Flux saveFlux(String strRec, String strDec, String apAuto,
+                         SpaceObject object, PhotoProperties photoProperties, User uploadingUser) throws ParseException {
+        Flux flux = new Flux();
+        float dec = UnitConversions.angleToFloatForm(strDec);
+        flux.setDec(dec);
+        float rec = UnitConversions.hourAngleToDegrees(strRec);
+        flux.setRec(rec);
+        flux.setApertureAuto(!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
+        flux.setObject(object);
+        flux.setPhotoProperty(photoProperties);
+        flux.setUser(uploadingUser);
+        fluxRepo.save(flux);
+        return flux;
+    }
+
+    public void saveAperture(String apertureStr, Flux flux) {
+        Aperture aperture = new Aperture();
+        aperture.setValue(!apertureStr.equals("saturated") ? Float.parseFloat(apertureStr) : 0);
+        aperture.setFlux(flux);
+        apertureRepo.save(aperture);
+    }
 }
+
+

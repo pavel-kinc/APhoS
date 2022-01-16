@@ -13,7 +13,7 @@ public class Flux {
     private Float rec;
     private Float dec;
     @Column(name = "ap_auto")
-    private String apertureAuto;
+    private Float apertureAuto;
     @OneToMany(mappedBy = "flux")
     private Set<Aperture> apertures;
     @ManyToOne
@@ -53,11 +53,11 @@ public class Flux {
         this.dec = dec;
     }
 
-    public String getApertureAuto() {
+    public Float getApertureAuto() {
         return apertureAuto;
     }
 
-    public void setApertureAuto(String apertureAuto) {
+    public void setApertureAuto(Float apertureAuto) {
         this.apertureAuto = apertureAuto;
     }
 

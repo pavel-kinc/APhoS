@@ -13,12 +13,12 @@ public class Aperture {
     @ManyToOne
     @JoinColumn(name = "flux_id")
     private Flux flux;
-    private String value;
+    private Float value;
 
     public Aperture() {
     }
 
-    public Aperture(Flux flux, String value) {
+    public Aperture(Flux flux, Float value) {
         this.flux = flux;
         this.value = value;
     }
@@ -39,11 +39,11 @@ public class Aperture {
         this.flux = flux;
     }
 
-    public String getValue() {
+    public Float getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Float value) {
         this.value = value;
     }
 }

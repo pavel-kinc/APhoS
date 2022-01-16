@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS flux
     rec                 float8       NOT NULL,
     dec                 float8       NOT NULL,
     coordinates         earth,
-    ap_auto             varchar(20),
+    ap_auto             float8,
     object_id           int4         NOT NULL REFERENCES object (id),
     user_id             VARCHAR(100) NOT NULL REFERENCES users (google_sub),
     photo_properties_id int4         NOT NULL REFERENCES photo_properties (id),
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS flux
 CREATE TABLE IF NOT EXISTS aperture
 (
     id      SERIAL NOT NULL,
-    value   VARCHAR(20),
+    value   float8,
     flux_id int4   NOT NULL REFERENCES flux (id),
     PRIMARY KEY (id)
 );
