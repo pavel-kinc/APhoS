@@ -6,7 +6,7 @@ function uploadFiles() {
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
     document.getElementById("progressBar").style.visibility = "visible";
-    document.getElementById("spinner").style.visibility = "visible";
+    document.getElementById("progressSpinner").style.visibility = "visible";
     const uploadProgress = document.getElementById("uploadProgress");
     uploadProgress.style.width = "0";
     let filesLength = files.length;
@@ -35,7 +35,7 @@ function printMessages(success, fileName, uploadProgress, filesLength, uploadMes
     uploadProgress.ariaValueNow = progress;
     uploadProgress.style.width = progress + "%";
     if (progress==="100") {
-        document.getElementById("spinner").style.visibility = "hidden";
+        document.getElementById("progressSpinner").style.visibility = "hidden";
     }
 }
 
