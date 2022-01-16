@@ -42,15 +42,15 @@ public class RowDataParserService {
                 row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
         Flux flux = saveFlux(row.get("RA"), row.get("Dec"),
                 row.get("ApAuto"), spaceObject, photoProperties);
-        int i = 1;
-        String aperture;
-        List<Aperture> apertures = new ArrayList<>();
-        // getting all columns in form of Ap1..Apn
-        while ((aperture = row.get("Ap"+i)) != null) {
-            apertures.add(new Aperture(flux, aperture));
-            i++;
-        }
-        apertureRepo.saveAll(apertures);
+//        int i = 1;
+//        String aperture;
+//        List<Aperture> apertures = new ArrayList<>();
+//        // getting all columns in form of Ap1..Apn
+//        while ((aperture = row.get("Ap"+i)) != null) {
+//            apertures.add(new Aperture(flux, aperture));
+//            i++;
+//        }
+//        apertureRepo.saveAll(apertures);
     }
 
     public SpaceObject saveObject(String name, String catalog, String catalogID,

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
+                .csrf(c -> c
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeRequests()
                     .antMatchers("/home", "/", "/about").permitAll()
                     .antMatchers("/js/**").permitAll()
@@ -42,8 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     userService.processOAuthPostLogin(
                             oauthUser.getAttribute("sub"),
                             oauthUser.getAttribute("name"),
-                            oauthUser.getAttribute("email"));
-                    response.sendRedirect("/profile");
+                            oauthUser.getAttribute("email"),
+                            oauthUser.getAttribute("picture"));
+                    response.sendRedirect("/profile/?id="+oauthUser.getAttribute("sub"));
                 });
     }
 

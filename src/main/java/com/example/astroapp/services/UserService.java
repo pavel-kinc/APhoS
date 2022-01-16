@@ -13,11 +13,11 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public void processOAuthPostLogin(String sub, String name, String email) {
+    public void processOAuthPostLogin(String sub, String name, String email, String photoUrl) {
         if (!userRepo.existsById(sub)) {
             String firstName = name.split(" ")[0];
             String lastName = name.split(" ")[1];
-            User newUser = new User(sub, email, firstName, lastName);
+            User newUser = new User(sub, email, firstName, lastName, photoUrl);
             userRepo.save(newUser);
         }
     }

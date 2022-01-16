@@ -8,10 +8,14 @@ AS
 
 CREATE TABLE IF NOT EXISTS users
 (
-    google_sub VARCHAR(100) NOT NULL PRIMARY KEY,
-    email      VARCHAR(100) NULL,
-    first_name VARCHAR(30)  NULL,
-    last_name  VARCHAR(30)  NULL
+    google_sub  VARCHAR(100) NOT NULL PRIMARY KEY,
+    email       VARCHAR(50),
+    first_name  VARCHAR(30),
+    last_name   VARCHAR(30),
+    location    VARCHAR(30),
+    website     VARCHAR(100),
+    photo_url   VARCHAR(100),
+    description VARCHAR(300)
 );
 
 CREATE TABLE IF NOT EXISTS object

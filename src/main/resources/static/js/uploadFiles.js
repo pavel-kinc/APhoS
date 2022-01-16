@@ -6,14 +6,17 @@ function uploadFiles() {
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
     document.getElementById("progressBar").style.visibility = "visible";
+    document.getElementById("spinner").style.visibility = "visible";
     const uploadProgress = document.getElementById("uploadProgress");
     uploadProgress.style.width = "0";
     let filesLength = files.length;
+    const myHeaders = new Headers();
+    myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     for (let i = 0; i < filesLength; i++) {
         let formData = new FormData();
         let file = files[i];
         formData.append("file", file);
-        fetch('/upload/save', {method: "POST", body: formData})
+        fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
             .then(response => response.ok)
             .then(success => printMessages(success, file.name, uploadProgress, filesLength, uploadMessageArea));
     }
@@ -31,6 +34,9 @@ function printMessages(success, fileName, uploadProgress, filesLength, uploadMes
     uploadMessageArea.appendChild(paragraph);
     uploadProgress.ariaValueNow = progress;
     uploadProgress.style.width = progress + "%";
+    if (progress==="100") {
+        document.getElementById("spinner").style.visibility = "hidden";
+    }
 }
 
 function createScrollPanel() {

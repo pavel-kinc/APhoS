@@ -14,5 +14,5 @@ public interface UserRepo extends CrudRepository<User, String> {
 
     @Query(nativeQuery = true, value =
             "SELECT * FROM users where google_sub = ?1")
-    User findByUserID(String catalogID);
+    User findByUserID(String userID);
 }
