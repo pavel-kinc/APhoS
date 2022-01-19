@@ -43,9 +43,6 @@ public class FileHandlingService {
     @Autowired
     UserRepo userRepo;
 
-    @Autowired
-    ObjectService objectService;
-
     public void store(MultipartFile multipartFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
         File file = multipartFileToNormal(multipartFile);
@@ -81,7 +78,7 @@ public class FileHandlingService {
                     saveRow(row, photoProperties, uploadingUser);
                 }
             }
-            objectRepo.updateCoordinates();
+            //objectRepo.updateCoordinates();
             fluxRepo.updateCoordinates();
         } catch (ParseException e) {
             e.printStackTrace();

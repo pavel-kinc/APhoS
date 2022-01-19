@@ -3,7 +3,6 @@ package com.example.astroapp.entities;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 @Table(name = "object", schema = "public")
 public class SpaceObject {
     @Id
@@ -22,6 +21,15 @@ public class SpaceObject {
     private Float catalogMag;
     @OneToMany(mappedBy = "object")
     private List<Flux> fluxes;
+
+    public SpaceObject(String catalogID, String name, String catalog, Float catalogDec, Float catalogRec, Float catalogMag) {
+        this.catalogID = catalogID;
+        this.name = name;
+        this.catalog = catalog;
+        this.catalogDec = catalogDec;
+        this.catalogRec = catalogRec;
+        this.catalogMag = catalogMag;
+    }
 
     public SpaceObject() {
     }
