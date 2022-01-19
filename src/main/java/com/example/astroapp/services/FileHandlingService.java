@@ -10,7 +10,6 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -20,8 +19,6 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-import static org.springframework.transaction.annotation.Isolation.*;
-
 @Service
 public class FileHandlingService {
 
@@ -29,10 +26,10 @@ public class FileHandlingService {
     PhotoPropsRepo propsRepo;
 
     @Autowired
-    ObjectRepo objectRepo;
+    SpaceObjectDao spaceObjectDao;
 
     @Autowired
-    FluxRepo fluxRepo;
+    FluxDao fluxDao;
 
     @Autowired
     UserService userService;
@@ -51,7 +48,7 @@ public class FileHandlingService {
         parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
     }
 
-    private void parseCsv(List<String> schemaRow, Integer startingLine,
+    public void parseCsv(List<String> schemaRow, Integer startingLine,
                           File file, PhotoProperties photoProperties) throws IOException {
         User uploadingUser = userService.getCurrentUser();
         CsvMapper csvMapper = new CsvMapper();
@@ -78,8 +75,7 @@ public class FileHandlingService {
                     saveRow(row, photoProperties, uploadingUser);
                 }
             }
-            //objectRepo.updateCoordinates();
-            fluxRepo.updateCoordinates();
+            spaceObjectDao.updateCoordinates();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -115,11 +111,12 @@ public class FileHandlingService {
         return normalFile;
     }
 
-    public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser) throws ParseException {
-        SpaceObject spaceObject = saveObject(row.get("Name"), row.get("Catalog"),
+    public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser)
+            throws ParseException {
+        Long spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
                 row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
-        Flux flux = saveFlux(row.get("RA"), row.get("Dec"),
-                row.get("ApAuto"), spaceObject, photoProperties, uploadingUser);
+        Long fluxId = saveFlux(row.get("RA"), row.get("Dec"),
+                row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser);
 //        int i = 1;
 //        String aperture;
 //        List<Aperture> apertures = new ArrayList<>();
@@ -131,33 +128,23 @@ public class FileHandlingService {
 //        apertureRepo.saveAll(apertures);
     }
 
-    public SpaceObject saveObject(String name, String catalog, String catalogID,
-                                  String catalogRec, String catalogDec, String catalogMag) throws ParseException {
-        SpaceObject spaceObject = new SpaceObject();
-        spaceObject.setName(name);
-        spaceObject.setCatalog(catalog);
-        spaceObject.setCatalogID(catalogID);
+    public Long saveObject(String name, String catalog, String catalogId,
+                                  String catalogRec, String catalogDec, String catalogMag)
+            throws ParseException {
         float dec = UnitConversions.angleToFloatForm(catalogDec);
-        spaceObject.setCatalogDec(dec);
         float rec = UnitConversions.hourAngleToDegrees(catalogRec);
-        spaceObject.setCatalogRec(rec);
-        spaceObject.setCatalogMag(Float.parseFloat(catalogMag));
-        return objectService.checkIfExistsAndSave(spaceObject);
+        float mag = Float.parseFloat(catalogMag);
+        return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
     }
 
-    public Flux saveFlux(String strRec, String strDec, String apAuto,
-                         SpaceObject object, PhotoProperties photoProperties, User uploadingUser) throws ParseException {
-        Flux flux = new Flux();
+    public Long saveFlux(String strRec, String strDec, String apAuto,
+                         Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser)
+            throws ParseException {
         float dec = UnitConversions.angleToFloatForm(strDec);
-        flux.setDec(dec);
         float rec = UnitConversions.hourAngleToDegrees(strRec);
-        flux.setRec(rec);
-        flux.setApertureAuto(!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        flux.setObject(object);
-        flux.setPhotoProperty(photoProperties);
-        flux.setUser(uploadingUser);
-        fluxRepo.save(flux);
-        return flux;
+        Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
+        return fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId,uploadingUser.getGoogleSub(),
+                photoProperties.getId());
     }
 
     public void saveAperture(String apertureStr, Flux flux) {

@@ -22,9 +22,9 @@ public class Flux {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne
-    @JoinColumn(name = "object_id")
-    private SpaceObject object;
+//    @ManyToOne
+//    @JoinColumn(name = "object_id")
+//    private SpaceObject object;
 
     public Flux() {
     }
@@ -75,13 +75,5 @@ public class Flux {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public SpaceObject getObject() {
-        return object;
-    }
-
-    public void setObject(SpaceObject object) {
-        this.object = object;
     }
 }
