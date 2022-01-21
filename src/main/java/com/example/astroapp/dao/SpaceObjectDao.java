@@ -48,12 +48,6 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public void updateCoordinates() {
-        assert getJdbcTemplate() != null;
-        getJdbcTemplate().queryForList("UPDATE object SET coordinates=ll_to_earth(catalog_dec,catalog_rec)" +
-                "WHERE coordinates IS NULL");
-    }
-
     public List<Long> getObjectsByCatId(String catalogId) {
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().queryForList("SELECT id FROM object " +

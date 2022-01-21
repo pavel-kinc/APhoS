@@ -19,11 +19,12 @@ public class FluxDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public long saveFlux(Float rec, Float dec, Float apertureAuto, Long spaceObjectId, String userId, Long photoId) {
+    public long saveFlux(Float rec, Float dec, Float apertureAuto, Long spaceObjectId,
+                         String userId, Long photoId, Float[] apertures) {
         assert getJdbcTemplate() != null;
         String insertQuery = "INSERT INTO flux " +
-                "(id, rec, dec, coordinates, ap_auto, object_id, user_id, photo_properties_id)" +
-                "VALUES (nextval('flux_id_seq'), ?, ?, ll_to_earth(?, ?) ,?, ?, ?, ?)";
+                "(id, rec, dec, coordinates, ap_auto, object_id, user_id, photo_properties_id, apertures)" +
+                "VALUES (nextval('flux_id_seq'), ?, ?, ll_to_earth(?, ?) ,?, ?, ?, ?, ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         getJdbcTemplate().update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
@@ -35,6 +36,7 @@ public class FluxDao extends JdbcDaoSupport {
             ps.setLong(6, spaceObjectId);
             ps.setString(7, userId);
             ps.setLong(8, photoId);
+            ps.setArray(9, connection.createArrayOf("float8", apertures));
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).longValue();

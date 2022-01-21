@@ -1,7 +1,8 @@
 package com.example.astroapp.services;
 
 import com.example.astroapp.dao.*;
-import com.example.astroapp.entities.*;
+import com.example.astroapp.entities.PhotoProperties;
+import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.utils.UnitConversions;
 import com.fasterxml.jackson.databind.MappingIterator;
@@ -16,6 +17,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +77,6 @@ public class FileHandlingService {
                     saveRow(row, photoProperties, uploadingUser);
                 }
             }
-            spaceObjectDao.updateCoordinates();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -115,17 +116,16 @@ public class FileHandlingService {
             throws ParseException {
         Long spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
                 row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
+        int i = 1;
+        String aperture;
+        List<Float> apertures = new ArrayList<>();
+        // getting all columns in form of Ap1..Apn
+        while ((aperture = row.get("Ap"+i)) != null) {
+            apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
+            i++;
+        }
         Long fluxId = saveFlux(row.get("RA"), row.get("Dec"),
-                row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser);
-//        int i = 1;
-//        String aperture;
-//        List<Aperture> apertures = new ArrayList<>();
-//        // getting all columns in form of Ap1..Apn
-//        while ((aperture = row.get("Ap"+i)) != null) {
-//            apertures.add(new Aperture(flux, aperture));
-//            i++;
-//        }
-//        apertureRepo.saveAll(apertures);
+                row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
     }
 
     public Long saveObject(String name, String catalog, String catalogId,
@@ -138,20 +138,14 @@ public class FileHandlingService {
     }
 
     public Long saveFlux(String strRec, String strDec, String apAuto,
-                         Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser)
+                         Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser, List<Float> aperturesList)
             throws ParseException {
         float dec = UnitConversions.angleToFloatForm(strDec);
         float rec = UnitConversions.hourAngleToDegrees(strRec);
+        Float[] apertures = aperturesList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
         return fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId,uploadingUser.getGoogleSub(),
-                photoProperties.getId());
-    }
-
-    public void saveAperture(String apertureStr, Flux flux) {
-        Aperture aperture = new Aperture();
-        aperture.setValue(!apertureStr.equals("saturated") ? Float.parseFloat(apertureStr) : 0);
-        aperture.setFlux(flux);
-        apertureRepo.save(aperture);
+                photoProperties.getId(), apertures);
     }
 }
 

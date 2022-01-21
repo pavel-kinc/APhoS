@@ -21,4 +21,9 @@ public class ProfileController {
         model.addAttribute("user", user);
         return "profile";
     }
+
+    @GetMapping("/profile/username")
+    public String displayUsernameForm() {
+        return "usernameForm";
+    }
 }

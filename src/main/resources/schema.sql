@@ -9,12 +9,7 @@ AS
 CREATE TABLE IF NOT EXISTS users
 (
     google_sub  VARCHAR(100) NOT NULL PRIMARY KEY,
-    email       VARCHAR(50),
-    first_name  VARCHAR(30),
-    last_name   VARCHAR(30),
-    location    VARCHAR(30),
-    website     VARCHAR(100),
-    photo_url   VARCHAR(100),
+    username    VARCHAR(50),
     description VARCHAR(300)
 );
 
@@ -49,6 +44,7 @@ CREATE TABLE IF NOT EXISTS flux
     object_id           int4         NOT NULL REFERENCES object (id),
     user_id             VARCHAR(100) NOT NULL REFERENCES users (google_sub),
     photo_properties_id int4         NOT NULL REFERENCES photo_properties (id),
+    apertures           float8[],
     PRIMARY KEY (id)
 );
 
@@ -59,13 +55,6 @@ CREATE TABLE IF NOT EXISTS aperture
     flux_id int4   NOT NULL REFERENCES flux (id),
     PRIMARY KEY (id)
 );
-
-
--- CREATE RULE object_dont_add_duplicates AS
---     ON INSERT TO object
---     WHERE EXISTS(SELECT 1 FROM object
---                  WHERE (catalog_id)=(NEW.catalog_id))
---     DO INSTEAD NOTHING;
 
 CREATE INDEX IF NOT EXISTS flux_rec
     ON flux (rec);
