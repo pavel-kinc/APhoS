@@ -41,9 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> {
 
                     OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-                    userService.processOAuthPostLogin(
+                    boolean newUser = userService.processOAuthPostLogin(
                             oauthUser.getAttribute("sub"));
-                    response.sendRedirect("/profile/username");
+                    if (newUser) {
+                        response.sendRedirect("/profile/username");
+                    } else {
+                        response.sendRedirect("/profile/?id="+oauthUser.getAttribute("sub"));
+                    }
                 });
     }
 

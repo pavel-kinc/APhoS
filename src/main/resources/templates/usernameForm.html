@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="layout :: head"></head>
+
+    <form th:action="@{/profile/username/save}" method="post">
+        <div class="mb-3">
+            <label for="validationTooltipUsername" class="form-label">Username</label>
+            <div class="input-group has-validation">
+                <span class="input-group-text" id="validationTooltipUsernamePrepend"></span>
+                <input type="text" th:name="username" class="form-control" id="validationTooltipUsername"
+                       aria-describedby="validationTooltipUsernamePrepend" required>
+                <div class="invalid-tooltip">
+                    Please choose a valid username.
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
 </html>

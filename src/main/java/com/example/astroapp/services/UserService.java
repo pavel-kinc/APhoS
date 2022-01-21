@@ -13,11 +13,20 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public void processOAuthPostLogin(String sub) {
+
+    /**
+     * Save user to the database if it is a new user.
+     *
+     * @param sub user id
+     * @return true if user is new false otherwise
+     */
+    public boolean processOAuthPostLogin(String sub) {
         if (!userRepo.existsById(sub)) {
             User newUser = new User(sub);
             userRepo.save(newUser);
+            return true;
         }
+        return false;
     }
 
     public User getCurrentUser() {
