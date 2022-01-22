@@ -4,19 +4,25 @@
 
     <head th:replace="layout :: head"></head>
 
-    <form th:action="@{/profile/username/save}" method="post">
-        <div class="mb-3">
-            <label for="validationTooltipUsername" class="form-label">Username</label>
-            <div class="input-group has-validation">
-                <span class="input-group-text" id="validationTooltipUsernamePrepend"></span>
-                <input type="text" th:name="username" class="form-control" id="validationTooltipUsername"
-                       aria-describedby="validationTooltipUsernamePrepend" required>
-                <div class="invalid-tooltip">
-                    Please choose a valid username.
+    <div class="row justify-content-center">
+        <div class="col-md-4 mt-5">
+            <form th:action="@{/profile/username/save}" method="post">
+                <div class="mb-3">
+                    <h5>Please choose a username:</h5>
+                        <input th:if="${message}" type="text" th:name="username" class="form-control is-invalid" id="usernameInput usernameTaken"
+                               aria-describedby="passwordHelp" required minlength="5" maxlength="30">
+                        <input th:unless="${message}" type="text" th:name="username" class="form-control" id="usernameInput usernameTaken"
+                           aria-describedby="passwordHelp" required minlength="5" maxlength="30">
+                        <div id="passwordHelp" class="form-text">
+                            Your username must be 5-30 characters long, others will identify you by your username.
+                        </div>
+                        <div th:if="${message}" id="usernameTaken" class="invalid-feedback">
+                            Username already taken.
+                        </div>
                 </div>
-            </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 
 </html>
