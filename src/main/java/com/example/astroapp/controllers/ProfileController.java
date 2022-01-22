@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/profile")
@@ -33,7 +34,11 @@ public class ProfileController {
     }
 
     @RequestMapping("/username/save")
-    public String saveUsername(@RequestParam String username) {
+    public String saveUsername(@RequestParam String username, RedirectAttributes redirectAttributes) {
+        if (userRepo.existsByUsernameEquals(username)) {
+            redirectAttributes.addFlashAttribute("message", "Username already taken");
+            return "redirect:/profile/username";
+        }
         User user = userService.getCurrentUser();
         user.setUsername(username);
         userRepo.save(user);

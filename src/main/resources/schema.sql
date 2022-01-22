@@ -9,7 +9,7 @@ AS
 CREATE TABLE IF NOT EXISTS users
 (
     google_sub  VARCHAR(100) NOT NULL PRIMARY KEY,
-    username    VARCHAR(50),
+    username    VARCHAR(50) UNIQUE,
     description VARCHAR(300)
 );
 
