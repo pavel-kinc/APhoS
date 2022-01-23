@@ -9,9 +9,9 @@
             <form th:action="@{/profile/username/save}" method="post">
                 <div class="mb-3">
                     <h5>Please choose a username:</h5>
-                        <input th:if="${message}" type="text" th:name="username" class="form-control is-invalid" id="usernameInput usernameTaken"
+                        <input th:if="${message}" type="text" th:name="username" class="form-control is-invalid" id="usernameInputTaken"
                                aria-describedby="passwordHelp" required minlength="5" maxlength="30">
-                        <input th:unless="${message}" type="text" th:name="username" class="form-control" id="usernameInput usernameTaken"
+                        <input th:unless="${message}" type="text" th:name="username" class="form-control" id="usernameInputOk"
                            aria-describedby="passwordHelp" required minlength="5" maxlength="30">
                         <div id="passwordHelp" class="form-text">
                             Your username must be 5-30 characters long, others will identify you by your username.

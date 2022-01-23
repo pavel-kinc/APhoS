@@ -14,10 +14,11 @@
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img class="img-thumbnail rounded-circle" th:src="@{/images/person.svg}"
                                      alt="profile logo" width="160" height="180">
-                                <div class="mt-3">
-                                    <h5>username</h5>
-                                </div>
                             </div>
+                        </div>
+                        <hr class="mx-4"/>
+                        <div class="card-body align-items-center text-center">
+                                <h3 th:text="${user.username}"></h3>
                         </div>
                     </div>
                 </div>
@@ -28,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <script th:src="@{js/highlightActive.js}"></script>
+        <script th:src="@{/js/highlightActive.js}"></script>
     </body>
 
 </html>
