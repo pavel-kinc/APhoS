@@ -39,7 +39,13 @@
                 <textarea class="form-control" id="textArea" th:text="${user.description}"
                           rows="6" maxlength="500"></textarea>
                 <div class="mt-3 d-md-flex justify-content-md-end">
-                    <button type="button" onclick="saveChanges()" class="btn btn-outline-primary btn-lg">Save changes
+                    <form th:action="@{/profile/}">
+                        <button type="submit" class="btn btn-outline-secondary btn-lg me-2">
+                            Discard
+                        </button>
+                    </form>
+                    <button type="button" onclick="saveChanges()" class="btn btn-outline-primary btn-lg">
+                        Save changes
                     </button>
                 </div>
             </div>

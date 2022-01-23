@@ -2,8 +2,10 @@ package com.example.astroapp.controllers;
 
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.entities.User;
+import com.example.astroapp.exceptions.UnauthorizedAccessException;
 import com.example.astroapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,9 +25,15 @@ public class ProfileController {
     UserService userService;
 
     @GetMapping("/")
-    public String displayProfile(@RequestParam String id,
+    public String displayProfile(@RequestParam(defaultValue = "current") String id,
                                  @RequestParam(defaultValue = "false") Boolean editable, Model model) {
+        if (id.equals("current")) {
+            id = userService.getCurrentUser().getGoogleSub();
+        }
         User user = userRepo.findByUserID(id);
+        if (!user.getGoogleSub().equals(userService.getCurrentUser().getGoogleSub())) {
+            throw new UnauthorizedAccessException("Not authorized to access.");
+        }
         model.addAttribute("user", user);
         return editable ? "editableProfile" : "profile";
     }
