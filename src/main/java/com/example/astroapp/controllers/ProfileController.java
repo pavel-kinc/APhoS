@@ -31,8 +31,11 @@ public class ProfileController {
             id = userService.getCurrentUser().getGoogleSub();
         }
         User user = userRepo.findByUserID(id);
-        if (!user.getGoogleSub().equals(userService.getCurrentUser().getGoogleSub())) {
+        if (editable && !user.getGoogleSub().equals(userService.getCurrentUser().getGoogleSub())) {
             throw new UnauthorizedAccessException("Not authorized to access.");
+        }
+        if (id.equals(userService.getCurrentUser().getGoogleSub())) {
+            model.addAttribute("currentUserSignedIn", true);
         }
         model.addAttribute("user", user);
         return editable ? "editableProfile" : "profile";
@@ -42,6 +45,7 @@ public class ProfileController {
     public String saveProfile(@RequestParam String description, @RequestParam String username) {
         User user = userService.getCurrentUser();
         user.setDescription(description);
+        //TODO unchanged name is ok
         if (userRepo.existsByUsernameEquals(username)) {
             userRepo.save(user);
             return "redirect:/profile/?id="+user.getGoogleSub()+"&editable=true";
