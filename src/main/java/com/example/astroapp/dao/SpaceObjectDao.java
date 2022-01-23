@@ -22,7 +22,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.READ_COMMITTED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public long saveObject(String catalogId, String name, String catalog,
                            Float catalogDec, Float catalogRec, Float catalogMag) {
         assert getJdbcTemplate() != null;

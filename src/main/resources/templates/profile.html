@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml">
 
     <head th:replace="layout :: head"></head>
 
@@ -12,25 +12,19 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-column align-items-center text-center">
-                                <img>
+                                <img class="img-thumbnail rounded-circle" th:src="@{/images/person.svg}"
+                                     alt="profile logo" width="160" height="180">
                                 <div class="mt-3">
-                                    <h5 class="card-title"></h5>
-                                    <p class="text-secondary mb-1">Contributor</p>
-                                    <p class="text-secondary mb-1">ČAS 251 65, Ondřejov</p>
+                                    <h5>username</h5>
                                 </div>
                             </div>
-                        </div>
-                        <hr class="mx-4"/>
-                        <div class="card-body align-items-center text-center">
-                            <a href="#" class="card-link">Card link</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-8">
-                    <h2>TITLE HEADING</h2>
-                    <h5>Title description, Dec 7, 2020</h5>
-                    <p>Some text..</p>
-                    <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+                    <h2>Profile</h2>
+                    <h5>Add additional info for others:</h5>
+                    <textarea class="form-control" id="textArea" rows="6"></textarea>
                 </div>
             </div>
         </div>
