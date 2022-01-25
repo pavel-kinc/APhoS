@@ -48,14 +48,6 @@ CREATE TABLE IF NOT EXISTS flux
     PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS aperture
-(
-    id      SERIAL NOT NULL,
-    value   float8,
-    flux_id int4   NOT NULL REFERENCES flux (id),
-    PRIMARY KEY (id)
-);
-
 CREATE INDEX IF NOT EXISTS flux_rec
     ON flux (rec);
 

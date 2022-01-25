@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -39,14 +40,13 @@ public class FileHandlingService {
     UserService userService;
 
     @Autowired
-    ApertureRepo apertureRepo;
-
-    @Autowired
     UserRepo userRepo;
 
-    public void store(MultipartFile multipartFile) throws IOException {
+    @Transactional
+    public void store(Path pathToFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
-        File file = multipartFileToNormal(multipartFile);
+        File file = pathToFile.toFile();
+        // second element of pair is length of the header
         Pair<List<String>, Integer> retPair = parseHeader(file, photoProperties);
         propsRepo.save(photoProperties);
         parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
@@ -108,12 +108,6 @@ public class FileHandlingService {
         throw new CsvContentException("Schema not found.");
     }
 
-    private File multipartFileToNormal(MultipartFile file) throws IOException {
-        File normalFile = new File(System.getProperty("java.io.tmpdir") + "/" + file.getOriginalFilename());
-        file.transferTo(normalFile);
-        return normalFile;
-    }
-
     public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser)
             throws ParseException {
         Long spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
@@ -126,7 +120,7 @@ public class FileHandlingService {
             apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
             i++;
         }
-        Long fluxId = saveFlux(row.get("RA"), row.get("Dec"),
+        saveFlux(row.get("RA"), row.get("Dec"),
                 row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
     }
 

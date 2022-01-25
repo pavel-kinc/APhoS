@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Transactional(propagation = Propagation.MANDATORY)
 public class FluxDao extends JdbcDaoSupport {
 
 

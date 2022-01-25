@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
+@Transactional(propagation = Propagation.MANDATORY)
 public class SpaceObjectDao extends JdbcDaoSupport {
 
 
@@ -23,8 +24,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
     SpaceObjectDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
-    @Retryable(backoff = @Backoff(delay = 100, maxDelay = 300))
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
+
     public long saveObject(String catalogId, String name, String catalog,
                            Float catalogDec, Float catalogRec, Float catalogMag) {
         assert getJdbcTemplate() != null;

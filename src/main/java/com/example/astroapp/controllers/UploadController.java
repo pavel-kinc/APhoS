@@ -1,5 +1,6 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.services.FileHandlingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Controller
@@ -40,7 +44,29 @@ public class UploadController {
         File normalFile = new File(path +
                 "/" + file.getOriginalFilename());
         file.transferTo(normalFile);
-//        fileHandlingService.store(file);
         return path;
+    }
+
+    @PostMapping("/parse")
+    @ResponseBody
+    public String parseAndSave(@RequestParam String pathToDir) {
+        int unsuccessfulCount = 0;
+        try {
+            try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
+                filePaths
+                        .filter(Files::isRegularFile)
+                        .forEach(path -> {
+                            try {
+                                fileHandlingService.store(path);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+            }
+        } catch (IOException | CsvContentException e) {
+            e.printStackTrace();
+            unsuccessfulCount++;
+        }
+        return Integer.toString(unsuccessfulCount);
     }
 }

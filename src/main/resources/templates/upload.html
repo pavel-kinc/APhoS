@@ -23,7 +23,7 @@
                             <button class="btn btn-primary" id="submitButton" onclick="uploadFiles()" disabled> Upload Files </button>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row-mb-3">
                         <div class="col-md-11">
                             <div class="progress" id="progressBar" style="visibility: hidden">
                                 <div class="progress-bar" id="uploadProgress" role="progressbar" style="width: 0"
@@ -33,12 +33,22 @@
                         <div class="col-md-1">
                             <div class="d-flex align-items-center">
                                 <div id="progressSpinner" class="spinner-border spinner-border-sm"
-                                     role="status" style="visibility: hidden"></div>
+                                     role="status" style="visibility: visible"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="scrollable mt-4" id="uploadMessages">
+                    <div class="row justify-content-start">
+                        <div id="processingSign" class="col-auto" style="visibility: hidden">
+                            <h5>Processing files</h5>
+                        </div>
+                        <div class="col-auto">
+                            <i id="processingCheck" class="bi bi-check-lg" style="visibility: hidden"></i>
+                            <div id="processingSpinner" class="spinner-border spinner-border-sm"
+                                 role="status" style="visibility: hidden"></div>
+                        </div>
+                        <p id="processingMessage" style="visibility: hidden"> files saved successfully.</p>
                     </div>
+                    <div class="scrollable mt-4" id="uploadMessages"></div>
                 </div>
             </div>
         </div>
