@@ -11,19 +11,30 @@ function uploadFiles() {
     uploadProgress.style.width = "0";
     let filesLength = files.length;
     const myHeaders = new Headers();
+    let formData = new FormData();
+    formData.append("file", files[0]);
+    formData.append("dirName", "create_new");
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
-    for (let i = 0; i < filesLength; i++) {
-        let formData = new FormData();
-        let file = files[i];
-        formData.append("file", file);
-        fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
-            .then(response => response.ok)
-            .then(success => printMessages(success, file.name, uploadProgress, filesLength, uploadMessageArea));
-    }
+    fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
+        .then(response => response.text())
+        .then(pathToDir => {
+            printUploadMessages(true, files[0].name,
+                uploadProgress, filesLength, uploadMessageArea, );
+            for (let i = 1; i < filesLength; i++) {
+            let formData = new FormData();
+            let file = files[i];
+            formData.append("file", file);
+            formData.append("dirName", pathToDir);
+            fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
+                .then(response => response.ok)
+                .then(success => printUploadMessages(success, file.name,
+                    uploadProgress, filesLength, uploadMessageArea));
+            }
+        })
     document.getElementById("submitButton").disabled = true;
 }
 
-function printMessages(success, fileName, uploadProgress, filesLength, uploadMessageArea) {
+function printUploadMessages(success, fileName, uploadProgress, filesLength, uploadMessageArea) {
     const paragraph = document.createElement("p");
     const message = document.createTextNode(
         success ?

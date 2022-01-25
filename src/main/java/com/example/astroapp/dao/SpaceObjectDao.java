@@ -3,6 +3,8 @@ package com.example.astroapp.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
@@ -21,7 +23,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
     SpaceObjectDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
-
+    @Retryable(backoff = @Backoff(delay = 100, maxDelay = 300))
     @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.SERIALIZABLE)
     public long saveObject(String catalogId, String name, String catalog,
                            Float catalogDec, Float catalogRec, Float catalogMag) {
