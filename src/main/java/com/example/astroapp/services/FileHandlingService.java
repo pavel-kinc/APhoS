@@ -10,10 +10,8 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
-import org.springframework.security.core.Transient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -130,17 +128,21 @@ public class FileHandlingService {
         float dec = UnitConversions.angleToFloatForm(catalogDec);
         float rec = UnitConversions.hourAngleToDegrees(catalogRec);
         float mag = Float.parseFloat(catalogMag);
-        return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+        try {
+            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+        } catch (Exception e) {
+            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+        }
     }
 
-    public Long saveFlux(String strRec, String strDec, String apAuto,
+    public void saveFlux(String strRec, String strDec, String apAuto,
                          Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser, List<Float> aperturesList)
             throws ParseException {
         float dec = UnitConversions.angleToFloatForm(strDec);
         float rec = UnitConversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        return fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId,uploadingUser.getGoogleSub(),
+        fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId, uploadingUser.getGoogleSub(),
                 photoProperties.getId(), apertures);
     }
 }

@@ -22,22 +22,16 @@ function uploadFiles() {
     fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.text())
         .then(pathToDir => {
+            let i = 1;
             printUploadMessages(true, files[0].name,
                 uploadProgress, filesLength, uploadMessageArea, pathToDir);
-            for (let i = 1; i < filesLength; i++) {
+            do {
                 let formData = new FormData();
                 let file = files[i];
                 let finalFetchBody = new FormData();
                 finalFetchBody.append("pathToDir", pathToDir)
                 if (uploadedFilesCount === filesLength) {
-                    fetch("/upload/parse", {
-                        method: "POST",
-                        headers: myHeaders, body: finalFetchBody
-                    })
-                        .then(response => response.text())
-                        .then(body => finishedSaving(filesLength.toString(),body));
-                    document.getElementById("processingSign").style.visibility = "visible";
-                    document.getElementById("processingSpinner").style.visibility = "visible";
+                    postFiles(myHeaders, finalFetchBody, filesLength);
                 }
                 formData.append("file", file);
                 formData.append("dirName", pathToDir);
@@ -47,19 +41,24 @@ function uploadFiles() {
                         printUploadMessages(success, file.name,
                             uploadProgress, filesLength, uploadMessageArea);
                         if (uploadedFilesCount === filesLength) {
-                            fetch("/upload/parse", {
-                                method: "POST",
-                                headers: myHeaders, body: finalFetchBody
-                            })
-                                .then(response => response.text())
-                                .then(body => finishedSaving(filesLength.toString(),body));
-                            document.getElementById("processingSign").style.visibility = "visible";
-                            document.getElementById("processingSpinner").style.visibility = "visible";
+                            postFiles(myHeaders, finalFetchBody, filesLength)
                         }
                     });
-            }
+                i++;
+            } while (i < filesLength);
         })
     document.getElementById("submitButton").disabled = true;
+}
+
+function postFiles(headers, body, filesLength) {
+    fetch("/upload/parse", {
+        method: "POST",
+        headers: headers, body: body
+    })
+        .then(response => response.text())
+        .then(body => finishedSaving(filesLength.toString(),body));
+    document.getElementById("processingSign").style.visibility = "visible";
+    document.getElementById("processingSpinner").style.visibility = "visible";
 }
 
 function finishedSaving(fileCount, errorCount) {
