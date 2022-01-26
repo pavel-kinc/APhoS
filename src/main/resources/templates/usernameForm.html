@@ -10,7 +10,7 @@
                 <div class="mb-3">
                     <h5>Please choose a username:</h5>
                         <input th:if="${message}" type="text" th:name="username" class="form-control is-invalid" id="usernameInputTaken"
-                               aria-describedby="passwordHelp" required minlength="5" maxlength="30">
+                               aria-describedby="passwordHelp" required minlength="5" maxlength="20">
                         <input th:unless="${message}" type="text" th:name="username" class="form-control" id="usernameInputOk"
                            aria-describedby="passwordHelp" required minlength="5" maxlength="30">
                         <div id="passwordHelp" class="form-text">

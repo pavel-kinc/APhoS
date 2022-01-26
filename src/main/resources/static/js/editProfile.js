@@ -1,3 +1,6 @@
+document.getElementById("textArea")
+    .addEventListener("input", preventSpecialCharInput, false);
+
 function saveChanges() {
     const description = document.getElementById("textArea");
     const userName = document.getElementById("usernameInput");
@@ -19,4 +22,9 @@ function redirectAfterPost(url) {
     } else {
         window.location.replace(url);
     }
+}
+
+function preventSpecialCharInput(event){
+    event.target.value = event.target.value
+        .replace(/[;/{}|\\"$<>\?~!`#\^&*@()%=\-\[\]\\']/g, "");
 }
