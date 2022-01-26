@@ -45,8 +45,7 @@ public class ProfileController {
     public String saveProfile(@RequestParam String description, @RequestParam String username) {
         User user = userService.getCurrentUser();
         user.setDescription(description);
-        //TODO unchanged name is ok
-        if (userRepo.existsByUsernameEquals(username)) {
+        if (userRepo.existsByUsernameEquals(username) && !username.equals(user.getUsername())) {
             userRepo.save(user);
             return "redirect:/profile/?id="+user.getGoogleSub()+"&editable=true";
         }
