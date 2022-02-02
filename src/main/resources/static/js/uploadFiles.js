@@ -10,7 +10,7 @@ function uploadFiles() {
     document.getElementById("progressSpinner").style.visibility = "visible";
     document.getElementById("processingSign").style.visibility = "hidden";
     document.getElementById("processingCheck").style.visibility = "hidden";
-    document.getElementById("processingMessage").style.visibility= "hidden";
+    document.getElementById("processingMessage").style.visibility = "hidden";
     const uploadProgress = document.getElementById("uploadProgress");
     uploadProgress.style.width = "0";
     let filesLength = files.length;
@@ -56,7 +56,7 @@ function postFiles(headers, body, filesLength) {
         headers: headers, body: body
     })
         .then(response => response.text())
-        .then(body => finishedSaving(filesLength.toString(),body));
+        .then(body => finishedSaving(filesLength.toString(), body));
     document.getElementById("processingSign").style.visibility = "visible";
     document.getElementById("processingSpinner").style.visibility = "visible";
 }
