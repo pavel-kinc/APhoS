@@ -26,5 +26,5 @@ function redirectAfterPost(url) {
 
 function preventSpecialCharInput(event){
     event.target.value = event.target.value
-        .replace(/[;/{}|\\"$<>\?~!`#\^&*@()%=\-\[\]\\']/g, "");
+        .replace(/[;/{}|\\"$<>?~!`#^&*@()%=\-\[\]\\']/g, "");
 }

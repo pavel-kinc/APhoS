@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +50,10 @@ public class UploadController {
 
     @PostMapping("/parse")
     @ResponseBody
-    public String parseAndSave(@RequestParam String pathToDir) {
+    public String parseAndSave(@RequestParam String pathToDir) throws FileNotFoundException {
+        if (!Files.isDirectory(Paths.get(pathToDir))) {
+            throw new FileNotFoundException("Given path to the directory is not correct.");
+        }
         int unsuccessfulCount = 0;
         try {
             try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
