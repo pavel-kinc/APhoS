@@ -13,6 +13,10 @@ public interface UserRepo extends CrudRepository<User, String> {
     public List<User> findAll();
 
     @Query(nativeQuery = true, value =
+            "SELECT * FROM users where google_sub IN (SELECT user_id FROM flux)")
+    User findAllUsersWhoHaveUploaded();
+
+    @Query(nativeQuery = true, value =
             "SELECT * FROM users where google_sub = ?1")
     User findByUserID(String userID);
 
