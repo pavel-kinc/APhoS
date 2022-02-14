@@ -41,9 +41,20 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                            Users
-                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                                Users
+                            </button>
+                            <div class="dropdown-menu">
+                                <div class="input-group px-3">
+                                    <select class="form-select"  aria-label="User select" style="width: 200px">
+                                        <option th:each="user : ${users}"   th:value="${user.username}"
+                                                th:text="${user.username}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <div class="btn-group">
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                                 Magnitude
