@@ -2,100 +2,116 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="layout :: head"></head>
+<head th:replace="layout :: head"></head>
 
-    <body class="bg-light">
-        <nav th:replace="layout :: navbar"></nav>
-        <div class="container-fluid">
-            <div class="my-3">
-                <h3>Searching</h3>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <form>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle"
-                                    data-bs-toggle="dropdown">
-                                Coordinates
-                            </button>
-                            <div class="dropdown-menu">
-                                <div class="input-group-prepend px-3">
-                                    <span class="input-group-text"> Object coordinates (RA#Dec)</span>
-                                    <input type="text" id="coorInput" class="form-control" style="min-width: 290px"
-                                           placeholder="e.g. 21h46m13.358s#68°33'34.59&quot;" aria-label="Text input with dropdown button">
-                                    <span class="input-group-text"> Radius (degrees) </span>
-                                    <input type="text" class="form-control" placeholder="e.g 0.05"
-                                           aria-label="Text input with dropdown button">
-                                </div>
-                            </div>
+<body class="bg-light">
+<nav th:replace="layout :: navbar"></nav>
+<div class="container-fluid">
+    <div class="my-3">
+        <h3>Searching</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                        Coordinates
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group-prepend px-3">
+                            <span class="input-group-text"> Object coordinates (RA#Dec)</span>
+                            <input type="text" id="coorInput" class="form-control" style="min-width: 290px"
+                                   placeholder="e.g. 21h46m13.358s#68°33'34.59&quot;"
+                                   aria-label="Text input with dropdown button">
+                            <span class="input-group-text"> Radius (degrees) </span>
+                            <input type="text" class="form-control" placeholder="e.g 0.05"
+                                   aria-label="Text input with dropdown button">
                         </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                Object
-                            </button>
-                            <div class="dropdown-menu">
-                                <div class="input-group-prepend px-3">
-                                    <span class="input-group-text"> Object name </span>
-                                    <input type="text" class="form-control" placeholder="e.g comp V434"
-                                           style="min-width: 150px" aria-label="Text input with dropdown button">
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        Object
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group-prepend px-3">
+                            <span class="input-group-text"> Object name </span>
+                            <input type="text" class="form-control" placeholder="e.g comp V434"
+                                   style="min-width: 150px" aria-label="Text input with dropdown button">
                         </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                Users
-                            </button>
-                            <div class="dropdown-menu">
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        Users
+                    </button>
+                    <div id="userDropDownMenu" class="dropdown-menu">
+                        <div class="row">
+                            <div class="col-md-6 align-self-center">
+                                <h6>Include</h6>
                                 <div class="input-group px-3">
-                                    <select class="form-select" size="4" aria-label="User select" style="width: 200px">
-                                        <option th:each="user : ${users}"   th:value="${user.username}"
-                                                th:text="${user.username}">
+                                    <select class="form-select" th:size="${#lists.size(users)+2}" id="wantedUsersSelect"
+                                            aria-label="User select" style="width: 400px">
+                                        <option th:each="user : ${users}" th:value="${user.username}"
+                                                th:id="${user.username}" th:text="${user.username}" draggable="true">
                                         </option>
-                                        <option> nove1</option>
-                                        <option> nove</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                                Magnitude
-                            </button>
-                            <div class="dropdown-menu">
+                            <div class="col-md-6 align-self-center">
+                                <h6>Exclude</h6>
                                 <div class="input-group px-3">
-                                    <span class="input-group-text"> Min </span>
-                                    <input id="minInput" type="text" class="form-control" value="0"
-                                           aria-label="Text input with dropdown button">
-                                    <div class="my-2">
-                                        <input id="minRange" type="range" value="0" max="15" step="0.1">
-                                    </div>
-                                    <span class="input-group-text"> Max </span>
-                                    <input id="maxInput" type="text" class="form-control" value="15"
-                                           aria-label="Text input with dropdown button">
-                                    <div class="my-2">
-                                        <input id="maxRange" type="range" value="15" max="15" step="0.1">
-                                    </div>
+                                    <select class="form-select" th:size="${#lists.size(users)+2}"
+                                            id="unwantedUsersSelect"
+                                            aria-label="User select" style="width: 400px">
+                                    </select>
                                 </div>
                             </div>
+
                         </div>
-                        <div class="input-group mt-1">
-                            <div class="col-md-2">
-                                <select id="catalogSelect" class="form-select" data-style="btn-primary">
-                                    <option selected>UCAC4</option>
-                                    <option value="1">Other option</option>
-                                </select>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Object ID"
-                                   aria-label="Text input with dropdown button">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        Magnitude
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group px-3">
+                            <span class="input-group-text"> Min </span>
+                            <input id="minInput" type="text" class="form-control" value="0"
+                                   aria-label="Text input with dropdown button">
+                            <div class="my-2">
+                                <input id="minRange" type="range" value="0" max="15" step="0.1">
+                            </div>
+                            <span class="input-group-text"> Max </span>
+                            <input id="maxInput" type="text" class="form-control" value="15"
+                                   aria-label="Text input with dropdown button">
+                            <div class="my-2">
+                                <input id="maxRange" type="range" value="15" max="15" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mt-1">
+                    <div class="col-md-2">
+                        <select id="catalogSelect" class="form-select" data-style="btn-primary">
+                            <option selected>UCAC4</option>
+                            <option value="1">Other option</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Object ID"
+                           aria-label="Text input with dropdown button">
+                    <button type="submit" class="btn btn-dark">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
-        <script th:src="@{js/magnitudeSliders.js}"></script>
-        <script th:src="@{js/highlightActive.js}"></script>
-    </body>
+    </div>
+</div>
+<script th:src="@{js/dragAndDrop.js}"></script>
+<script th:src="@{js/magnitudeSliders.js}"></script>
+<script th:src="@{js/highlightActive.js}"></script>
+</body>
 </html>
