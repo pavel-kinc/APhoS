@@ -12,7 +12,7 @@
     </div>
     <div class="row">
         <div class="col-md-6">
-            <form action="/search" method="get">
+            <form id="searchForm" action="/search" method="get" novalidate>
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle"
                             data-bs-toggle="dropdown">
@@ -25,8 +25,8 @@
                                    style="min-width: 290px" placeholder="e.g. 21h46m13.358s#68°33'34.59&quot;"
                                    aria-label="Text input with dropdown button">
                             <span class="input-group-text"> Radius (degrees) </span>
-                            <input type="number" class="form-control" name="radius" placeholder="e.g 0.05"
-                                   aria-label="Text input with dropdown button">
+                            <input type="text" class="form-control" name="radius" placeholder="e.g 0.05"
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
                         </div>
                     </div>
                 </div>
@@ -79,13 +79,13 @@
                     <div class="dropdown-menu">
                         <div class="input-group px-3">
                             <span class="input-group-text"> Min </span>
-                            <input id="minInput" type="number" class="form-control" name="min_mag"
+                            <input id="minInput" type="text" class="form-control" name="min_mag"
                                    value="0" aria-label="Text input with dropdown button">
                             <div class="my-2">
                                 <input id="minRange" type="range" value="0" max="15" step="0.1">
                             </div>
                             <span class="input-group-text"> Max </span>
-                            <input id="maxInput" name="max_mag" type="number" class="form-control" value="15"
+                            <input id="maxInput" name="max_mag" type="text" class="form-control" value="15"
                                    aria-label="Text input with dropdown button">
                             <div class="my-2">
                                 <input id="maxRange" type="range" value="15" max="15" step="0.1">
@@ -113,5 +113,6 @@
 <script th:src="@{js/dragAndDrop.js}"></script>
 <script th:src="@{js/magnitudeSliders.js}"></script>
 <script th:src="@{js/highlightActive.js}"></script>
+<script th:src="@{js/searchFormValidation.js}"></script>
 </body>
 </html>
