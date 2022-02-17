@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.util.List;
 import java.util.Objects;
 
 @Repository

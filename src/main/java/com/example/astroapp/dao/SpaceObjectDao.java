@@ -1,5 +1,6 @@
 package com.example.astroapp.dao;
 
+import com.example.astroapp.dto.ObjectFluxes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -23,6 +24,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
     @Autowired
     SpaceObjectDao(DataSource dataSource) {
         this.setDataSource(dataSource);
+    }
+
+    public List<ObjectFluxes> queryObjects(String coordinates, String radius, String name, String minMag,
+                                            String maxMag, String catalog, String objectId) {
+        return null;
     }
 
     public long saveObject(String catalogId, String name, String catalog,
