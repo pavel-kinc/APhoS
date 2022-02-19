@@ -20,7 +20,8 @@ public class HomeController {
     }
 
     @GetMapping("search")
-    public String displayResults(@RequestParam String coordinates,
+    public String displayResults(@RequestParam String rightAscension,
+                                 @RequestParam String dec,
                                  @RequestParam String radius,
                                  @RequestParam String name,
                                  @RequestParam(name = "min_mag") String minMag,

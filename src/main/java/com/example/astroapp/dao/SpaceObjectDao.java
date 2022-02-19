@@ -26,9 +26,44 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<ObjectFluxes> queryObjects(String coordinates, String radius, String name, String minMag,
+    public List<ObjectFluxes> queryObjects(String RA, String dec, String radius, String name, String minMag,
                                             String maxMag, String catalog, String objectId) {
         StringBuilder query = new StringBuilder("SELECT * FROM object LEFT OUTER JOIN flux WHERE ");
+        boolean appendAnd = false;
+        if (!RA.isEmpty()) {
+            query.append("earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
+            appendAnd = true;
+        }
+        if (!name.isEmpty()) {
+            if (appendAnd) {
+                query.append(" AND");
+            }
+            query.append(" name LIKE ?");
+            appendAnd = true;
+        }
+        if (!(minMag.equals("0") && (maxMag.equals("15")))) {
+            if (appendAnd) {
+                query.append(" AND");
+            }
+            query.append(" catalog_mag BETWEEN ? AND ?");
+            appendAnd = true;
+        }
+
+        if (!catalog.isEmpty()) {
+            if (appendAnd) {
+                query.append(" AND");
+            }
+            query.append(" catalog LIKE ?");
+            appendAnd = true;
+        }
+
+        if (!objectId.isEmpty()) {
+            if (appendAnd) {
+                query.append(" AND");
+            }
+            query.append(" object.id LIKE ?");
+        }
+        String finishedQuery = query.toString();
         return null;
     }
 

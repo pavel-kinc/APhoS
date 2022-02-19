@@ -19,6 +19,12 @@ public class ConversionsTest {
     }
 
     @Test
+    public void convertBasicRAtoDegWithColonTest() throws ParseException {
+        double expected = 325.4792;
+        assertEquals(expected, hourAngleToDegrees("21:41:55.291"), 0.001);
+    }
+
+    @Test
     public void convertIncorrectInputTest() {
         assertThrows(ParseException.class, () -> hourAngleToDegrees("a21 41 55.291"));
     }
@@ -26,6 +32,11 @@ public class ConversionsTest {
     @Test
     public void convertBasicDecTest() {
         assertEquals(71.3114222, angleToFloatForm("+71 18 41.12"), 0.001);
+    }
+
+    @Test
+    public void convertBasicDecWithColonTest() {
+        assertEquals(71.3114222, angleToFloatForm("+71:18:41.12"), 0.001);
     }
 
     @Test

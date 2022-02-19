@@ -34,7 +34,7 @@ public class UnitConversions {
      */
     public static float angleToFloatForm(String angle) {
         try {
-            String[] angleArray = angle.strip().split(" ");
+            String[] angleArray = angle.strip().replace(":", " ").split(" ");
             float seconds = Float.parseFloat(angleArray[1]) * 60 + Float.parseFloat(angleArray[2]);
             float degrees = Float.parseFloat(angleArray[0]);
             return degrees > 0 ? degrees + seconds / 3600 : degrees - seconds / 3600;

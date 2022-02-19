@@ -20,9 +20,13 @@
                     </button>
                     <div class="dropdown-menu">
                         <div class="input-group-prepend px-3">
-                            <span class="input-group-text"> Object coordinates (RA#Dec)</span>
-                            <input type="text" id="coorInput" name="coordinates" class="form-control"
-                                   style="min-width: 290px" placeholder="e.g. 21h46m13.358s#68°33'34.59&quot;"
+                            <span class="input-group-text"> Right Ascension (HH:MM:SS)</span>
+                            <input type="text" id="RAInput" name="rightAscension" class="form-control"
+                                   style="min-width: 290px" placeholder="e.g. 21:46:13.358"
+                                   pattern="[0-9]+:[0-9]+:([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
+                            <span class="input-group-text"> Declination (Deg:Min:Sec)</span>
+                            <input type="text" id="DecInput" name="dec" class="form-control"
+                                   style="min-width: 290px" placeholder="e.g. 68:33:34.59"
                                    aria-label="Text input with dropdown button">
                             <span class="input-group-text"> Radius (degrees) </span>
                             <input type="text" class="form-control" name="radius" placeholder="e.g 0.05"
