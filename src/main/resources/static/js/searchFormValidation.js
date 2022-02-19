@@ -7,7 +7,9 @@ searchForm.addEventListener('submit', function (event) {
     }
     let minInput = document.getElementById("minInput");
     let maxInput = document.getElementById("maxInput");
-    if (minInput.valueOf() > maxInput.valueOf()) {
+    if (parseInt(minInput.value) > parseInt(maxInput.value)) {
+        event.preventDefault();
+        event.stopPropagation();
         minInput.classList.add("is-invalid");
         maxInput.classList.add("is-invalid");
     }
