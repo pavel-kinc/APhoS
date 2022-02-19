@@ -21,8 +21,8 @@ public class UnitConversions {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         Date zeroDate = dateFormat.parse("00:00:00");
         Date myValue = dateFormat.parse(hourAngle.strip().replace(" ", ":"));
-        float seconds = (myValue.getTime() - zeroDate.getTime());
-        return seconds / (24*3600);
+        float seconds = (myValue.getTime() - zeroDate.getTime()) / 1000F;
+        return seconds / 3600 * 15;
     }
 
 
@@ -35,8 +35,9 @@ public class UnitConversions {
     public static float angleToFloatForm(String angle) {
         try {
             String[] angleArray = angle.strip().split(" ");
-            float minutes = Float.parseFloat(angleArray[1]) * 60 + Float.parseFloat(angleArray[2]);
-            return Float.parseFloat(angleArray[0]) + minutes / 3600;
+            float seconds = Float.parseFloat(angleArray[1]) * 60 + Float.parseFloat(angleArray[2]);
+            float degrees = Float.parseFloat(angleArray[0]);
+            return degrees > 0 ? degrees + seconds / 3600 : degrees - seconds / 3600;
         } catch (ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }

@@ -28,6 +28,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
 
     public List<ObjectFluxes> queryObjects(String coordinates, String radius, String name, String minMag,
                                             String maxMag, String catalog, String objectId) {
+        StringBuilder query = new StringBuilder("SELECT * FROM object LEFT OUTER JOIN flux WHERE ");
         return null;
     }
 
@@ -40,17 +41,19 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             return existingIds.get(0);
         }
         String insertQuery = "INSERT INTO object " +
-                "(id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag)" +
-                "VALUES (nextval('object_id_seq'), ?, ?, ?, ?, ?, ?)";
+                "(id, name, catalog, catalog_id, catalog_rec, catalog_dec, coordinates, catalog_mag)" +
+                "VALUES (nextval('object_id_seq'), ?, ?, ?, ?, ?, ll_to_earth(?, ?), ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         getJdbcTemplate().update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
             ps.setString(1, name);
             ps.setString(2, catalog);
             ps.setString(3, catalogId);
-            ps.setFloat(4, catalogDec);
-            ps.setFloat(5, catalogRec);
-            ps.setFloat(6, catalogMag);
+            ps.setFloat(4, catalogRec);
+            ps.setFloat(5, catalogDec);
+            ps.setFloat(6, catalogDec);
+            ps.setFloat(7, catalogRec);
+            ps.setFloat(8, catalogMag);
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
