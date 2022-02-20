@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -36,12 +37,11 @@ public class HomeController {
                                  @RequestParam(name = "min_mag") String minMag,
                                  @RequestParam(name = "max_mag") String maxMag,
                                  @RequestParam String catalog,
-                                 @RequestParam(name = "object_id") String objectId, Model model) throws SQLException {
-        model.addAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
+                                 @RequestParam(name = "object_id") String objectId, RedirectAttributes redirectAttributes) throws SQLException {
+        redirectAttributes.addFlashAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
-        model.addAttribute("resultingRows", objectFluxList);
-
-        return "home";
+        redirectAttributes.addFlashAttribute("resultingRows", objectFluxList);
+        return "redirect:/search";
     }
 }

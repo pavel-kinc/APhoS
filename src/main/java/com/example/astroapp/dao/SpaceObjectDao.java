@@ -30,15 +30,18 @@ public class SpaceObjectDao extends JdbcDaoSupport {
                                          String maxMag, String catalog, String objectId) throws SQLException {
         StringBuilder query = new StringBuilder("SELECT name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
-                " FROM object LEFT OUTER JOIN flux ON object_id=object.id WHERE");
+                " FROM object LEFT OUTER JOIN flux ON object_id=object.id");
         boolean appendAnd = false;
         if (!RA.isEmpty()) {
+            query.append(" WHERE");
             query.append(" earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
             appendAnd = true;
         }
         if (!name.isEmpty()) {
             if (appendAnd) {
                 query.append(" AND");
+            } else {
+                query.append(" WHERE");
             }
             query.append(" name LIKE ?");
             appendAnd = true;
@@ -46,6 +49,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         if (!(minMag.equals("0") && (maxMag.equals("15")))) {
             if (appendAnd) {
                 query.append(" AND");
+            } else {
+                query.append(" WHERE");
             }
             query.append(" catalog_mag BETWEEN ? AND ?");
             appendAnd = true;
@@ -54,6 +59,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         if (!catalog.equals("All catalogues")) {
             if (appendAnd) {
                 query.append(" AND");
+            } else {
+                query.append(" WHERE");
             }
             query.append(" catalog LIKE ?");
             appendAnd = true;
@@ -62,6 +69,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         if (!objectId.isEmpty()) {
             if (appendAnd) {
                 query.append(" AND");
+            } else {
+                query.append(" WHERE");
             }
             query.append(" catalog_id LIKE ?");
         }

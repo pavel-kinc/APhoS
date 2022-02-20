@@ -112,27 +112,28 @@
                 </div>
             </form>
         </div>
-        <div class="row my-4">
+        <div class="row my-4" th:if="${resultingRows}">
             <div class="col-md-8">
-                <table class="table table-bordered-table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <th>Catalog</th>
-                            <th>Catalog ID</th>
-                            <th>Right Ascension</th>
-                            <th>Declination</th>
-                            <th>Magnitude</th>
-                            <th>Number of fluxes</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Catalog</th>
+                            <th class="text-center">Catalog ID</th>
+                            <th class="text-center">Right Ascension</th>
+                            <th class="text-center">Declination</th>
+                            <th class="text-center">Magnitude</th>
+                            <th class="text-center">Number of fluxes</th>
                         </tr>
                     </thead>
                     <tr th:each="objectFluxCnt : ${resultingRows}">
-                        <td th:text="${objectFluxCnt.catalog}"/>
-                        <td th:text="${objectFluxCnt.catalogId}"/>
-                        <td th:text="${objectFluxCnt.catalogRec}"/>
-                        <td th:text="${objectFluxCnt.catalogDec}"/>
-                        <td th:text="${objectFluxCnt.catalogMag}"/>
-                        <td th:text="${objectFluxCnt.name}"/>
-                        <td th:text="${objectFluxCnt.numberOfFluxes}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.name}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.catalog}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogId}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogRec}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogDec}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogMag}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.numberOfFluxes}"/>
                     </tr>
                 </table>
             </div>

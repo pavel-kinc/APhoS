@@ -22,8 +22,8 @@ public class ObjectPreparedStatementSetter implements PreparedStatementSetter {
 
     public ObjectPreparedStatementSetter(String RA, String dec, String radius, String name,
                                          String minMag, String maxMag, String catalog, String objectId) {
-        this.RA = RA;
         this.dec = dec;
+        this.RA = RA;
         this.radius = radius;
         this.name = name;
         this.minMag = minMag;
@@ -36,12 +36,12 @@ public class ObjectPreparedStatementSetter implements PreparedStatementSetter {
     public void setValues(PreparedStatement ps) throws SQLException {
         int queryParamNumber = 1;
         if (!RA.isEmpty()) {
+            ps.setFloat(1, angleToFloatForm(dec));
             try {
-                ps.setFloat(1, hourAngleToDegrees(RA));
+                ps.setFloat(2, hourAngleToDegrees(RA));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            ps.setFloat(2, angleToFloatForm(dec));
             ps.setFloat(3, Float.parseFloat(radius));
             queryParamNumber = 4;
         }
