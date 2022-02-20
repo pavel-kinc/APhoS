@@ -1,18 +1,18 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.dto.ObjectFluxes;
+import com.example.astroapp.dto.ObjectFlux;
+import com.example.astroapp.jdbcStatementHelperClasses.FluxRowMapper;
+import com.example.astroapp.jdbcStatementHelperClasses.ObjectPreparedStatementSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,9 +26,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<ObjectFluxes> queryObjects(String RA, String dec, String radius, String name, String minMag,
-                                            String maxMag, String catalog, String objectId) {
-        StringBuilder query = new StringBuilder("SELECT * FROM object LEFT OUTER JOIN flux WHERE ");
+    public List<ObjectFlux> queryObjects(String RA, String dec, String radius, String name, String minMag,
+                                         String maxMag, String catalog, String objectId) throws SQLException {
+        StringBuilder query = new StringBuilder("SELECT name, catalog, catalog_id, catalog_rec, catalog_dec, " +
+                "catalog_mag, count(flux.id) AS flux_count" +
+                " FROM object LEFT OUTER JOIN flux WHERE ");
         boolean appendAnd = false;
         if (!RA.isEmpty()) {
             query.append("earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
@@ -49,7 +51,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             appendAnd = true;
         }
 
-        if (!catalog.isEmpty()) {
+        if (!catalog.equals("All catalogues")) {
             if (appendAnd) {
                 query.append(" AND");
             }
@@ -63,8 +65,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             }
             query.append(" object.id LIKE ?");
         }
+        query.append(" LIMIT 100");
         String finishedQuery = query.toString();
-        return null;
+        assert getJdbcTemplate() != null;
+        return getJdbcTemplate().query(finishedQuery, new ObjectPreparedStatementSetter(
+                RA, dec, radius, name, minMag, maxMag, catalog, objectId), new FluxRowMapper());
     }
 
     public long saveObject(String catalogId, String name, String catalog,
