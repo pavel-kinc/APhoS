@@ -1,17 +1,26 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.dao.UserRepo;
+import com.example.astroapp.dto.ObjectFlux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 public class HomeController {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    SpaceObjectDao spaceObjectDao;
 
     @GetMapping("/")
     public String displayHome(Model model) {
@@ -27,8 +36,11 @@ public class HomeController {
                                  @RequestParam(name = "min_mag") String minMag,
                                  @RequestParam(name = "max_mag") String maxMag,
                                  @RequestParam String catalog,
-                                 @RequestParam(name = "object_id") String objectId, Model model) {
+                                 @RequestParam(name = "object_id") String objectId, Model model) throws SQLException {
         model.addAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
+        List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
+                rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
+        model.addAttribute("resultingRows", objectFluxList);
 
         return "home";
     }

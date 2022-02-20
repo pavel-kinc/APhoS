@@ -112,6 +112,31 @@
                 </div>
             </form>
         </div>
+        <div class="row my-4">
+            <div class="col-md-8">
+                <table class="table table-bordered-table-striped">
+                    <thead>
+                        <tr>
+                            <th>Catalog</th>
+                            <th>Catalog ID</th>
+                            <th>Right Ascension</th>
+                            <th>Declination</th>
+                            <th>Magnitude</th>
+                            <th>Number of fluxes</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="objectFluxCnt : ${resultingRows}">
+                        <td th:text="${objectFluxCnt.catalog}"/>
+                        <td th:text="${objectFluxCnt.catalogId}"/>
+                        <td th:text="${objectFluxCnt.catalogRec}"/>
+                        <td th:text="${objectFluxCnt.catalogDec}"/>
+                        <td th:text="${objectFluxCnt.catalogMag}"/>
+                        <td th:text="${objectFluxCnt.name}"/>
+                        <td th:text="${objectFluxCnt.numberOfFluxes}"/>
+                    </tr>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 <script th:src="@{js/dragAndDrop.js}"></script>

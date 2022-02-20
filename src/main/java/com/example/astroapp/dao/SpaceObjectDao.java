@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-@Transactional(propagation = Propagation.MANDATORY)
+@Transactional
 public class SpaceObjectDao extends JdbcDaoSupport {
 
 
@@ -30,10 +30,10 @@ public class SpaceObjectDao extends JdbcDaoSupport {
                                          String maxMag, String catalog, String objectId) throws SQLException {
         StringBuilder query = new StringBuilder("SELECT name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
-                " FROM object LEFT OUTER JOIN flux WHERE ");
+                " FROM object LEFT OUTER JOIN flux ON object_id=object.id WHERE");
         boolean appendAnd = false;
         if (!RA.isEmpty()) {
-            query.append("earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
+            query.append(" earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
             appendAnd = true;
         }
         if (!name.isEmpty()) {
@@ -63,9 +63,9 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             if (appendAnd) {
                 query.append(" AND");
             }
-            query.append(" object.id LIKE ?");
+            query.append(" catalog_id LIKE ?");
         }
-        query.append(" LIMIT 100");
+        query.append(" GROUP BY object.id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag LIMIT 100");
         String finishedQuery = query.toString();
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().query(finishedQuery, new ObjectPreparedStatementSetter(
