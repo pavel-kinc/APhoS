@@ -5,8 +5,8 @@ public class ObjectFlux {
     private String name;
     private String catalog;
     private String catalogId;
-    private Float catalogRec;
-    private Float catalogDec;
+    private String catalogRec;
+    private String catalogDec;
     private Float catalogMag;
     private int numberOfFluxes;
 
@@ -37,19 +37,19 @@ public class ObjectFlux {
         this.catalogId = catalogId;
     }
 
-    public Float getCatalogRec() {
+    public String getCatalogRec() {
         return catalogRec;
     }
 
-    public void setCatalogRec(Float catalogRec) {
+    public void setCatalogRec(String catalogRec) {
         this.catalogRec = catalogRec;
     }
 
-    public Float getCatalogDec() {
+    public String getCatalogDec() {
         return catalogDec;
     }
 
-    public void setCatalogDec(Float catalogDec) {
+    public void setCatalogDec(String catalogDec) {
         this.catalogDec = catalogDec;
     }
 
