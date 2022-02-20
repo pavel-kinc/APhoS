@@ -1,4 +1,4 @@
-package com.example.astroapp.jdbcStatementHelperClasses;
+package com.example.astroapp.mappers;
 
 import com.example.astroapp.dto.ObjectFlux;
 import org.springframework.jdbc.core.RowMapper;

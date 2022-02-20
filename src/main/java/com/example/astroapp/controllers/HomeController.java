@@ -37,11 +37,19 @@ public class HomeController {
                                  @RequestParam(name = "min_mag") String minMag,
                                  @RequestParam(name = "max_mag") String maxMag,
                                  @RequestParam String catalog,
-                                 @RequestParam(name = "object_id") String objectId, RedirectAttributes redirectAttributes) throws SQLException {
-        redirectAttributes.addFlashAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
+                                 @RequestParam(name = "object_id") String objectId, Model model) throws SQLException {
+        model.addAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
-        redirectAttributes.addFlashAttribute("resultingRows", objectFluxList);
-        return "redirect:/search";
+        model.addAttribute("resultingRows", objectFluxList);
+        model.addAttribute("RA", rightAscension);
+        model.addAttribute("dec", dec);
+        model.addAttribute("radius", radius);
+        model.addAttribute("name", name);
+        model.addAttribute("minMag", minMag);
+        model.addAttribute("maxMag", maxMag);
+        model.addAttribute("catalog", catalog);
+        model.addAttribute("objectId", objectId);
+        return "home";
     }
 }

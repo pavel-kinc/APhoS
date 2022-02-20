@@ -22,14 +22,15 @@
                         <div class="input-group-prepend px-3">
                             <span class="input-group-text"> Right Ascension (HH:MM:SS)</span>
                             <input type="text" id="RAInput" name="rightAscension" class="form-control"
-                                   style="min-width: 290px" placeholder="e.g. 21:46:13.358"
+                                   style="min-width: 290px" placeholder="e.g. 21:46:13.358" th:value="${RA}"
                                    pattern="[0-9]+:[0-9]+:([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
                             <span class="input-group-text"> Declination (Deg:Min:Sec)</span>
                             <input type="text" id="DecInput" name="dec" class="form-control"
                                    style="min-width: 290px" placeholder="e.g. 68:33:34.59"
-                                   aria-label="Text input with dropdown button">
+                                   th:value="${dec}" aria-label="Text input with dropdown button">
                             <span class="input-group-text"> Radius (degrees) </span>
                             <input type="text" class="form-control" name="radius" placeholder="e.g 0.05"
+                                   th:value="${radius}"
                                    pattern="([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
                         </div>
                     </div>
@@ -42,6 +43,7 @@
                         <div class="input-group-prepend px-3">
                             <span class="input-group-text"> Object name </span>
                             <input type="text" class="form-control" name="name" placeholder="e.g comp V434"
+                                   th:value="${name}"
                                    style="min-width: 150px" aria-label="Text input with dropdown button">
                         </div>
                     </div>
@@ -84,13 +86,13 @@
                         <div class="input-group px-3">
                             <span class="input-group-text"> Min </span>
                             <input id="minInput" type="text" class="form-control" name="min_mag"
-                                   value="0" pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
+                                   th:value="0" pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
                             <div class="my-2">
                                 <input id="minRange" type="range" value="0" max="15" step="0.1">
                             </div>
                             <span class="input-group-text"> Max </span>
                             <input id="maxInput" name="max_mag" type="text" class="form-control" value="15"
-                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Input max mag value">
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Input max mag value" >
                             <div class="my-2">
                                 <input id="maxRange" type="range" value="15" max="15" step="0.1">
                             </div>
@@ -100,12 +102,12 @@
                 <div class="input-group mt-1">
                     <div class="col-md-2">
                         <select id="catalogSelect" class="form-select" data-style="btn-primary" name="catalog">
-                            <option selected>All catalogues</option>
-                            <option >UCAC4</option>
+                            <option>All catalogues</option>
+                            <option>UCAC4</option>
                         </select>
                     </div>
                     <input type="text" class="form-control" name="object_id" placeholder="Object ID"
-                           aria-label="Text input with dropdown button">
+                           aria-label="Text input with dropdown button" th:value="${objectId}">
                     <button type="submit" class="btn btn-dark">
                         <i class="bi bi-search"></i>
                     </button>

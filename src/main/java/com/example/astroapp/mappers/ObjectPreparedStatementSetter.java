@@ -1,4 +1,4 @@
-package com.example.astroapp.jdbcStatementHelperClasses;
+package com.example.astroapp.mappers;
 
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
