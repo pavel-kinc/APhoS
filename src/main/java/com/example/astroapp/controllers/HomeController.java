@@ -1,16 +1,16 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.dao.UserRepo;
+import com.example.astroapp.dto.FluxUserTime;
 import com.example.astroapp.dto.ObjectFlux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,7 +24,8 @@ public class HomeController {
     @Autowired
     SpaceObjectDao spaceObjectDao;
 
-
+    @Autowired
+    FluxDao fluxDao;
 
     @GetMapping("/")
     public String displayHome(Model model) {
@@ -32,9 +33,10 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("object/{catalog_id}")
-    public String displayObjectFluxes(@PathVariable("catalog_id") String catalogId, Model model) {
-
+    @GetMapping("object/{object_id}")
+    public String displayObjectFluxes(@PathVariable("object_id") Long objectId, Model model) {
+        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId);
+        model.addAttribute("fluxes", fluxes);
         return "home";
     }
 

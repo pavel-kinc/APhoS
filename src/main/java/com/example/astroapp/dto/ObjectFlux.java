@@ -2,6 +2,7 @@ package com.example.astroapp.dto;
 
 public class ObjectFlux {
 
+    private long id;
     private String name;
     private String catalog;
     private String catalogId;
@@ -11,6 +12,14 @@ public class ObjectFlux {
     private int numberOfFluxes;
 
     public ObjectFlux() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

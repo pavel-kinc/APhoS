@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,8 +25,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
     }
 
     public List<ObjectFlux> queryObjects(String RA, String dec, String radius, String name, String minMag,
-                                         String maxMag, String catalog, String objectId) throws SQLException {
-        StringBuilder query = new StringBuilder("SELECT name, catalog, catalog_id, catalog_rec, catalog_dec, " +
+                                         String maxMag, String catalog, String objectId) {
+        StringBuilder query = new StringBuilder("SELECT object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
                 " FROM object LEFT OUTER JOIN flux ON object_id=object.id");
         boolean appendAnd = false;

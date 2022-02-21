@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-@Transactional(propagation = Propagation.MANDATORY)
+@Transactional
 public class FluxDao extends JdbcDaoSupport {
 
 
@@ -47,13 +47,13 @@ public class FluxDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public List<FluxUserTime> getFluxesByCatId(String catalogId) {
+    public List<FluxUserTime> getFluxesByObjId(Long objectId) {
         assert getJdbcTemplate() != null;
         String query = "SELECT rec, dec, ap_auto, apertures, username, exposure_begin, exposure_end " +
                 "FROM (flux LEFT OUTER JOIN users ON users.google_sub = user_id) " +
-                "LEFT OUTER JOIN photo_properties ON photo_properties_id = photo_properties.id" +
-                "WHERE object_id LIKE ?";
-        return getJdbcTemplate().query(query, new FluxRowMapper(), catalogId);
+                "LEFT OUTER JOIN photo_properties ON photo_properties_id = photo_properties.id " +
+                "WHERE object_id = ?";
+        return getJdbcTemplate().query(query, new FluxRowMapper(), objectId);
     }
 
 }

@@ -21,7 +21,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         }
         fluxUserTime.setDec(angleToExpendedForm(rs.getFloat("dec")));
         fluxUserTime.setApAuto(rs.getFloat("ap_auto"));
-        fluxUserTime.setApertures((Float[]) rs.getArray("apertures").getArray());
+        fluxUserTime.setApertures((Double[]) rs.getArray("apertures").getArray());
         fluxUserTime.setUsername(rs.getString("username"));
         fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin"));
         fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end"));

@@ -15,6 +15,7 @@ public class ObjectFluxCountRowMapper implements RowMapper<ObjectFlux> {
     @Override
     public ObjectFlux mapRow(ResultSet rs, int rowNum) throws SQLException {
         ObjectFlux objectFlux = new ObjectFlux();
+        objectFlux.setId(rs.getLong("obj_id"));
         objectFlux.setCatalog(rs.getString("catalog"));
         objectFlux.setCatalogId(rs.getString("catalog_id"));
         objectFlux.setName(rs.getString("name"));
