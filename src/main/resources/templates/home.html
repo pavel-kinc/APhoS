@@ -129,13 +129,14 @@
                         </tr>
                     </thead>
                     <tr th:each="objectFluxCnt : ${resultingRows}">
-                        <td class="text-center" th:text="${objectFluxCnt.name}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.catalog}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.catalogId}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.catalogRec}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.catalogDec}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.catalogMag}"/>
-                        <td class="text-center" th:text="${objectFluxCnt.numberOfFluxes}"/>
+                        <td class="text-center" th:text="${objectFluxCnt.name}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalog}"></td>
+                        <td class="text-center" ><a th:href="${'/object/' + objectFluxCnt.catalogId}"
+                                                    th:text="${objectFluxCnt.catalogId}"></a></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogRec}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogDec}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogMag}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.numberOfFluxes}"></td>
                     </tr>
                 </table>
             </div>

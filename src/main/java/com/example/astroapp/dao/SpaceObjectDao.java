@@ -1,7 +1,7 @@
 package com.example.astroapp.dao;
 
 import com.example.astroapp.dto.ObjectFlux;
-import com.example.astroapp.mappers.FluxRowMapper;
+import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
 import com.example.astroapp.mappers.ObjectPreparedStatementSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -77,7 +77,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         String finishedQuery = query.toString();
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().query(finishedQuery, new ObjectPreparedStatementSetter(
-                RA, dec, radius, name, minMag, maxMag, catalog, objectId), new FluxRowMapper());
+                RA, dec, radius, name, minMag, maxMag, catalog, objectId), new ObjectFluxCountRowMapper());
     }
 
     public long saveObject(String catalogId, String name, String catalog,
