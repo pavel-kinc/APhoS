@@ -19,26 +19,13 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    UserRepo userRepo;
-
-    @Autowired
     SpaceObjectDao spaceObjectDao;
 
     @Autowired
     FluxDao fluxDao;
 
     @GetMapping("/")
-    public String displayHome(Model model) {
-        model.addAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
-        return "home";
-    }
-
-    @GetMapping("object")
-    public String displayObjectFluxes(@RequestParam(name = "id") Long id,
-                                      @RequestParam(name = "catId") String catalogId, Model model) {
-        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id);
-        model.addAttribute("fluxes", fluxes);
-        model.addAttribute("catalogId", catalogId);
+    public String displayHome() {
         return "home";
     }
 
@@ -51,7 +38,6 @@ public class HomeController {
                                  @RequestParam(name = "max_mag") String maxMag,
                                  @RequestParam String catalog,
                                  @RequestParam(name = "object_id") String objectId, Model model) throws SQLException {
-        model.addAttribute("users", userRepo.findAllUsersWhoHaveUploaded());
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         model.addAttribute("resultingRows", objectFluxList);
