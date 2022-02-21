@@ -49,7 +49,7 @@ public class FluxDao extends JdbcDaoSupport {
 
     public List<FluxUserTime> getFluxesByObjId(Long objectId) {
         assert getJdbcTemplate() != null;
-        String query = "SELECT rec, dec, ap_auto, apertures, username, exposure_begin, exposure_end " +
+        String query = "SELECT rec, dec, ap_auto, apertures, username, exposure_begin, exposure_end, google_sub " +
                 "FROM (flux LEFT OUTER JOIN users ON users.google_sub = user_id) " +
                 "LEFT OUTER JOIN photo_properties ON photo_properties_id = photo_properties.id " +
                 "WHERE object_id = ?";

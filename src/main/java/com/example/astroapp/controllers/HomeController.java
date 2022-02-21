@@ -33,10 +33,12 @@ public class HomeController {
         return "home";
     }
 
-    @GetMapping("object/{object_id}")
-    public String displayObjectFluxes(@PathVariable("object_id") Long objectId, Model model) {
-        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId);
+    @GetMapping("object")
+    public String displayObjectFluxes(@RequestParam(name = "id") Long id,
+                                      @RequestParam(name = "catId") String catalogId, Model model) {
+        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id);
         model.addAttribute("fluxes", fluxes);
+        model.addAttribute("catalogId", catalogId);
         return "home";
     }
 

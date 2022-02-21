@@ -48,10 +48,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-                        Users
-                    </button>
+<!--                <div class="btn-group">-->
+<!--                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                        Users-->
+<!--                    </button>-->
 <!--                    <div id="userDropDownMenu" class="dropdown-menu">-->
 <!--                        <div class="row">-->
 <!--                            <div class="col-md-6 align-self-center">-->
@@ -77,7 +77,7 @@
 
 <!--                        </div>-->
 <!--                    </div>-->
-                </div>
+<!--                </div>-->
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                         Magnitude
@@ -131,8 +131,10 @@
                     <tr th:each="objectFluxCnt : ${resultingRows}">
                         <td class="text-center" th:text="${objectFluxCnt.name}"></td>
                         <td class="text-center" th:text="${objectFluxCnt.catalog}"></td>
-                        <td class="text-center" ><a th:href="${'/object/' + objectFluxCnt.id}"
-                                                    th:text="${objectFluxCnt.catalogId}"></a></td>
+                        <td class="text-center" >
+                            <a th:href="${'/object?id=' + objectFluxCnt.id + '&catId=' + objectFluxCnt.catalogId}"
+                                                    th:text="${objectFluxCnt.catalogId}"></a>
+                        </td>
                         <td class="text-center" th:text="${objectFluxCnt.catalogRec}"></td>
                         <td class="text-center" th:text="${objectFluxCnt.catalogDec}"></td>
                         <td class="text-center" th:text="${objectFluxCnt.catalogMag}"></td>
@@ -162,7 +164,10 @@
                         <td class="text-center" th:text="${flux.expEnd}"></td>
                         <td class="text-center" th:text="${flux.apAuto}"></td>
                         <td class="text-center" th:text="${flux.apertures}"></td>
-                        <td class="text-center" th:text="${flux.username}"></td>
+                        <td class="text-center">
+                            <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
+                            </a>
+                        </td>
                     </tr>
                 </table>
             </div>

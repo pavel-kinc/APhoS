@@ -25,6 +25,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         fluxUserTime.setUsername(rs.getString("username"));
         fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin"));
         fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end"));
+        fluxUserTime.setUserId(rs.getString("google_sub"));
         return fluxUserTime;
     }
 }

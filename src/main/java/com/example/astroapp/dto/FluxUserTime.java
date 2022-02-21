@@ -9,6 +9,7 @@ public class FluxUserTime {
     Float apAuto;
     Double[] apertures;
     String username;
+    String userId;
     Timestamp expBegin;
     Timestamp expEnd;
 
@@ -53,6 +54,14 @@ public class FluxUserTime {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Timestamp getExpBegin() {
