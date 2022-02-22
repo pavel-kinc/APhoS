@@ -6,8 +6,8 @@ public class FluxUserTime {
 
     String RA;
     String dec;
-    Float apAuto;
-    Double[] apertures;
+    String apAuto;
+    String[] apertures;
     String username;
     String userId;
     Timestamp expBegin;
@@ -32,19 +32,19 @@ public class FluxUserTime {
         this.dec = dec;
     }
 
-    public Float getApAuto() {
+    public String getApAuto() {
         return apAuto;
     }
 
-    public void setApAuto(Float apAuto) {
+    public void setApAuto(String apAuto) {
         this.apAuto = apAuto;
     }
 
-    public Double[] getApertures() {
+    public String[] getApertures() {
         return apertures;
     }
 
-    public void setApertures(Double[] apertures) {
+    public void setApertures(String[] apertures) {
         this.apertures = apertures;
     }
 

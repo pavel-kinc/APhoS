@@ -25,8 +25,8 @@
                                         <div class="input-group px-3">
                                             <select class="form-select" th:size="${#lists.size(users)+2}" id="wantedUsersSelect"
                                                     aria-label="User select" style="width: 400px">
-                                                <option th:each="user : ${users}" th:value="${user.username}"
-                                                        th:id="${user.username}" th:text="${user.username}" draggable="true">
+                                                <option th:each="user : ${users}" th:value="${user}"
+                                                        th:id="${user}" th:text="${user}" draggable="true">
                                                 </option>
                                             </select>
                                         </div>
