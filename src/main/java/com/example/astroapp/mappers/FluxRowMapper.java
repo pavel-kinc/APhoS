@@ -11,6 +11,7 @@ import static com.example.astroapp.utils.UnitConversions.angleToExpendedForm;
 import static com.example.astroapp.utils.UnitConversions.degreesToHourAngle;
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
+
     @Override
     public FluxUserTime mapRow(ResultSet rs, int rowNum) throws SQLException {
         FluxUserTime fluxUserTime = new FluxUserTime();

@@ -6,74 +6,88 @@
 
 <body class="bg-light">
     <nav th:replace="layout :: navbar"></nav>
-
-    <div class="row my-4">
-        <div class="col-md-8">
-            <div class="row mb-3 justify-content-end">
-                <div class="col-md-9">
-                    <h1 th:text="${catalogId}"></h1>
-                </div>
-                <div class="col-md-3">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-lg dropdown-toggle" data-bs-toggle="dropdown">
-                            Users
-                        </button>
-                        <div id="userDropDownMenu" class="dropdown-menu">
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <h6 class="text-center">Include</h6>
-                                    <div class="input-group px-3">
-                                        <select class="form-select" th:size="${#lists.size(users)+2}" id="wantedUsersSelect"
-                                                aria-label="User select" style="width: 400px">
-                                            <option th:each="user : ${users}" th:value="${user.username}"
-                                                    th:id="${user.username}" th:text="${user.username}" draggable="true">
-                                            </option>
-                                        </select>
+    <div class="container-fluid">
+        <div class="row my-4">
+            <div class="col-md-8">
+                <div class="row mb-3 justify-content-end">
+                    <div class="col-md-9">
+                        <h1 th:text="${catalogId}"></h1>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary btn-lg dropdown-toggle" data-bs-toggle="dropdown">
+                                Users
+                            </button>
+                            <div id="userDropDownMenu" class="dropdown-menu">
+                                <div class="row">
+                                    <div class="col-md-6 align-self-center">
+                                        <h6 class="text-center">Include</h6>
+                                        <div class="input-group px-3">
+                                            <select class="form-select" th:size="${#lists.size(users)+2}" id="wantedUsersSelect"
+                                                    aria-label="User select" style="width: 400px">
+                                                <option th:each="user : ${users}" th:value="${user.username}"
+                                                        th:id="${user.username}" th:text="${user.username}" draggable="true">
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6 align-self-center">
-                                    <h6 class="text-center">Exclude</h6>
-                                    <div class="input-group px-3">
-                                        <select class="form-select" th:size="${#lists.size(users)+2}"
-                                                id="unwantedUsersSelect"
-                                                aria-label="User select" style="width: 400px">
-                                        </select>
+                                    <div class="col-md-6 align-self-center">
+                                        <h6 class="text-center">Exclude</h6>
+                                        <div class="input-group px-3">
+                                            <select class="form-select" th:size="${#lists.size(users)+2}"
+                                                    id="unwantedUsersSelect"
+                                                    aria-label="User select" style="width: 400px">
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <button class="btn btn-lg btn-primary">Download CSV</button>
                     </div>
-                    <button class="btn btn-lg btn-primary">Download CSV</button>
                 </div>
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Right Ascension</th>
+                        <th class="text-center">Declination</th>
+                        <th class="text-center">Exposure begin</th>
+                        <th class="text-center">Exposure end</th>
+                        <th class="text-center">Aperture auto</th>
+                        <th class="text-center">Apertures</th>
+                        <th class="text-center">Uploaded by</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="flux : ${fluxes}">
+                        <td class="text-center" th:text="${flux.RA}"></td>
+                        <td class="text-center" th:text="${flux.dec}"></td>
+                        <td class="text-center" th:text="${flux.expBegin}"></td>
+                        <td class="text-center" th:text="${flux.expEnd}"></td>
+                        <td class="text-center" th:text="${flux.apAuto}"></td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-secondary" id="aperturesDropdown"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Show apertures
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
+                                <ol class="list-group list-group-numbered">
+                                    <th:block th:each="aperture: ${flux.apertures}">
+                                        <li class="list-group-item" th:text="${aperture}"></li>
+                                    </th:block>
+                                </ol>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-dark">
-                <tr>
-                    <th class="text-center">Right Ascension</th>
-                    <th class="text-center">Declination</th>
-                    <th class="text-center">Exposure begin</th>
-                    <th class="text-center">Exposure end</th>
-                    <th class="text-center">Aperture auto</th>
-                    <th class="text-center">Apertures</th>
-                    <th class="text-center">Uploaded by</th>
-                </tr>
-                </thead>
-                <tr th:each="flux : ${fluxes}">
-                    <td class="text-center" th:text="${flux.RA}"></td>
-                    <td class="text-center" th:text="${flux.dec}"></td>
-                    <td class="text-center" th:text="${flux.expBegin}"></td>
-                    <td class="text-center" th:text="${flux.expEnd}"></td>
-                    <td class="text-center" th:text="${flux.apAuto}"></td>
-                    <td class="text-center" th:text="${flux.apertures}"></td>
-                    <td class="text-center">
-                        <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
-                        </a>
-                    </td>
-                </tr>
-            </table>
         </div>
     </div>
-
 
     <script th:src="@{js/dragAndDrop.js}"></script>
     <script th:src="@{js/highlightActive.js}"></script>
