@@ -1,18 +1,43 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml">
 
     <head th:replace="layout :: head"></head>
 
-    <body>
-
+    <body class="bg-light">
         <nav th:replace="layout :: navbar"></nav>
-
-        <p>TODO</p>>
-
-        <script th:src="@{js/highlightActive.js}"></script>
-        <script th:src="@{js/signedInContent.js}"></script>
-
-        </body>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img class="img-thumbnail rounded-circle" th:src="@{/images/person.svg}"
+                                     alt="profile logo" width="160" height="180">
+                            </div>
+                        </div>
+                        <hr class="mx-4"/>
+                        <div class="card-body align-items-center text-center">
+                                <h3 th:text="${user.username}"></h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <h2>Profile</h2>
+                    <h5>About user:</h5>
+                    <textarea readonly class="form-control" id="textArea" rows="6" th:text="${user.description}"></textarea>
+                    <div class="mt-3 d-md-flex justify-content-md-end">
+                        <form th:action="@{/profile/}">
+                            <input type="hidden" name="editable" value="true">
+                            <button th:if="${currentUserSignedIn}" type="submit" class="btn btn-outline-primary btn-lg">
+                                Edit profile
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:src="@{/js/highlightActive.js}"></script>
+    </body>
 
 </html>

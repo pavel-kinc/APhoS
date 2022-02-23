@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,18 +24,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
+                .csrf(c -> c
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeRequests()
-                    .antMatchers("/home", "/", "/about").permitAll()
-                    .antMatchers("/js/**").permitAll()
+                    .antMatchers("/home/**", "/search" ,"/", "/about", "/object/**").permitAll()
+                    .antMatchers("/js/**", "/css/**", "/js/**","/images/**", "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()
                     .logoutSuccessUrl("/")
                     .and()
-                .exceptionHandling(e -> e
-                        .authenticationEntryPoint(
-                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login().permitAll()
                     .userInfoEndpoint()
                         .userService(oAuth2UserService)
@@ -42,15 +41,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler((request, response, authentication) -> {
 
                     OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
-                    userService.processOAuthPostLogin(
-                            oauthUser.getAttribute("sub"),
-                            oauthUser.getAttribute("name"),
-                            oauthUser.getAttribute("email"));
-                    response.sendRedirect("/profile");
+                    boolean newUser = userService.processOAuthPostLogin(
+                            oauthUser.getAttribute("sub"));
+                    if (newUser) {
+                        response.sendRedirect("/profile/username");
+                    } else {
+                        response.sendRedirect("/profile/?id="+oauthUser.getAttribute("sub"));
+                    }
                 });
     }
-
-
-
 }
 

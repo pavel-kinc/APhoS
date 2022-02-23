@@ -2,14 +2,121 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-    <head th:replace="layout :: head"></head>
+<head th:replace="layout :: head"></head>
 
-    <body>
-
-        <nav th:replace="layout :: navbar"></nav>
-        <script th:src="@{js/highlightActive.js}"></script>
-        <script th:src="@{js/signedInContent.js}"></script>
-
-
-    </body>
+<body class="bg-light">
+<nav th:replace="layout :: navbar"></nav>
+<div class="container-fluid">
+    <div class="my-3">
+        <h3>Searching</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <form id="searchForm" action="/search" method="get" novalidate>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown">
+                        Coordinates
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group-prepend px-3">
+                            <span class="input-group-text"> Right Ascension (HH:MM:SS)</span>
+                            <input type="text" id="RAInput" name="rightAscension" class="form-control"
+                                   style="min-width: 290px" placeholder="e.g. 21:46:13.358" th:value="${RA}"
+                                   pattern="[0-9]+:[0-9]+:([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
+                            <span class="input-group-text"> Declination (Deg:Min:Sec)</span>
+                            <input type="text" id="DecInput" name="dec" class="form-control"
+                                   style="min-width: 290px" placeholder="e.g. 68:33:34.59"
+                                   th:value="${dec}" aria-label="Text input with dropdown button">
+                            <span class="input-group-text"> Radius (degrees) </span>
+                            <input type="text" class="form-control" name="radius" placeholder="e.g 0.05"
+                                   th:value="${radius}"
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Text input with dropdown button">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        Object
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group-prepend px-3">
+                            <span class="input-group-text"> Object name </span>
+                            <input type="text" class="form-control" name="name" placeholder="e.g comp V434"
+                                   th:value="${name}"
+                                   style="min-width: 150px" aria-label="Text input with dropdown button">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                        Magnitude
+                    </button>
+                    <div class="dropdown-menu">
+                        <div class="input-group px-3">
+                            <span class="input-group-text"> Min </span>
+                            <input id="minInput" type="text" class="form-control" name="min_mag"
+                                   th:value="0" pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
+                            <div class="my-2">
+                                <input id="minRange" type="range" value="0" max="15" step="0.1">
+                            </div>
+                            <span class="input-group-text"> Max </span>
+                            <input id="maxInput" name="max_mag" type="text" class="form-control" value="15"
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Input max mag value" >
+                            <div class="my-2">
+                                <input id="maxRange" type="range" value="15" max="15" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mt-1">
+                    <div class="col-md-2">
+                        <select id="catalogSelect" class="form-select" data-style="btn-primary" name="catalog">
+                            <option>All catalogues</option>
+                            <option>UCAC4</option>
+                        </select>
+                    </div>
+                    <input type="text" class="form-control" name="object_id" placeholder="Object ID"
+                           aria-label="Text input with dropdown button" th:value="${objectId}">
+                    <button type="submit" class="btn btn-dark">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="row my-4" th:if="${resultingRows}">
+            <div class="col-md-8">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Catalog</th>
+                            <th class="text-center">Catalog ID</th>
+                            <th class="text-center">Right Ascension</th>
+                            <th class="text-center">Declination</th>
+                            <th class="text-center">Magnitude</th>
+                            <th class="text-center">Number of fluxes</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="objectFluxCnt : ${resultingRows}">
+                        <td class="text-center" th:text="${objectFluxCnt.name}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalog}"></td>
+                        <td class="text-center" >
+                            <a th:href="${'/object?id=' + objectFluxCnt.id + '&catId=' + objectFluxCnt.catalogId}"
+                                                    th:text="${objectFluxCnt.catalogId}"></a>
+                        </td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogRec}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogDec}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.catalogMag}"></td>
+                        <td class="text-center" th:text="${objectFluxCnt.numberOfFluxes}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{js/magnitudeSliders.js}"></script>
+<script th:src="@{js/highlightActive.js}"></script>
+<script th:src="@{js/searchFormValidation.js}"></script>
+</body>
 </html>

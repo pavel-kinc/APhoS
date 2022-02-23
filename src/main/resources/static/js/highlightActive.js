@@ -4,7 +4,10 @@ function highlightActive() {
     for (let navLink of navLinks) {
         if (navLink.href === document.URL) {
             navLink.classList.add('active');
-        } else {
+        } else if (navLink.innerText==="Home" && document.URL.includes("search")) {
+
+        }
+        else {
             navLink.classList.remove('active');
         }
     }
