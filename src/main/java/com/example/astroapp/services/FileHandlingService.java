@@ -128,10 +128,12 @@ public class FileHandlingService {
         float dec = UnitConversions.angleToFloatForm(catalogDec);
         float rec = UnitConversions.hourAngleToDegrees(catalogRec);
         float mag = Float.parseFloat(catalogMag);
+        String strRec = UnitConversions.addHourAngleSigns(catalogRec);
+        String strDec = UnitConversions.addHourAngleSigns(catalogDec);
         try {
-            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+            return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         } catch (Exception e) {
-            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+            return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         }
     }
 
@@ -142,8 +144,10 @@ public class FileHandlingService {
         float rec = UnitConversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId, uploadingUser.getGoogleSub(),
-                photoProperties.getId(), apertures);
+        strRec = UnitConversions.addHourAngleSigns(strRec);
+        strDec = UnitConversions.addAngleSigns(strDec);
+        fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, spaceObjectId,
+                uploadingUser.getGoogleSub(), photoProperties.getId(), apertures);
     }
 }
 

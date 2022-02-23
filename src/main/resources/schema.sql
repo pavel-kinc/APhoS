@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS object
     name        VARCHAR(40),
     catalog     VARCHAR(20),
     catalog_id  VARCHAR(30) UNIQUE,
-    catalog_rec float4,
-    catalog_dec float4,
+    catalog_rec VARCHAR(20),
+    catalog_dec VARCHAR(20),
     coordinates earth,
     catalog_mag float4,
     PRIMARY KEY (id)
@@ -28,17 +28,17 @@ CREATE TABLE IF NOT EXISTS object
 
 CREATE TABLE IF NOT EXISTS photo_properties
 (
-    id             SERIAL NOT NULL,
-    exposure_begin timestamp   NOT NULL,
-    exposure_end   timestamp   NOT NULL,
+    id             SERIAL    NOT NULL,
+    exposure_begin timestamp NOT NULL,
+    exposure_end   timestamp NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS flux
 (
     id                  SERIAL       NOT NULL,
-    rec                 float8       NOT NULL,
-    dec                 float8       NOT NULL,
+    rec                 VARCHAR(20)  NOT NULL,
+    dec                 VARCHAR(20)  NOT NULL,
     coordinates         earth,
     ap_auto             float8,
     object_id           int4         NOT NULL REFERENCES object (id),

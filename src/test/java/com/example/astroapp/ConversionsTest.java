@@ -49,18 +49,18 @@ public class ConversionsTest {
 
     }
 
-    @Test
-    public void backwardConversionAngleTest() {
-        assertEquals("+71°18'41.13\"", angleToExpendedForm(angleToFloatForm("+71 18 41.13")));
-    }
-
-    @Test
-    public void backwardConversionMinusAngleTest() {
-        assertEquals("-71°18'41.13\"", angleToExpendedForm(angleToFloatForm("-71 18 41.13")));
-    }
-
-    @Test
-    public void backwardConversionHourAngleTest() throws ParseException {
-        assertEquals("21:41:55.200", degreesToHourAngle(hourAngleToDegrees("21:41:55.231")));
-    }
+//    @Test
+//    public void backwardConversionAngleTest() {
+//        assertEquals("+71°18'41.13\"", angleToExpendedForm(angleToFloatForm("+71 18 41.13")));
+//    }
+//
+//    @Test
+//    public void backwardConversionMinusAngleTest() {
+//        assertEquals("-71°18'41.13\"", angleToExpendedForm(angleToFloatForm("-71 18 41.13")));
+//    }
+//
+//    @Test
+//    public void backwardConversionHourAngleTest() throws ParseException {
+//        assertEquals("21:41:55.200", degreesToHourAngle(hourAngleToDegrees("21:41:55.231")));
+//    }
 }

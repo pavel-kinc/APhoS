@@ -7,22 +7,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
-import static com.example.astroapp.utils.UnitConversions.angleToExpendedForm;
-import static com.example.astroapp.utils.UnitConversions.degreesToHourAngle;
+import static com.example.astroapp.utils.UnitConversions.addAngleSigns;
+import static com.example.astroapp.utils.UnitConversions.addHourAngleSigns;
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
 
     @Override
     public FluxUserTime mapRow(ResultSet rs, int rowNum) throws SQLException {
         FluxUserTime fluxUserTime = new FluxUserTime();
-        try {
-            fluxUserTime.setRA(degreesToHourAngle(rs.getFloat("rec")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        fluxUserTime.setDec(angleToExpendedForm(rs.getFloat("dec")));
+        fluxUserTime.setRA(rs.getString("rec"));
+        fluxUserTime.setDec(rs.getString("dec"));
         Float apAuto = rs.getFloat("ap_auto");
         String apAutoStr = apAuto.equals(0.0f) ? "saturated" : apAuto.toString();
         fluxUserTime.setApAuto(apAutoStr);

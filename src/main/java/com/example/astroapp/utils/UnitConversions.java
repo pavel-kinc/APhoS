@@ -45,26 +45,16 @@ public class UnitConversions {
         return -1;
     }
 
-    public static String angleToExpendedForm(Float angle) {
-        String sign = "+";
-        if (angle < 0) {
-            sign = "-";
-            angle = -angle;
-        }
-        String degrees = Integer.toString(angle.intValue());
-        int minutes = (int) ((angle - angle.intValue()) * 60);
-        float seconds = ((angle - angle.intValue()) * 3600) - (minutes * 60);
-        return sign + String.format("%s°%d'%.2f\"", degrees, minutes, seconds);
+    public static String addAngleSigns(String angle) {
+        angle = angle.replaceFirst(" ", "°");
+        angle = angle.replaceFirst(" ", "'");
+        angle = angle+"\"";
+        return angle;
     }
 
-    public static String degreesToHourAngle(Float angle) throws ParseException {
-        float seconds = angle * 3600 / 15;
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        Date zeroDate = dateFormat.parse("00:00:00.000");
-        // adding zero date because of time zone
-        String hourAngle = dateFormat.format((long) (seconds*1000) + zeroDate.getTime());
-        hourAngle = hourAngle.replaceFirst(":", "h");
-        hourAngle = hourAngle.replaceFirst(":", "m");
+    public static String addHourAngleSigns(String hourAngle) {
+        hourAngle = hourAngle.replaceFirst(" ", "h");
+        hourAngle = hourAngle.replaceFirst(" ", "m");
         hourAngle = hourAngle+"s";
         return hourAngle;
     }

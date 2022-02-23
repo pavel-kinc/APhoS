@@ -32,7 +32,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         boolean appendAnd = false;
         if (!RA.isEmpty()) {
             query.append(" WHERE");
-            query.append(" earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
+            query.append(" earth_box(ll_to_earth(?, ?), ?) @> object.coordinates");
             appendAnd = true;
         }
         if (!name.isEmpty()) {
@@ -79,7 +79,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
                 RA, dec, radius, name, minMag, maxMag, catalog, objectId), new ObjectFluxCountRowMapper());
     }
 
-    public long saveObject(String catalogId, String name, String catalog,
+    public long saveObject(String catalogId, String name, String catalog, String strDec, String strRec,
                            Float catalogDec, Float catalogRec, Float catalogMag) {
         assert getJdbcTemplate() != null;
         List<Long> existingIds = getJdbcTemplate().queryForList("SELECT id FROM object " +
@@ -96,8 +96,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             ps.setString(1, name);
             ps.setString(2, catalog);
             ps.setString(3, catalogId);
-            ps.setFloat(4, catalogRec);
-            ps.setFloat(5, catalogDec);
+            ps.setString(4, strRec);
+            ps.setString(5, strDec);
             ps.setFloat(6, catalogDec);
             ps.setFloat(7, catalogRec);
             ps.setFloat(8, catalogMag);
