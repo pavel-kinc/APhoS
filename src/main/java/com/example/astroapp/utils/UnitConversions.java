@@ -18,7 +18,7 @@ public class UnitConversions {
      * @return the angle in degrees
      */
     public static float hourAngleToDegrees(String hourAngle) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         // subtracting zero date because of time zone
         Date zeroDate = dateFormat.parse("00:00:00.000");
         Date myValue = dateFormat.parse(hourAngle.strip().replace(" ", ":"));
