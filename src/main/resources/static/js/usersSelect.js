@@ -25,3 +25,19 @@ function drop(event) {
     let droppedElement = event.dataTransfer.getData("text/plain");
     event.target.appendChild(document.getElementById(droppedElement));
 }
+
+function filterUsers() {
+    let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
+    const a = 1;
+    let fluxTable = document.getElementById("fluxTable");
+    let rows = fluxTable.getElementsByTagName("tr");
+    let unwantedRows = Array.from(rows)
+        .map(function (row) {
+            if (unwantedUsers.includes(row.children.item(6).innerText)) {
+                row.style.display = "none";
+            } else {
+                row.style.display = "";
+            }
+        });
+
+}
