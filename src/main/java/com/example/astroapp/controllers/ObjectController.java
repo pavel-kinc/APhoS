@@ -32,8 +32,11 @@ public class ObjectController {
     FluxDao fluxDao;
 
     @GetMapping("/object")
-    public String displayObjectFluxes(@RequestParam(name = "id") Long id,
-                                      @RequestParam(name = "catId") String catalogId, Model model) {
+    public String displayObjectFluxes(@RequestParam(name = "refId") Long referenceObjectId,
+                                      @RequestParam(name = "refCatId") String refObjectCatalogId,
+                                      @RequestParam(name = "id") Long id,
+                                      @RequestParam(name = "catalogId") String catalogId,
+                                      Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id);
         List<String> users = fluxes
                 .stream()
@@ -43,6 +46,7 @@ public class ObjectController {
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);
         model.addAttribute("catalogId", catalogId);
+        model.addAttribute("refCatalogId", refObjectCatalogId);
         return "object";
     }
 
