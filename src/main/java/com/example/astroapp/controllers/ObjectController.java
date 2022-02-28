@@ -37,7 +37,7 @@ public class ObjectController {
                                       @RequestParam(name = "id") Long id,
                                       @RequestParam(name = "catalogId") String catalogId,
                                       Model model) {
-        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id);
+        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
                 .stream()
                 .map(FluxUserTime::getUsername)

@@ -9,10 +9,10 @@
 <div class="container-fluid">
     <div class="row my-4">
         <div class="col-md-8">
-            <div class="row mb-3 justify-content-end">
+            <div class="row mb-3 justify-content-end align-items-end">
                 <div class="col-md-9">
-                    <h1 th:text="${catalogId}"></h1>
-                    <h2 th:text="${refCatalogId}" class="text-secondary"> </h2>
+                    <h1 th:text="${'Object ' + catalogId}"></h1>
+                    <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
                 <div class="col-md-3">
                     <div class="btn-group">
@@ -59,15 +59,16 @@
             </div>
             <table class="table table-bordered table-striped table-hover" id="fluxTable">
                 <thead class="table-dark">
-                <tr>
-                    <th class="text-center">Right Ascension</th>
-                    <th class="text-center">Declination</th>
-                    <th class="text-center">Exposure begin</th>
-                    <th class="text-center">Exposure end</th>
-                    <th class="text-center">Aperture auto</th>
-                    <th class="text-center">Apertures</th>
-                    <th class="text-center">Uploaded by</th>
-                </tr>
+                    <tr>
+                        <th class="text-center">Right Ascension</th>
+                        <th class="text-center">Declination</th>
+                        <th class="text-center">Exposure begin</th>
+                        <th class="text-center">Exposure end</th>
+                        <th class="text-center">Aperture auto</th>
+                        <th class="text-center">Apertures</th>
+                        <th class="text-center">Magnitude</th>
+                        <th class="text-center">Uploaded by</th>
+                    </tr>
                 </thead>
                 <tr th:each="flux : ${fluxes}">
                     <td class="text-center" th:text="${flux.RA}"></td>
@@ -90,6 +91,7 @@
                             </div>
                         </div>
                     </td>
+                    <td class="text-center" th:text="${flux.refApAuto}"></td>
                     <td class="text-center">
                         <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
                         </a>

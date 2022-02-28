@@ -5,11 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.Arrays;
-
-import static com.example.astroapp.utils.UnitConversions.addAngleSigns;
-import static com.example.astroapp.utils.UnitConversions.addHourAngleSigns;
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
 
@@ -26,6 +22,14 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
         fluxUserTime.setApertures(aperturesStr);
+        Float refApAuto = rs.getFloat("ref_ap_auto");
+        String refApAutoStr = refApAuto.equals(0.0f) ? "saturated" : refApAuto.toString();
+        fluxUserTime.setRefApAuto(refApAutoStr);
+        Double[] refAperturesArray = (Double[]) rs.getArray("ref_apertures").getArray();
+        String[] refAperturesStr = Arrays.stream(refAperturesArray)
+                .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
+                .toArray(String[]::new);
+        fluxUserTime.setRefApertures(refAperturesStr);
         fluxUserTime.setUsername(rs.getString("username"));
         fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin"));
         fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end"));

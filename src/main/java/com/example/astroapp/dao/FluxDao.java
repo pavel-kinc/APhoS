@@ -48,13 +48,15 @@ public class FluxDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public List<FluxUserTime> getFluxesByObjId(Long objectId) {
+    public List<FluxUserTime> getFluxesByObjId(Long originalObjectId, Long referenceObjectId) {
         assert getJdbcTemplate() != null;
-        String query = "SELECT rec, dec, ap_auto, apertures, username, exposure_begin, exposure_end, google_sub " +
-                "FROM (flux LEFT OUTER JOIN users ON users.google_sub = user_id) " +
-                "LEFT OUTER JOIN photo_properties ON photo_properties_id = photo_properties.id " +
-                "WHERE object_id = ?";
-        return getJdbcTemplate().query(query, new FluxRowMapper(), objectId);
+        String query = "SELECT rec, dec, OF.ap_auto, OF.apertures, RF.ap_auto ref_ap_auto, " +
+                "RF.apertures ref_apertures, username, exposure_begin, exposure_end, google_sub FROM " +
+               "(SELECT * FROM flux WHERE object_id=?) AS OF INNER JOIN " +
+        "(SELECT ap_auto, apertures, photo_properties_id FROM flux WHERE object_id=?) AS RF " +
+        "ON OF.photo_properties_id=RF.photo_properties_id LEFT OUTER JOIN users ON users.google_sub=user_id " +
+        "LEFT OUTER JOIN photo_properties on OF.photo_properties_id=photo_properties.id";
+        return getJdbcTemplate().query(query, new FluxRowMapper(), originalObjectId, referenceObjectId);
     }
 
 }

@@ -8,6 +8,8 @@ public class FluxUserTime {
     String dec;
     String apAuto;
     String[] apertures;
+    String refApAuto;
+    String[] refApertures;
     String username;
     String userId;
     Timestamp expBegin;
@@ -46,6 +48,22 @@ public class FluxUserTime {
 
     public void setApertures(String[] apertures) {
         this.apertures = apertures;
+    }
+
+    public String getRefApAuto() {
+        return refApAuto;
+    }
+
+    public void setRefApAuto(String refApAuto) {
+        this.refApAuto = refApAuto;
+    }
+
+    public String[] getRefApertures() {
+        return refApertures;
+    }
+
+    public void setRefApertures(String[] refApertures) {
+        this.refApertures = refApertures;
     }
 
     public String getUsername() {
