@@ -48,15 +48,19 @@ public class UnitConversions {
     public static String addAngleSigns(String angle) {
         angle = angle.replaceFirst(" ", "°");
         angle = angle.replaceFirst(" ", "'");
-        angle = angle+"\"";
+        angle = angle + "\"";
         return angle;
     }
 
     public static String addHourAngleSigns(String hourAngle) {
         hourAngle = hourAngle.replaceFirst(" ", "h");
         hourAngle = hourAngle.replaceFirst(" ", "m");
-        hourAngle = hourAngle+"s";
+        hourAngle = hourAngle + "s";
         return hourAngle;
+    }
+
+    public static float convertFluxesToMagnitude(String flux, String referenceFlux) {
+        return (float) (-2.5 * Math.log10(Double.parseDouble(flux) / Double.parseDouble(referenceFlux)));
     }
 
 }

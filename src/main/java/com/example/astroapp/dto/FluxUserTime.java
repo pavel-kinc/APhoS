@@ -10,6 +10,7 @@ public class FluxUserTime {
     String[] apertures;
     String refApAuto;
     String[] refApertures;
+    Float magnitude;
     String username;
     String userId;
     Timestamp expBegin;
@@ -64,6 +65,14 @@ public class FluxUserTime {
 
     public void setRefApertures(String[] refApertures) {
         this.refApertures = refApertures;
+    }
+
+    public Float getMagnitude() {
+        return magnitude;
+    }
+
+    public void setMagnitude(Float magnitude) {
+        this.magnitude = magnitude;
     }
 
     public String getUsername() {
