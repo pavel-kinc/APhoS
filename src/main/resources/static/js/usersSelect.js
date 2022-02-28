@@ -30,9 +30,9 @@ function filterUsers() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
     let fluxTable = document.getElementById("fluxTable");
     let rows = fluxTable.getElementsByTagName("tr");
-    let unwantedRows = Array.from(rows)
+    Array.from(rows)
         .map(function (row) {
-            if (unwantedUsers.includes(row.children.item(6).innerText)) {
+            if (unwantedUsers.includes(row.children.item(7).innerText.trim())) {
                 row.style.display = "none";
             } else {
                 row.style.display = "";
