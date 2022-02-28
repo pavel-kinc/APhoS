@@ -38,5 +38,4 @@ function filterUsers() {
                 row.style.display = "";
             }
         });
-
 }

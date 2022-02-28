@@ -11,11 +11,10 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -54,14 +53,19 @@ public class ObjectController {
     }
 
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void generateCSV(@RequestParam String objectID,
-                                          @RequestParam String[] unwantedUsers, HttpServletResponse response) {
+    public void generateCSV(@RequestParam(required = false) String objectID,
+                                     @RequestParam(required = false) String[] unwantedUsers, HttpServletResponse response) {
         try {
-            InputStream is = new FileInputStream("nove");
-            FileCopyUtils.copy(is, response.getOutputStream());
+            File file = new File("nove.csv");
+            try (FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw)) {
+                bw.write("Sample file");
+            }
+            FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
             response.flushBuffer();
+            int a = 1;
         } catch (IOException ex) {
-            throw new RuntimeException("IOError writing file to output stream");
+            throw new RuntimeException("IOError writing file to output stream", ex);
         }
     }
 }

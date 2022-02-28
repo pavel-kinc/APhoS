@@ -60,6 +60,9 @@ public class UnitConversions {
     }
 
     public static float convertFluxesToMagnitude(String flux, String referenceFlux) {
+        if (flux.equals("saturated") || referenceFlux.equals("saturated")) {
+            return 0F;
+        }
         return (float) (-2.5 * Math.log10(Double.parseDouble(flux) / Double.parseDouble(referenceFlux)));
     }
 

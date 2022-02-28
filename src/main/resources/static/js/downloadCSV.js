@@ -10,6 +10,6 @@ function downloadCSV() {
     formData.append("unwantedUsers", unwantedUsers);
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/object/download', {method: "POST", headers: myHeaders, body: formData})
-        .then(r => r.json())
-        .then(data => console.log(data));
+        .then(response => response.blob())
+        .then(blob => download(blob, "magnitudes"));
 }
