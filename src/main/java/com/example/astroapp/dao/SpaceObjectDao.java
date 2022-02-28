@@ -106,6 +106,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
+    public List<String> getAvailableCatalogues() {
+        assert getJdbcTemplate() != null;
+        return getJdbcTemplate().queryForList("SELECT DISTINCT catalog FROM object", String.class);
+    }
+
     public List<Long> getObjectsByCatId(String catalogId) {
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().queryForList("SELECT id FROM object " +

@@ -4,11 +4,21 @@ import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,5 +44,17 @@ public class ObjectController {
         model.addAttribute("fluxes", fluxes);
         model.addAttribute("catalogId", catalogId);
         return "object";
+    }
+
+    @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void generateCSV(@RequestParam String objectID,
+                                          @RequestParam String[] unwantedUsers, HttpServletResponse response) {
+        try {
+            InputStream is = new FileInputStream("nove");
+            FileCopyUtils.copy(is, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
+        }
     }
 }

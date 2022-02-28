@@ -28,7 +28,6 @@ function drop(event) {
 
 function filterUsers() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
-    const a = 1;
     let fluxTable = document.getElementById("fluxTable");
     let rows = fluxTable.getElementsByTagName("tr");
     let unwantedRows = Array.from(rows)

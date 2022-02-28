@@ -73,8 +73,9 @@
                 <div class="input-group mt-1">
                     <div class="col-md-2">
                         <select id="catalogSelect" class="form-select" data-style="btn-primary" name="catalog">
-                            <option>All catalogues</option>
-                            <option>UCAC4</option>
+                            <option th:each="catalog : ${availableCatalogues}"
+                                    th:text="${catalog}" th:value="${catalog}">
+                            </option>
                         </select>
                     </div>
                     <input type="text" class="form-control" name="object_id" placeholder="Object ID"

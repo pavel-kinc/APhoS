@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-lg btn-primary">Download CSV</button>
+                    <button class="btn btn-lg btn-primary" onclick="downloadCSV()">Download CSV</button>
                 </div>
             </div>
             <table class="table table-bordered table-striped table-hover" id="fluxTable">
@@ -99,6 +99,8 @@
     </div>
 </div>
 
+<script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+<script th:src="@{js/downloadCSV.js}"></script>
 <script th:src="@{js/usersSelect.js}"></script>
 <script th:src="@{js/highlightActive.js}"></script>
 </body>

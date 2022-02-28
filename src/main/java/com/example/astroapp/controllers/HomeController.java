@@ -25,7 +25,9 @@ public class HomeController {
     FluxDao fluxDao;
 
     @GetMapping("/")
-    public String displayHome() {
+    public String displayHome(Model model) {
+        List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
+        model.addAttribute("availableCatalogues", availableCatalogues);
         return "home";
     }
 
@@ -37,9 +39,11 @@ public class HomeController {
                                  @RequestParam(name = "min_mag") String minMag,
                                  @RequestParam(name = "max_mag") String maxMag,
                                  @RequestParam String catalog,
-                                 @RequestParam(name = "object_id") String objectId, Model model) throws SQLException {
+                                 @RequestParam(name = "object_id") String objectId, Model model) {
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
+        List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
+        model.addAttribute("availableCatalogues", availableCatalogues);
         model.addAttribute("resultingRows", objectFluxList);
         model.addAttribute("RA", rightAscension);
         model.addAttribute("dec", dec);
