@@ -1,7 +1,11 @@
 package com.example.astroapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 import java.sql.Timestamp;
 
+@JsonPropertyOrder({"RA", "dec", "apAuto", "refApAuto", "magnitude", "expBegin", "expEnd"})
 public class FluxUserTime {
 
     String RA;

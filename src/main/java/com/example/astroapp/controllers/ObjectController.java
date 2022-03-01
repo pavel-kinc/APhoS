@@ -3,6 +3,9 @@ package com.example.astroapp.controllers;
 import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
+import com.fasterxml.jackson.databind.SequenceWriter;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,9 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,10 +54,17 @@ public class ObjectController {
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void generateCSV(@RequestParam Long objectId,
                             @RequestParam(name="refObjectId") Long referenceObjectId,
-                            @RequestParam String[] unwantedUsers, HttpServletResponse response) {
+                            @RequestParam String[] unwantedUsers, HttpServletResponse response) throws IOException {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
-
+        CsvMapper mapper = new CsvMapper();
+        final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)
+                .withColumnSeparator(';');
         File file = new File("nove.csv");
+        try (SequenceWriter seqWriter = mapper.writer(schema)
+                .writeValues(file)) {
+            seqWriter.write(new Object[] {"Object:", "123"});
+            seqWriter.writeAll(fluxes);
+        }
         try {
             FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
             response.flushBuffer();

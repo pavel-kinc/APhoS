@@ -13,5 +13,6 @@ function generateCSV() {
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/object/download', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.blob())
-        .then(blob => download(blob, "magnitudes"));
+        // TODO: name of the file
+        .then(blob => download(blob, objectId + "_magnitudes.csv"));
 }
