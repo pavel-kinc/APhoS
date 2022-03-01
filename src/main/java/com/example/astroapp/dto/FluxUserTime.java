@@ -1,5 +1,6 @@
 package com.example.astroapp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -8,17 +9,22 @@ import java.sql.Timestamp;
 @JsonPropertyOrder({"RA", "dec", "apAuto", "refApAuto", "magnitude", "expBegin", "expEnd"})
 public class FluxUserTime {
 
+    @JsonProperty
     String RA;
     String dec;
     String apAuto;
+    @JsonIgnore
     String[] apertures;
     String refApAuto;
+    @JsonIgnore
     String[] refApertures;
     Float magnitude;
+    @JsonIgnore
     String username;
+    @JsonIgnore
     String userId;
-    Timestamp expBegin;
-    Timestamp expEnd;
+    String expBegin;
+    String expEnd;
 
     public FluxUserTime() {
     }
@@ -95,19 +101,19 @@ public class FluxUserTime {
         this.userId = userId;
     }
 
-    public Timestamp getExpBegin() {
+    public String getExpBegin() {
         return expBegin;
     }
 
-    public void setExpBegin(Timestamp expBegin) {
+    public void setExpBegin(String expBegin) {
         this.expBegin = expBegin;
     }
 
-    public Timestamp getExpEnd() {
+    public String getExpEnd() {
         return expEnd;
     }
 
-    public void setExpEnd(Timestamp expEnd) {
+    public void setExpEnd(String expEnd) {
         this.expEnd = expEnd;
     }
 }

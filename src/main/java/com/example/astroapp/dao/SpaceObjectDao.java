@@ -1,8 +1,10 @@
 package com.example.astroapp.dao;
 
 import com.example.astroapp.dto.ObjectFlux;
+import com.example.astroapp.entities.SpaceObject;
 import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
 import com.example.astroapp.mappers.ObjectPreparedStatementSetter;
+import com.example.astroapp.mappers.SpaceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -12,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -109,6 +112,13 @@ public class SpaceObjectDao extends JdbcDaoSupport {
     public List<String> getAvailableCatalogues() {
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().queryForList("SELECT DISTINCT catalog FROM object", String.class);
+    }
+
+    public SpaceObject getSpaceObjectById(Long id) {
+        assert getJdbcTemplate() != null;
+        String query = "SELECT catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
+                "FROM object WHERE id=?";
+        return getJdbcTemplate().queryForObject(query, new SpaceObjectMapper(), id);
     }
 
     public List<Long> getObjectsByCatId(String catalogId) {

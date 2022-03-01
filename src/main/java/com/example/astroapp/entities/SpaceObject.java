@@ -14,15 +14,15 @@ public class SpaceObject {
     private String name;
     private String catalog;
     @Column(name = "catalog_dec")
-    private Float catalogDec;
+    private String catalogDec;
     @Column(name = "catalog_rec")
-    private Float catalogRec;
+    private String catalogRec;
     @Column(name = "catalog_mag")
     private Float catalogMag;
     @OneToMany(mappedBy = "object")
     private List<Flux> fluxes;
 
-    public SpaceObject(String catalogID, String name, String catalog, Float catalogDec, Float catalogRec, Float catalogMag) {
+    public SpaceObject(String catalogID, String name, String catalog, String catalogDec, String catalogRec, Float catalogMag) {
         this.catalogID = catalogID;
         this.name = name;
         this.catalog = catalog;
@@ -66,19 +66,19 @@ public class SpaceObject {
         this.catalog = catalog;
     }
 
-    public Float getCatalogRec() {
+    public String getCatalogRec() {
         return catalogRec;
     }
 
-    public void setCatalogRec(Float catalogRec) {
+    public void setCatalogRec(String catalogRec) {
         this.catalogRec = catalogRec;
     }
 
-    public Float getCatalogDec() {
+    public String getCatalogDec() {
         return catalogDec;
     }
 
-    public void setCatalogDec(Float catalogDec) {
+    public void setCatalogDec(String catalogDec) {
         this.catalogDec = catalogDec;
     }
 

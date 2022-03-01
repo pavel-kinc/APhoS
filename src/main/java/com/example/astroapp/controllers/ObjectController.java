@@ -1,8 +1,10 @@
 package com.example.astroapp.controllers;
 
 import com.example.astroapp.dao.FluxDao;
+import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
+import com.example.astroapp.entities.SpaceObject;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,9 @@ public class ObjectController {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    SpaceObjectDao spaceObjectDao;
 
     @Autowired
     FluxDao fluxDao;
@@ -53,16 +59,23 @@ public class ObjectController {
 
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void generateCSV(@RequestParam Long objectId,
-                            @RequestParam(name="refObjectId") Long referenceObjectId,
+                            @RequestParam(name = "refObjectId") Long referenceObjectId,
                             @RequestParam String[] unwantedUsers, HttpServletResponse response) throws IOException {
+        List<String> unwantedUsersList = Arrays.asList(unwantedUsers);
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
+        fluxes = fluxes
+                .stream()
+                .filter(flux ->
+                        !unwantedUsersList.contains(flux.getUsername()))
+                .collect(Collectors.toList());
         CsvMapper mapper = new CsvMapper();
         final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)
                 .withColumnSeparator(';');
-        File file = new File("nove.csv");
+        File file = new File("file.csv");
         try (SequenceWriter seqWriter = mapper.writer(schema)
                 .writeValues(file)) {
-            seqWriter.write(new Object[] {"Object:", "123"});
+            writeInitialData(seqWriter, spaceObjectDao.getSpaceObjectById(objectId),
+                    spaceObjectDao.getSpaceObjectById(referenceObjectId));
             seqWriter.writeAll(fluxes);
         }
         try {
@@ -71,5 +84,21 @@ public class ObjectController {
         } catch (IOException ex) {
             throw new RuntimeException("IOError writing file to output stream", ex);
         }
+    }
+
+    private void writeInitialData(SequenceWriter seqWriter,
+                                  SpaceObject spaceObject, SpaceObject refObject) throws IOException {
+        seqWriter.write(new Object[]{"Catalog ID", spaceObject.getCatalog()
+                + " " + spaceObject.getCatalogID()});
+        seqWriter.write(new Object[]{"Catalog Right Ascension", spaceObject.getCatalogRec()});
+        seqWriter.write(new Object[]{"Catalog Declination", spaceObject.getCatalogDec()});
+        seqWriter.write(new Object[]{"Catalog Magnitude", spaceObject.getCatalogMag()});
+        seqWriter.write(new Object[]{"Reference catalog ID", spaceObject.getCatalog()
+                + " " + refObject.getCatalogID()});
+        seqWriter.write(new Object[]{"Reference catalog Right Ascension", refObject.getCatalogRec()});
+        seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
+        seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
+        seqWriter.write(new Object[]{"RA", "Dec", "Aperture", "refAperture",
+                "Magnitude", "Exposure begin", "Exposure end"});
     }
 }

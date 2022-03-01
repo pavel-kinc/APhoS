@@ -34,8 +34,8 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         fluxUserTime.setMagnitude(convertFluxesToMagnitude(apAutoStr, refApAutoStr));
         fluxUserTime.setRefApertures(refAperturesStr);
         fluxUserTime.setUsername(rs.getString("username"));
-        fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin"));
-        fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end"));
+        fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin").toString());
+        fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end").toString());
         fluxUserTime.setUserId(rs.getString("google_sub"));
         return fluxUserTime;
     }
