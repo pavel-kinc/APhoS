@@ -11,15 +11,13 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
 
 @Controller
 public class ObjectController {
@@ -42,9 +40,9 @@ public class ObjectController {
                 .map(FluxUserTime::getUsername)
                 .distinct()
                 .collect(Collectors.toList());
-        Consumer<FluxUserTime> consumer = flux ->
-                flux.setMagnitude(convertFluxesToMagnitude(flux.getApAuto(), flux.getRefApAuto()));
-        fluxes.forEach(consumer);
+//        Consumer<FluxUserTime> consumer = flux ->
+//                flux.setMagnitude(convertFluxesToMagnitude(flux.getApAuto(), flux.getRefApAuto()));
+//        fluxes.forEach(consumer);
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);
         model.addAttribute("catalogId", catalogId);
@@ -53,17 +51,15 @@ public class ObjectController {
     }
 
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void generateCSV(@RequestParam(required = false) String objectID,
-                                     @RequestParam(required = false) String[] unwantedUsers, HttpServletResponse response) {
+    public void generateCSV(@RequestParam Long objectId,
+                            @RequestParam(name="refObjectId") Long referenceObjectId,
+                            @RequestParam String[] unwantedUsers, HttpServletResponse response) {
+        List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
+
+        File file = new File("nove.csv");
         try {
-            File file = new File("nove.csv");
-            try (FileWriter fw = new FileWriter(file);
-            BufferedWriter bw = new BufferedWriter(fw)) {
-                bw.write("Sample file");
-            }
             FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
             response.flushBuffer();
-            int a = 1;
         } catch (IOException ex) {
             throw new RuntimeException("IOError writing file to output stream", ex);
         }

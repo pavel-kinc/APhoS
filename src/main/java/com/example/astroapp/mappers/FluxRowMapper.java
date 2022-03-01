@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
+
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
 
     @Override
@@ -29,6 +31,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         String[] refAperturesStr = Arrays.stream(refAperturesArray)
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
+        fluxUserTime.setMagnitude(convertFluxesToMagnitude(apAutoStr, refApAutoStr));
         fluxUserTime.setRefApertures(refAperturesStr);
         fluxUserTime.setUsername(rs.getString("username"));
         fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin"));
