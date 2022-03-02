@@ -14,7 +14,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
     @Override
     public FluxUserTime mapRow(ResultSet rs, int rowNum) throws SQLException {
         FluxUserTime fluxUserTime = new FluxUserTime();
-        fluxUserTime.setRA(rs.getString("rec"));
+        fluxUserTime.setRightAsc(rs.getString("rec"));
         fluxUserTime.setDec(rs.getString("dec"));
         Float apAuto = rs.getFloat("ap_auto");
         String apAutoStr = apAuto.equals(0.0f) ? "saturated" : apAuto.toString();

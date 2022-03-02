@@ -1,16 +1,11 @@
 package com.example.astroapp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.sql.Timestamp;
-
-@JsonPropertyOrder({"RA", "dec", "apAuto", "refApAuto", "magnitude", "expBegin", "expEnd"})
+@JsonPropertyOrder({"rightAsc", "dec", "apAuto", "refApAuto", "magnitude", "expBegin", "expEnd"})
 public class FluxUserTime {
-
-    @JsonProperty
-    String RA;
+    String rightAsc;
     String dec;
     String apAuto;
     @JsonIgnore
@@ -29,12 +24,12 @@ public class FluxUserTime {
     public FluxUserTime() {
     }
 
-    public String getRA() {
-        return RA;
+    public String getRightAsc() {
+        return rightAsc;
     }
 
-    public void setRA(String RA) {
-        this.RA = RA;
+    public void setRightAsc(String rightAsc) {
+        this.rightAsc = rightAsc;
     }
 
     public String getDec() {
