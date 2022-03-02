@@ -19,13 +19,15 @@ public class UnitConversions {
      */
     public static float hourAngleToDegrees(String hourAngle) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        if (hourAngle.contains(".")) {
+            dateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+        }
         // subtracting zero date because of time zone
         Date zeroDate = dateFormat.parse("00:00:00.000");
-        Date myValue = dateFormat.parse(hourAngle.strip().replace(" ", ":"));
-        float seconds = (myValue.getTime() - zeroDate.getTime()) / 1000F;
+        Date angleDate = dateFormat.parse(hourAngle.strip().replace(" ", ":"));
+        float seconds = (angleDate.getTime() - zeroDate.getTime()) / 1000F;
         return seconds / 3600 * 15;
     }
-
 
     /**
      * Angle to float form. Primarily for converting Declination.

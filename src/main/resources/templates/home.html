@@ -97,7 +97,8 @@
         </div>
         <div class="row my-4" th:if="${resultingRows}">
             <div class="col-md-8">
-                <table class="table table-bordered table-striped table-hover">
+                <table class="table table-bordered table-striped table-hover
+                table-sort table-arrows">
                     <thead class="table-dark">
                     <tr>
                         <th class="text-center">Name</th>
@@ -133,6 +134,7 @@
         </div>
     </div>
 </div>
+<script src="https://leewannacott.github.io/table-sort-js/table-sort.js"></script>
 <script th:src="@{js/magnitudeSliders.js}"></script>
 <script th:src="@{js/highlightActive.js}"></script>
 <script th:src="@{js/searchFormValidation.js}"></script>

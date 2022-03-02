@@ -8,14 +8,14 @@
 <nav th:replace="layout :: navbar"></nav>
 <div class="container-fluid">
     <div class="row my-4">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="row mb-3 justify-content-end align-items-end">
                 <div class="col-md-9">
                     <h1 th:text="${'Object ' + catalogId}"></h1>
                     <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
                 <div class="col-md-3">
-                    <div class="btn-group">
+                    <div class="btn-group ms-5">
                         <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
                                 data-bs-toggle="dropdown">
                             Users
@@ -57,7 +57,8 @@
                     <button class="btn btn-lg btn-primary" onclick="generateCSV()">Download CSV</button>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover" id="fluxTable">
+            <table class="table table-bordered table-striped table-hover
+            table-sort table-arrows" id="fluxTable">
                 <thead class="table-dark">
                     <tr>
                         <th class="text-center">Right Ascension</th>
@@ -107,6 +108,7 @@
 <script th:src="@{js/download.js}"></script>
 <script th:src="@{js/usersSelect.js}"></script>
 <script th:src="@{js/highlightActive.js}"></script>
+<script src="https://leewannacott.github.io/table-sort-js/table-sort.js"></script>
 </body>
 
 </html>

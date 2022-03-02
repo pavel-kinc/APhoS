@@ -18,6 +18,18 @@ public class ConversionsTest {
     }
 
     @Test
+    public void convertBasicRAtoDegOneDecimalTest() throws ParseException {
+        double expected = 325.4792;
+        assertEquals(expected, hourAngleToDegrees("21 41 55.2"), 0.01);
+    }
+
+    @Test
+    public void convertBasicRAtoDegTestNoDecimalTest() throws ParseException {
+        double expected = 325.4792;
+        assertEquals(expected, hourAngleToDegrees("21 41 55"), 0.01);
+    }
+
+    @Test
     public void convertBasicRAtoDegWithColonTest() throws ParseException {
         double expected = 325.4792;
         assertEquals(expected, hourAngleToDegrees("21:41:55.291"), 0.01);
@@ -48,19 +60,4 @@ public class ConversionsTest {
         assertThrows(NumberFormatException.class, () -> angleToFloatForm("a-21 41 55.291"));
 
     }
-
-//    @Test
-//    public void backwardConversionAngleTest() {
-//        assertEquals("+71°18'41.13\"", angleToExpendedForm(angleToFloatForm("+71 18 41.13")));
-//    }
-//
-//    @Test
-//    public void backwardConversionMinusAngleTest() {
-//        assertEquals("-71°18'41.13\"", angleToExpendedForm(angleToFloatForm("-71 18 41.13")));
-//    }
-//
-//    @Test
-//    public void backwardConversionHourAngleTest() throws ParseException {
-//        assertEquals("21:41:55.200", degreesToHourAngle(hourAngleToDegrees("21:41:55.231")));
-//    }
 }
