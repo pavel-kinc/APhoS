@@ -99,16 +99,23 @@
                     </td>
                 </tr>
             </table>
+            <div class="d-flex justify-content-end">
+                <nav id="paginationNav" aria-label="..."></nav>
+            </div>
+            <div id="statDiv" class="d-flex justify-content-end align-self-center">
+            </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+<script th:src="@{js/paginator.js}"></script>
 <script th:src="@{js/generateCSV.js}"></script>
 <script th:src="@{js/download.js}"></script>
 <script th:src="@{js/usersSelect.js}"></script>
 <script th:src="@{js/highlightActive.js}"></script>
-<script src="https://leewannacott.github.io/table-sort-js/table-sort.js"></script>
+<script th:src="@{js/table-sort.js}"></script>
+
 </body>
 
 </html>

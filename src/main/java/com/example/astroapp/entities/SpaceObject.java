@@ -22,7 +22,8 @@ public class SpaceObject {
     @OneToMany(mappedBy = "object")
     private List<Flux> fluxes;
 
-    public SpaceObject(String catalogID, String name, String catalog, String catalogDec, String catalogRec, Float catalogMag) {
+    public SpaceObject(String catalogID, String name, String catalog,
+                       String catalogDec, String catalogRec, Float catalogMag) {
         this.catalogID = catalogID;
         this.name = name;
         this.catalog = catalog;

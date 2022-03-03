@@ -5,6 +5,7 @@ unwantedSelect.addEventListener("dragover", allowDrop);
 wantedSelect.addEventListener("dragover", allowDrop);
 wantedSelect.addEventListener("drop", drop);
 let users = document.getElementById("userDropDownMenu").getElementsByTagName("option");
+
 for (let user of users) {
     user.addEventListener("dragstart", drag);
 }
