@@ -23,7 +23,7 @@
 
 paginator({
     table: document.getElementById("fluxTable"),
-    rows_per_page: 50,
+    rows_per_page: 20,
     box: document.getElementById("paginationNav"),
     box_mode: "list",
 });

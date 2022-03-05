@@ -5,10 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-
-import static com.example.astroapp.utils.UnitConversions.addAngleSigns;
-import static com.example.astroapp.utils.UnitConversions.addHourAngleSigns;
 
 public class ObjectFluxCountRowMapper implements RowMapper<ObjectFlux> {
 

@@ -1,10 +1,12 @@
 package com.example.astroapp.mappers;
 
 import com.example.astroapp.dto.FluxUserTime;
+import com.example.astroapp.helper.Night;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Arrays;
 
 import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
@@ -36,6 +38,13 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         fluxUserTime.setUsername(rs.getString("username"));
         fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin").toString());
         fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end").toString());
+        try {
+            Night night = new Night(rs.getTimestamp("exposure_begin"),
+                    fluxUserTime.getUsername());
+            fluxUserTime.setNight(night);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         fluxUserTime.setUserId(rs.getString("google_sub"));
         return fluxUserTime;
     }

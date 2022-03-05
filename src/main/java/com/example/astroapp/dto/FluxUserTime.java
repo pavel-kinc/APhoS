@@ -1,5 +1,6 @@
 package com.example.astroapp.dto;
 
+import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -18,6 +19,8 @@ public class FluxUserTime {
     String username;
     @JsonIgnore
     String userId;
+    @JsonIgnore
+    Night night;
     String expBegin;
     String expEnd;
 
@@ -110,5 +113,13 @@ public class FluxUserTime {
 
     public void setExpEnd(String expEnd) {
         this.expEnd = expEnd;
+    }
+
+    public Night getNight() {
+        return night;
+    }
+
+    public void setNight(Night night) {
+        this.night = night;
     }
 }

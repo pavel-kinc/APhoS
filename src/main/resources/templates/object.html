@@ -57,19 +57,21 @@
                     <button class="btn btn-lg btn-primary" onclick="generateCSV()">Download CSV</button>
                 </div>
             </div>
+        </div>
+        <div class="col-md-9">
             <table class="table table-bordered table-striped table-hover
             table-sort table-arrows" id="fluxTable">
                 <thead class="table-dark">
-                    <tr>
-                        <th class="text-center">Right Ascension</th>
-                        <th class="text-center">Declination</th>
-                        <th class="text-center">Exposure begin</th>
-                        <th class="text-center">Exposure end</th>
-                        <th class="text-center">Aperture auto</th>
-                        <th class="text-center">Apertures</th>
-                        <th class="text-center">Magnitude</th>
-                        <th class="text-center">Uploaded by</th>
-                    </tr>
+                <tr>
+                    <th class="text-center">Right Ascension</th>
+                    <th class="text-center">Declination</th>
+                    <th class="text-center">Exposure begin</th>
+                    <th class="text-center">Exposure end</th>
+                    <th class="text-center">Ap auto</th>
+                    <th class="text-center">Apertures</th>
+                    <th class="text-center">Magnitude</th>
+                    <th class="text-center">Uploaded by</th>
+                </tr>
                 </thead>
                 <tr th:each="flux : ${fluxes}">
                     <td class="text-center" th:text="${flux.rightAsc}"></td>
@@ -102,8 +104,22 @@
             <div class="d-flex justify-content-end">
                 <nav id="paginationNav" aria-label="..."></nav>
             </div>
-            <div id="statDiv" class="d-flex justify-content-end align-self-center">
-            </div>
+            <div id="statDiv" class="d-flex justify-content-end align-self-center"></div>
+        </div>
+        <div class="col-md-3">
+            <form action="/object/aperture" method="post">
+                <th:block th:each="night : ${nights}">
+                    <label th:for="${night.firstDateOfTheNight + night.username}"
+                           th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
+                            + night.secondDateOfTheNight + ' by ' + night.username}">
+                    </label>
+                    <select th:id="${night.firstDateOfTheNight + night.username}" class="form-select">
+                        <option selected value="auto">Aperture auto</option>
+                        <option th:each="i : ${#numbers.sequence( 1, 11, 1)}"
+                        th:value="${i}" th:text="${'Aperture' + i}"> </option>
+                    </select>
+                </th:block>
+            </form>
         </div>
     </div>
 </div>

@@ -5,6 +5,7 @@ import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
 import com.example.astroapp.entities.SpaceObject;
+import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -47,9 +48,16 @@ public class ObjectController {
                 .map(FluxUserTime::getUsername)
                 .distinct()
                 .collect(Collectors.toList());
+        List<Night> nights = fluxes
+                .stream()
+                .map(FluxUserTime::getNight)
+                .distinct()
+                .collect(Collectors.toList());
+
 //        Consumer<FluxUserTime> consumer = flux ->
 //                flux.setMagnitude(convertFluxesToMagnitude(flux.getApAuto(), flux.getRefApAuto()));
 //        fluxes.forEach(consumer);
+        model.addAttribute("nights", nights);
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);
         model.addAttribute("catalogId", catalogId);
@@ -85,6 +93,12 @@ public class ObjectController {
             throw new RuntimeException("IOError writing file to output stream", ex);
         }
     }
+
+    @PostMapping("/object/aperture")
+    public String changeAperture() {
+        return "redirect:/object";
+    }
+
 
     private void writeInitialData(SequenceWriter seqWriter,
                                   SpaceObject spaceObject, SpaceObject refObject) throws IOException {

@@ -99,8 +99,9 @@ public class NightDatesTest {
         Timestamp timestampFirst = new Timestamp(simpleDateFormat
                 .parse("2021-11-06 22:55:15.709").getTime());
         Night night = new Night(timestampFirst, "rasto");
-        night.setFirstDateOfTheNight(date1);
-        night.setSecondDateOfTheNight(date2);
+        simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        night.setFirstDateOfTheNight(simpleDateFormat.format(date1));
+        night.setSecondDateOfTheNight(simpleDateFormat.format(date2));
         assertEquals(new Night(timestampFirst, "rasto"), night);
     }
 
