@@ -107,29 +107,27 @@
             <div id="statDiv" class="d-flex justify-content-end align-self-center"></div>
         </div>
         <div class="col-md-3">
-            <form action="/object/aperture" method="post">
-                <th:block th:each="night : ${nights}">
-                    <label th:for="${night.firstDateOfTheNight + night.username}"
-                           th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
-                            + night.secondDateOfTheNight + ' by ' + night.username}">
-                    </label>
-                    <select th:id="${night.firstDateOfTheNight + night.username}" class="form-select">
-                        <option selected value="auto">Aperture auto</option>
-                        <option th:each="i : ${#numbers.sequence( 1, 11, 1)}"
-                        th:value="${i}" th:text="${'Aperture' + i}"> </option>
-                    </select>
-                </th:block>
-            </form>
+            <th:block th:each="night : ${nights}">
+                <label th:for="${night.firstDateOfTheNight + night.username}"
+                       th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
+                        + night.secondDateOfTheNight + ' by ' + night.username}">
+                </label>
+                <select th:id="${night.firstDateOfTheNight + night.username}" class="form-select">
+                    <option selected value="auto">Aperture auto</option>
+                    <option th:each="i : ${#numbers.sequence( 1, 11, 1)}"
+                    th:value="${i}" th:text="${'Aperture' + i}"> </option>
+                </select>
+            </th:block>
         </div>
     </div>
 </div>
 
 <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
 <script th:src="@{js/paginator.js}"></script>
-<script th:src="@{js/generateCSV.js}"></script>
+<script th:src="@{js/generate-csv.js}"></script>
 <script th:src="@{js/download.js}"></script>
-<script th:src="@{js/usersSelect.js}"></script>
-<script th:src="@{js/highlightActive.js}"></script>
+<script th:src="@{js/users-select.js}"></script>
+<script th:src="@{js/highlight-active.js}"></script>
 <script th:src="@{js/table-sort.js}"></script>
 
 </body>
