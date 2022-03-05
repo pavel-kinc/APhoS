@@ -12,11 +12,12 @@ import java.util.Objects;
  * This is a helper class to identify a certain night with the intention of setting aperture
  * for that night. One night includes times from 12:00 of the first date to 12:00 of the second date.
  */
-public class Night {
+public class Night implements Comparable<Night> {
 
     private String firstDateOfTheNight;
     private String secondDateOfTheNight;
     private String username;
+    private int idOnPage;
     /**
      * 12 hours represented in milliseconds
      */
@@ -45,6 +46,14 @@ public class Night {
             secondDateOfTheNight = onlyDateFormatter.format(calendar.getTime());
         }
         this.username = username;
+    }
+
+    public int getIdOnPage() {
+        return idOnPage;
+    }
+
+    public void setIdOnPage(int idOnPage) {
+        this.idOnPage = idOnPage;
     }
 
     /**
@@ -114,5 +123,24 @@ public class Night {
     @Override
     public int hashCode() {
         return Objects.hash(firstDateOfTheNight, secondDateOfTheNight, username);
+    }
+
+
+    @Override
+    public int compareTo(Night o) {
+        SimpleDateFormat onlyDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date thisDate = onlyDateFormatter.parse(this.firstDateOfTheNight);
+            Date thatDate = onlyDateFormatter.parse(o.firstDateOfTheNight);
+            if (thisDate.getTime() < thatDate.getTime()) {
+                return -1;
+            } else if (thisDate.getTime() > thatDate.getTime()) {
+                return 1;
+            }
+            return this.username.compareTo(o.username);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

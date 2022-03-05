@@ -17,6 +17,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -41,6 +42,7 @@ public class ObjectController {
                                       @RequestParam(name = "refCatId") String refObjectCatalogId,
                                       @RequestParam(name = "id") Long id,
                                       @RequestParam(name = "catalogId") String catalogId,
+                                      @RequestParam(name = "apertures", required = false) String[] apertures,
                                       Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
@@ -52,8 +54,11 @@ public class ObjectController {
                 .stream()
                 .map(FluxUserTime::getNight)
                 .distinct()
+                .sorted()
                 .collect(Collectors.toList());
-
+        for (int i = 0; i < nights.size(); i++) {
+            nights.get(i).setIdOnPage(i);
+        }
 //        Consumer<FluxUserTime> consumer = flux ->
 //                flux.setMagnitude(convertFluxesToMagnitude(flux.getApAuto(), flux.getRefApAuto()));
 //        fluxes.forEach(consumer);
@@ -93,12 +98,6 @@ public class ObjectController {
             throw new RuntimeException("IOError writing file to output stream", ex);
         }
     }
-
-    @PostMapping("/object/aperture")
-    public String changeAperture() {
-        return "redirect:/object";
-    }
-
 
     private void writeInitialData(SequenceWriter seqWriter,
                                   SpaceObject spaceObject, SpaceObject refObject) throws IOException {
