@@ -10,12 +10,13 @@
     <div class="row my-4">
         <div class="col-md-10">
             <div class="row mb-3 justify-content-end align-items-end">
-                <div class="col-md-9">
+                <div class="col-md-8">
                     <h1 th:text="${'Object ' + catalogId}"></h1>
                     <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
-                <div class="col-md-3">
-                    <div class="btn-group ms-5 ps-4">
+                <div class="col-md-4">
+                    <button class="btn btn-lg btn-secondary ms-5" onclick="displayGraph()">Light Curve</button>
+                    <div class="btn-group">
                         <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
                                 data-bs-toggle="dropdown">
                             Users
@@ -55,7 +56,7 @@
                         </div>
                     </div>
                     <button class="btn btn-lg btn-primary" type="button"
-                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download CSV</button>
+                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download as CSV</button>
                     <div class="modal fade" id="confirmModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -75,6 +76,10 @@
                 </div>
             </div>
         </div>
+        <div>
+            <canvas id="lightCurveCanvas" width="400" height="400">
+            </canvas>
+        </div>
         <div class="col-md-10">
             <table class="table table-bordered table-striped table-hover
             table-sort table-arrows" id="fluxTable">
@@ -90,7 +95,6 @@
                     <th class="text-center">Ref apertures</th>
                     <th class="text-center">Magnitude</th>
                     <th class="text-center">Uploaded by</th>
-                    <th class="text-center">Graph</th>
                 </tr>
                 </thead>
                 <tr th:each="flux : ${fluxes}">
@@ -135,9 +139,6 @@
                         <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
                         </a>
                     </td>
-                    <td class="text-center">
-                        <a href="#"> view</a>
-                    </td>
                 </tr>
             </table>
             <div class="d-flex justify-content-end">
@@ -169,6 +170,8 @@
 </div>
 
 <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{js/create-graph.js}"></script>
 <script th:src="@{/js/aperture-select.js}"></script>
 <script th:src="@{js/paginator.js}"></script>
 <script th:src="@{js/generate-csv.js}"></script>

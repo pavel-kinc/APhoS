@@ -1,13 +1,17 @@
 let apertures = new URLSearchParams(window.location.search).get("apertures");
-let apsArray = apertures.split(",");
-for (let i = 0; i < apsArray.length; i++) {
-    document.getElementById(i.toString()).value = apsArray[i];
+if (apertures) {
+    let apsArray = apertures.split(",");
+    for (let i = 0; i < apsArray.length; i++) {
+        document.getElementById(i.toString()).value = apsArray[i];
+    }
 }
 
 let refApertures = new URLSearchParams(window.location.search).get("refApertures");
-let apsRefArray = refApertures.split(",");
-for (let i = 0; i < apsRefArray.length; i++) {
-    document.getElementById("ref" + i.toString()).value = apsRefArray[i];
+if (refApertures) {
+    let apsRefArray = refApertures.split(",");
+    for (let i = 0; i < apsRefArray.length; i++) {
+        document.getElementById("ref" + i.toString()).value = apsRefArray[i];
+    }
 }
 
 function selectAperture() {
