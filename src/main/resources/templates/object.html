@@ -54,7 +54,24 @@
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-lg btn-primary" onclick="generateCSV()">Download CSV</button>
+                    <button class="btn btn-lg btn-primary" type="button"
+                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download CSV</button>
+                    <div class="modal fade" id="confirmModal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add objects info to the csv?</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                            onclick="generateCSV(false)">No</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                            onclick="generateCSV(true)">Yes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

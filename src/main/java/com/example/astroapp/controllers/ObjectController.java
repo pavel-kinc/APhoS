@@ -73,6 +73,7 @@ public class ObjectController {
                             @RequestParam String[] unwantedUsers,
                             @RequestParam(name = "apertures", required = false) String[] apertures,
                             @RequestParam(name = "refApertures", required = false) String[] refApertures,
+                            @RequestParam Boolean addData,
                             HttpServletResponse response) throws IOException {
         List<String> unwantedUsersList = Arrays.asList(unwantedUsers);
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
@@ -88,7 +89,7 @@ public class ObjectController {
         File file = new File("file.csv");
         try (SequenceWriter seqWriter = mapper.writer(schema)
                 .writeValues(file)) {
-            writeInitialData(seqWriter, spaceObjectDao.getSpaceObjectById(objectId),
+            writeInitialData(seqWriter, addData, spaceObjectDao.getSpaceObjectById(objectId),
                     spaceObjectDao.getSpaceObjectById(referenceObjectId));
             seqWriter.writeAll(fluxes);
         }
@@ -100,18 +101,20 @@ public class ObjectController {
         }
     }
 
-    private void writeInitialData(SequenceWriter seqWriter,
+    private void writeInitialData(SequenceWriter seqWriter, Boolean addData,
                                   SpaceObject spaceObject, SpaceObject refObject) throws IOException {
-        seqWriter.write(new Object[]{"Catalog ID", spaceObject.getCatalog()
-                + " " + spaceObject.getCatalogID()});
-        seqWriter.write(new Object[]{"Catalog Right Ascension", spaceObject.getCatalogRec()});
-        seqWriter.write(new Object[]{"Catalog Declination", spaceObject.getCatalogDec()});
-        seqWriter.write(new Object[]{"Catalog Magnitude", spaceObject.getCatalogMag()});
-        seqWriter.write(new Object[]{"Reference catalog ID", spaceObject.getCatalog()
-                + " " + refObject.getCatalogID()});
-        seqWriter.write(new Object[]{"Reference catalog Right Ascension", refObject.getCatalogRec()});
-        seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
-        seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
+        if (addData) {
+            seqWriter.write(new Object[]{"Catalog ID", spaceObject.getCatalog()
+                    + " " + spaceObject.getCatalogID()});
+            seqWriter.write(new Object[]{"Catalog Right Ascension", spaceObject.getCatalogRec()});
+            seqWriter.write(new Object[]{"Catalog Declination", spaceObject.getCatalogDec()});
+            seqWriter.write(new Object[]{"Catalog Magnitude", spaceObject.getCatalogMag()});
+            seqWriter.write(new Object[]{"Reference catalog ID", spaceObject.getCatalog()
+                    + " " + refObject.getCatalogID()});
+            seqWriter.write(new Object[]{"Reference catalog Right Ascension", refObject.getCatalogRec()});
+            seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
+            seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
+        }
         seqWriter.write(new Object[]{"RA", "Dec", "Magnitude", "Exposure begin", "Exposure end"});
     }
 

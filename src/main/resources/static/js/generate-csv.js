@@ -1,5 +1,5 @@
 
-function generateCSV() {
+function generateCSV(addData) {
     const searchParams = new URLSearchParams(window.location.search);
     let selects = document.getElementById("apertureSelects")
         .getElementsByTagName("select");
@@ -30,6 +30,7 @@ function generateCSV() {
     formData.append("unwantedUsers", unwantedUsers);
     formData.append("apertures", aperturesParam);
     formData.append("refApertures", aperturesRefParam);
+    formData.append("addData", addData);
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/object/download', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.blob())
