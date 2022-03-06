@@ -23,7 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
 
 @Controller
 public class ObjectController {
@@ -58,11 +61,19 @@ public class ObjectController {
                 .sorted()
                 .collect(Collectors.toList());
         for (int i = 0; i < nights.size(); i++) {
-            nights.get(i).setIdOnPage(i);
+            Night night = nights.get(i);
+            night.setIdOnPage(i);
+            if (apertures != null && i < apertures.length && i < refApertures.length) {
+                night.setApToBeUsed(apertures[i]);
+                night.setRefApToBeUsed(refApertures[i]);
+            } else {
+                night.setApToBeUsed("auto");
+                night.setRefApToBeUsed("auto");
+            }
         }
-//        Consumer<FluxUserTime> consumer = flux ->
-//                flux.setMagnitude(convertFluxesToMagnitude(flux.getApAuto(), flux.getRefApAuto()));
-//        fluxes.forEach(consumer);
+        Consumer<FluxUserTime> consumer = flux ->
+                flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
+        fluxes.forEach(consumer);
         model.addAttribute("nights", nights);
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);

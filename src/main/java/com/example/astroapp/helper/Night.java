@@ -18,8 +18,8 @@ public class Night implements Comparable<Night> {
     private String secondDateOfTheNight;
     private String username;
     private int idOnPage;
-    private int apToBeUsed;
-    private int refApToBeUsed;
+    private String apToBeUsed;
+    private String refApToBeUsed;
 
     /**
      * 12 hours represented in milliseconds
@@ -51,19 +51,19 @@ public class Night implements Comparable<Night> {
         this.username = username;
     }
 
-    public int getApToBeUsed() {
+    public String getApToBeUsed() {
         return apToBeUsed;
     }
 
-    public void setApToBeUsed(int apToBeUsed) {
+    public void setApToBeUsed(String apToBeUsed) {
         this.apToBeUsed = apToBeUsed;
     }
 
-    public int getRefApToBeUsed() {
+    public String getRefApToBeUsed() {
         return refApToBeUsed;
     }
 
-    public void setRefApToBeUsed(int refApToBeUsed) {
+    public void setRefApToBeUsed(String refApToBeUsed) {
         this.refApToBeUsed = refApToBeUsed;
     }
 

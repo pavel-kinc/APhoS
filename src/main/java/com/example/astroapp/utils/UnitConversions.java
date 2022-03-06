@@ -1,9 +1,13 @@
 package com.example.astroapp.utils;
 
+import com.example.astroapp.dto.FluxUserTime;
+import com.example.astroapp.helper.Night;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Util class for converting units.
@@ -61,11 +65,30 @@ public class UnitConversions {
         return hourAngle;
     }
 
-    public static float convertFluxesToMagnitude(String flux, String referenceFlux) {
-        if (flux.equals("saturated") || referenceFlux.equals("saturated")) {
+    public static float convertFluxesToMagnitude(FluxUserTime flux, List<Night> nights) {
+        Night correspondingNight = nights.get(nights.indexOf(flux.getNight()));
+        String apToBeUsed = correspondingNight.getApToBeUsed();
+        String refApToBeUsed = correspondingNight.getRefApToBeUsed();
+        String fluxValue;
+        String refFluxValue;
+        if (apToBeUsed.equals("auto")) {
+            fluxValue = flux.getApAuto();
+        } else {
+            int apToBeUsedInt = Integer.parseInt(apToBeUsed);
+            fluxValue = apToBeUsedInt - 1 < flux.getApertures().length ?
+                    flux.getApertures()[apToBeUsedInt - 1] : flux.getApAuto();
+        }
+        if (refApToBeUsed.equals("auto")) {
+            refFluxValue = flux.getRefApAuto();
+        } else {
+            int apToBeUsedInt = Integer.parseInt(refApToBeUsed);
+            refFluxValue = apToBeUsedInt - 1 < flux.getRefApertures().length ?
+                    flux.getRefApertures()[apToBeUsedInt - 1] : flux.getRefApAuto();
+        }
+        if (fluxValue.equals("saturated") || refFluxValue.equals("saturated")) {
             return 0F;
         }
-        return (float) (-2.5 * Math.log10(Double.parseDouble(flux) / Double.parseDouble(referenceFlux)));
+        return (float) (-2.5 * Math.log10(Double.parseDouble(fluxValue) / Double.parseDouble(refFluxValue)));
     }
 
 }
