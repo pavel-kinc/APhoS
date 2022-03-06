@@ -8,14 +8,14 @@
 <nav th:replace="layout :: navbar"></nav>
 <div class="container-fluid">
     <div class="row my-4">
-        <div class="col-md-9">
+        <div class="col-md-10">
             <div class="row mb-3 justify-content-end align-items-end">
                 <div class="col-md-9">
                     <h1 th:text="${'Object ' + catalogId}"></h1>
                     <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
                 <div class="col-md-3">
-                    <div class="btn-group ms-5">
+                    <div class="btn-group ms-5 ps-4">
                         <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
                                 data-bs-toggle="dropdown">
                             Users
@@ -58,19 +58,22 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-10">
             <table class="table table-bordered table-striped table-hover
             table-sort table-arrows" id="fluxTable">
                 <thead class="table-dark">
                 <tr>
-                    <th class="text-center">Right Ascension</th>
+                    <th class="text-center">Right Asc</th>
                     <th class="text-center">Declination</th>
                     <th class="text-center">Exposure begin</th>
                     <th class="text-center">Exposure end</th>
                     <th class="text-center">Ap auto</th>
                     <th class="text-center">Apertures</th>
+                    <th class="text-center">Ref ap auto</th>
+                    <th class="text-center">Ref apertures</th>
                     <th class="text-center">Magnitude</th>
                     <th class="text-center">Uploaded by</th>
+                    <th class="text-center">Graph</th>
                 </tr>
                 </thead>
                 <tr th:each="flux : ${fluxes}">
@@ -83,7 +86,7 @@
                         <div class="dropdown">
                             <a class="dropdown-toggle text-secondary" id="aperturesDropdown"
                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Show apertures
+                                Show
                             </a>
                             <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
                                 <ol class="list-group list-group-numbered">
@@ -94,10 +97,29 @@
                             </div>
                         </div>
                     </td>
+                    <td class="text-center" th:text="${flux.refApAuto}"></td>
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle text-secondary" id="refAperturesDropdown"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Show
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
+                                <ol class="list-group list-group-numbered">
+                                    <th:block th:each="refAperture: ${flux.refApertures}">
+                                        <li class="list-group-item" th:text="${refAperture}"></li>
+                                    </th:block>
+                                </ol>
+                            </div>
+                        </div>
+                    </td>
                     <td class="text-center" th:text="${flux.magnitude}"></td>
                     <td class="text-center">
                         <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
                         </a>
+                    </td>
+                    <td class="text-center">
+                        <a href="#"> view</a>
                     </td>
                 </tr>
             </table>
@@ -106,7 +128,7 @@
             </div>
             <div id="statDiv" class="d-flex justify-content-end align-self-center"></div>
         </div>
-        <div class="col-md-3" id="apertureSelects">
+        <div class="col-md-2" id="apertureSelects">
             <th:block th:each="night : ${nights}">
                 <label th:for="${night.firstDateOfTheNight + night.username}"
                        th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
@@ -115,8 +137,14 @@
                 <select th:id="${night.idOnPage}" class="form-select"
                         onchange="selectAperture()">
                     <option selected value="auto">Aperture auto</option>
-                    <option th:each="i : ${#numbers.sequence( 1, 11, 1)}"
-                    th:value="${i}" th:text="${'Aperture' + i}"> </option>
+                    <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
+                    th:value="${i}" th:text="${'Aperture ' + i}"> </option>
+                </select>
+                <select th:id="${'ref' + night.idOnPage}" class="form-select mb-3"
+                        onchange="selectAperture()">
+                    <option selected value="auto">Reference aperture auto</option>
+                    <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
+                            th:value="${i}" th:text="${'Reference aperture ' + i}"> </option>
                 </select>
             </th:block>
         </div>

@@ -43,6 +43,7 @@ public class ObjectController {
                                       @RequestParam(name = "id") Long id,
                                       @RequestParam(name = "catalogId") String catalogId,
                                       @RequestParam(name = "apertures", required = false) String[] apertures,
+                                      @RequestParam(name = "refApertures", required = false) String[] refApertures,
                                       Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
