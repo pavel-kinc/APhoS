@@ -17,10 +17,11 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -54,23 +55,7 @@ public class ObjectController {
                 .map(FluxUserTime::getUsername)
                 .distinct()
                 .collect(Collectors.toList());
-        List<Night> nights = fluxes
-                .stream()
-                .map(FluxUserTime::getNight)
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
-        for (int i = 0; i < nights.size(); i++) {
-            Night night = nights.get(i);
-            night.setIdOnPage(i);
-            if (apertures != null && i < apertures.length && i < refApertures.length) {
-                night.setApToBeUsed(apertures[i]);
-                night.setRefApToBeUsed(refApertures[i]);
-            } else {
-                night.setApToBeUsed("auto");
-                night.setRefApToBeUsed("auto");
-            }
-        }
+        List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
         Consumer<FluxUserTime> consumer = flux ->
                 flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
         fluxes.forEach(consumer);
@@ -85,9 +70,13 @@ public class ObjectController {
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void generateCSV(@RequestParam Long objectId,
                             @RequestParam(name = "refObjectId") Long referenceObjectId,
-                            @RequestParam String[] unwantedUsers, HttpServletResponse response) throws IOException {
+                            @RequestParam String[] unwantedUsers,
+                            @RequestParam(name = "apertures", required = false) String[] apertures,
+                            @RequestParam(name = "refApertures", required = false) String[] refApertures,
+                            HttpServletResponse response) throws IOException {
         List<String> unwantedUsersList = Arrays.asList(unwantedUsers);
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
+        setMagnitudes(fluxes, apertures, refApertures);
         fluxes = fluxes
                 .stream()
                 .filter(flux ->
@@ -123,7 +112,30 @@ public class ObjectController {
         seqWriter.write(new Object[]{"Reference catalog Right Ascension", refObject.getCatalogRec()});
         seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
         seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
-        seqWriter.write(new Object[]{"RA", "Dec", "Aperture", "refAperture",
-                "Magnitude", "Exposure begin", "Exposure end"});
+        seqWriter.write(new Object[]{"RA", "Dec", "Magnitude", "Exposure begin", "Exposure end"});
+    }
+
+    private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {
+        List<Night> nights = fluxes
+                .stream()
+                .map(FluxUserTime::getNight)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+        for (int i = 0; i < nights.size(); i++) {
+            Night night = nights.get(i);
+            night.setIdOnPage(i);
+            if (apertures != null && i < apertures.length && i < refApertures.length) {
+                night.setApToBeUsed(apertures[i]);
+                night.setRefApToBeUsed(refApertures[i]);
+            } else {
+                night.setApToBeUsed("auto");
+                night.setRefApToBeUsed("auto");
+            }
+        }
+        Consumer<FluxUserTime> consumer = flux ->
+                flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
+        fluxes.forEach(consumer);
+        return nights;
     }
 }
