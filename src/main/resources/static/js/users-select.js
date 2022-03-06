@@ -31,9 +31,16 @@ function filterUsers() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
     let fluxTable = document.getElementById("fluxTable");
     let rows = fluxTable.getElementsByTagName("tr");
+    let theadItems = fluxTable.tHead.rows[0].children;
+    let usernameIndex = 9;
+    for (let i = 0; i < theadItems.length; i++) {
+        if (theadItems[i].innerText.trim().includes("Uploaded by")) {
+            usernameIndex = i;
+        }
+    }
     Array.from(rows)
         .map(function (row) {
-            if (unwantedUsers.includes(row.children.item(7).innerText.trim())) {
+            if (unwantedUsers.includes(row.children.item(usernameIndex).innerText.trim())) {
                 row.style.display = "none";
             } else {
                 row.style.display = "";
