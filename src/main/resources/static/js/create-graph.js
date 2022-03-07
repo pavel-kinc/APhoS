@@ -1,5 +1,4 @@
-
-fluxes.sort((flux1, flux2) => flux1.expBegin.localeCompare(flux2.expBegin))
+fluxes.sort((flux1, flux2) => flux1.expBegin.localeCompare(flux2.expBegin));
 
 const data = [];
 for (let i = 0; i < fluxes.length; i++) {
@@ -7,7 +6,7 @@ for (let i = 0; i < fluxes.length; i++) {
 }
 
 const ctx = document.getElementById('lightCurveCanvas');
-new Chart(ctx, {
+let chart = new Chart(ctx, {
     type: 'line',
     data: {
         datasets: [{
@@ -51,3 +50,18 @@ new Chart(ctx, {
         }
     },
 });
+
+function updateChart() {
+    let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
+    let fluxesFiltered = fluxes.filter(flux => !unwantedUsers.includes(flux.username));
+    fluxesFiltered.sort((flux1, flux2) => flux1.expBegin.localeCompare(flux2.expBegin));
+
+    let data = [];
+    for (let i = 0; i < fluxesFiltered.length; i++) {
+        data[i] = {x: fluxesFiltered[i].expBegin, y: fluxesFiltered[i].magnitude};
+    }
+    chart.data.datasets.forEach((dataset) => {
+        dataset.data = data;
+    });
+    chart.update();
+}

@@ -17,7 +17,6 @@ public class FluxUserTime {
     @JsonIgnore
     String[] refApertures;
     Float magnitude;
-    @JsonIgnore
     String username;
     @JsonIgnore
     String userId;
