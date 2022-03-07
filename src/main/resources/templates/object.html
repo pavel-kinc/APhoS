@@ -78,6 +78,9 @@
         </div>
         <div>
             <canvas id="lightCurveCanvas" width="400" height="400">
+                <script th:inline="javascript">
+                    let fluxes = [[${fluxes}]];
+                </script>
             </canvas>
         </div>
         <div class="col-md-10">
@@ -171,6 +174,7 @@
 
 <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script th:src="@{js/create-graph.js}"></script>
 <script th:src="@{/js/aperture-select.js}"></script>
 <script th:src="@{js/paginator.js}"></script>
