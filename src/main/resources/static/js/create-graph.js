@@ -46,6 +46,21 @@ let chart = new Chart(ctx, {
             title: {
                 display: true,
                 text: 'Light curve of ' + name
+            },
+            zoom: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
+                    },
+                    wheel: {
+                        enabled: true,
+                    },
+                    pinch: {
+                        enabled: true
+                    },
+                    mode: 'xy',
+                }
             }
         }
     },
