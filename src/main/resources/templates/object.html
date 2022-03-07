@@ -15,7 +15,9 @@
                     <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg btn-secondary ms-5" onclick="displayGraph()">Light Curve</button>
+                    <button class="btn btn-lg btn-secondary ms-5" data-bs-toggle="modal" data-bs-target="#graphModal">
+                        Light Curve
+                    </button>
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
                                 data-bs-toggle="dropdown">
@@ -61,7 +63,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add objects info to the csv?</h5>
+                                    <h5 class="modal-title">Add objects info to the csv?</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-footer">
@@ -76,12 +78,22 @@
                 </div>
             </div>
         </div>
-        <div>
-            <canvas id="lightCurveCanvas" width="400" height="400">
-                <script th:inline="javascript">
-                    let fluxes = [[${fluxes}]];
-                </script>
-            </canvas>
+        <div class="modal fade" id="graphModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+        style="max-height: 100%">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <canvas id="lightCurveCanvas">
+                            <script th:inline="javascript">
+                                let fluxes = [[${fluxes}]];
+                                let name = [[${catalogId}]];
+                            </script>
+                        </canvas>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="col-md-10">
             <table class="table table-bordered table-striped table-hover

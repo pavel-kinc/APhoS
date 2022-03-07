@@ -11,7 +11,10 @@ new Chart(ctx, {
     type: 'line',
     data: {
         datasets: [{
-            data: data
+            data: data,
+            backgroundColor: "#3c66ba",
+            borderColor: "#6693cc",
+            label: "magnitude",
         }]
     },
     options: {
@@ -24,6 +27,16 @@ new Chart(ctx, {
                     displayFormats: {
                         hour: 'yyyy MMM dd HH:mm:ss'
                     }
+                },
+                title: {
+                    display: false,
+                    text: 'Time'
+                }
+            },
+            y: {
+                title: {
+                    display: true,
+                    text: 'Magnitude'
                 }
             }
         },
@@ -33,17 +46,8 @@ new Chart(ctx, {
             },
             title: {
                 display: true,
-                text: 'Light curve'
+                text: 'Light curve of ' + name
             }
         }
     },
 });
-
-function displayGraph() {
-}
-
-function decodeHtml(html) {
-    const txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-}
