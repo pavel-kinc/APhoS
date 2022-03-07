@@ -5,6 +5,7 @@ for (let i = 0; i < fluxes.length; i++) {
     data[i] = {x: fluxes[i].expBegin, y: fluxes[i].magnitude};
 }
 
+
 const ctx = document.getElementById('lightCurveCanvas');
 let chart = new Chart(ctx, {
     type: 'line',
@@ -51,7 +52,6 @@ let chart = new Chart(ctx, {
                 zoom: {
                     pan: {
                         enabled: true,
-                        mode: 'xy'
                     },
                     wheel: {
                         enabled: true,
@@ -75,6 +75,7 @@ function updateChart() {
     for (let i = 0; i < fluxesFiltered.length; i++) {
         data[i] = {x: fluxesFiltered[i].expBegin, y: fluxesFiltered[i].magnitude};
     }
+    // data[data.length] = {x: "2021-11-12 16:31:25.355", y: 3};
     chart.data.datasets.forEach((dataset) => {
         dataset.data = data;
     });
