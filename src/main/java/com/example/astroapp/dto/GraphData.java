@@ -5,8 +5,8 @@ public class GraphData {
     String time;
     Float magnitude;
 
-    public GraphData(String expBegin, Float magnitude) {
-        this.time = expBegin;
+    public GraphData(String expMiddle, Float magnitude) {
+        this.time = expMiddle;
         this.magnitude = magnitude;
     }
 

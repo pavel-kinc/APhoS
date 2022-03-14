@@ -7,9 +7,10 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
-import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
 
@@ -35,8 +36,10 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
                 .toArray(String[]::new);
         fluxUserTime.setRefApertures(refAperturesStr);
         fluxUserTime.setUsername(rs.getString("username"));
-        fluxUserTime.setExpBegin(rs.getTimestamp("exposure_begin").toString());
-        fluxUserTime.setExpEnd(rs.getTimestamp("exposure_end").toString());
+        long expBegin = rs.getTimestamp("exposure_begin").getTime();
+        long expEnd = rs.getTimestamp("exposure_end").getTime();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        fluxUserTime.setExpMiddle(dateFormatter.format(new Date((expBegin + expEnd) / 2)));
         try {
             Night night = new Night(rs.getTimestamp("exposure_begin"),
                     fluxUserTime.getUsername());

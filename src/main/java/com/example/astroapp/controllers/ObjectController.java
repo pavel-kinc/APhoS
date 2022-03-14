@@ -115,7 +115,7 @@ public class ObjectController {
             seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
         }
-        seqWriter.write(new Object[]{"RA", "Dec", "Magnitude", "Exposure begin", "Exposure end", "Uploaded by"});
+        seqWriter.write(new Object[]{"RA", "Dec", "Magnitude", "Exposure middle", "Uploaded by"});
     }
 
     private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {

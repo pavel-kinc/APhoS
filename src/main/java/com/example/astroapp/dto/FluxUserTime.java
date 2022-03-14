@@ -22,8 +22,7 @@ public class FluxUserTime {
     String userId;
     @JsonIgnore
     Night night;
-    String expBegin;
-    String expEnd;
+    String expMiddle;
 
     public FluxUserTime() {
     }
@@ -100,20 +99,12 @@ public class FluxUserTime {
         this.userId = userId;
     }
 
-    public String getExpBegin() {
-        return expBegin;
+    public String getExpMiddle() {
+        return expMiddle;
     }
 
-    public void setExpBegin(String expBegin) {
-        this.expBegin = expBegin;
-    }
-
-    public String getExpEnd() {
-        return expEnd;
-    }
-
-    public void setExpEnd(String expEnd) {
-        this.expEnd = expEnd;
+    public void setExpMiddle(String expMiddle) {
+        this.expMiddle = expMiddle;
     }
 
     public Night getNight() {
