@@ -9,10 +9,10 @@
 <div class="container-fluid">
     <div class="mb-4 mt-3">
         <h3 th:unless="${resultingRows}"
-            th:text="${originalId} ? ${'Search for a reference object:'} : ${'Search for an object:'}">
+            th:text="${originalId} ? ${'Search for a comparison object:'} : ${'Search for an object:'}">
         </h3>
         <h3 th:if="${resultingRows}"
-            th:text="${originalId} ? ${'Choose a reference object:'} : ${'Choose an object:'}">
+            th:text="${originalId} ? ${'Choose a comparison object:'} : ${'Choose an object:'}">
         </h3>
     </div>
     <div class="row">

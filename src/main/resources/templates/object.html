@@ -12,7 +12,7 @@
             <div class="row mb-3 justify-content-end align-items-end">
                 <div class="col-md-8">
                     <h1 th:text="${'Object ' + catalogId}"></h1>
-                    <h3 th:text="${'Reference ' + refCatalogId}" class="text-secondary"> </h3>
+                    <h3 th:text="${'Comparison ' + refCatalogId}" class="text-secondary"> </h3>
                 </div>
                 <div class="col-md-4">
                     <button class="btn btn-lg btn-secondary ms-5" data-bs-toggle="modal"
@@ -176,9 +176,9 @@
                 </select>
                 <select th:id="${'ref' + night.idOnPage}" class="form-select mb-3"
                         onchange="selectAperture()">
-                    <option selected value="auto">Reference aperture auto</option>
+                    <option selected value="auto">Comparison aperture auto</option>
                     <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
-                            th:value="${i}" th:text="${'Reference aperture ' + i}"> </option>
+                            th:value="${i}" th:text="${'Comparison aperture ' + i}"> </option>
                 </select>
             </th:block>
         </div>
