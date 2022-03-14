@@ -4,7 +4,7 @@ import com.example.astroapp.dao.*;
 import com.example.astroapp.entities.PhotoProperties;
 import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
-import com.example.astroapp.utils.UnitConversions;
+import com.example.astroapp.utils.Conversions;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -125,11 +125,11 @@ public class FileHandlingService {
     public Long saveObject(String name, String catalog, String catalogId,
                                   String catalogRec, String catalogDec, String catalogMag)
             throws ParseException {
-        float dec = UnitConversions.angleToFloatForm(catalogDec);
-        float rec = UnitConversions.hourAngleToDegrees(catalogRec);
+        float dec = Conversions.angleToFloatForm(catalogDec);
+        float rec = Conversions.hourAngleToDegrees(catalogRec);
         float mag = Float.parseFloat(catalogMag);
-        String strRec = UnitConversions.addAngleSigns(catalogRec);
-        String strDec = UnitConversions.addAngleSigns(catalogDec);
+        String strRec = Conversions.addAngleSigns(catalogRec);
+        String strDec = Conversions.addAngleSigns(catalogDec);
         try {
             return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         } catch (Exception e) {
@@ -140,12 +140,12 @@ public class FileHandlingService {
     public void saveFlux(String strRec, String strDec, String apAuto,
                          Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser, List<Float> aperturesList)
             throws ParseException {
-        float dec = UnitConversions.angleToFloatForm(strDec);
-        float rec = UnitConversions.hourAngleToDegrees(strRec);
+        float dec = Conversions.angleToFloatForm(strDec);
+        float rec = Conversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        strRec = UnitConversions.addHourAngleSigns(strRec);
-        strDec = UnitConversions.addAngleSigns(strDec);
+        strRec = Conversions.addHourAngleSigns(strRec);
+        strDec = Conversions.addAngleSigns(strDec);
         fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, spaceObjectId,
                 uploadingUser.getGoogleSub(), photoProperties.getId(), apertures);
     }

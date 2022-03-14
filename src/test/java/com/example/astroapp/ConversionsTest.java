@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 
-import static com.example.astroapp.utils.UnitConversions.*;
+import static com.example.astroapp.utils.Conversions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

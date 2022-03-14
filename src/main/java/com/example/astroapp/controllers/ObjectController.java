@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.example.astroapp.utils.UnitConversions.convertFluxesToMagnitude;
+import static com.example.astroapp.utils.Conversions.convertFluxesToMagnitude;
 
 @Controller
 public class ObjectController {
@@ -59,6 +59,10 @@ public class ObjectController {
         Consumer<FluxUserTime> consumer = flux ->
                 flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
         fluxes.forEach(consumer);
+        fluxes = fluxes
+                .stream()
+                .filter(flux -> !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
+                .collect(Collectors.toList());
         model.addAttribute("nights", nights);
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Util class for converting units.
  */
-public class UnitConversions {
+public class Conversions {
 
 
     /**
@@ -86,7 +86,7 @@ public class UnitConversions {
                     flux.getRefApertures()[apToBeUsedInt - 1] : flux.getRefApAuto();
         }
         if (fluxValue.equals("saturated") || refFluxValue.equals("saturated")) {
-            return 0F;
+            return Float.NEGATIVE_INFINITY;
         }
         return (float) (-2.5 * Math.log10(Double.parseDouble(fluxValue) / Double.parseDouble(refFluxValue)));
     }
