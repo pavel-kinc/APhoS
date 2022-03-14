@@ -1,4 +1,4 @@
-fluxes.sort((flux1, flux2) => flux1.expBegin.localeCompare(flux2.expBegin));
+fluxes.sort((flux1, flux2) => flux1.expMiddle.localeCompare(flux2.expMiddle));
 
 const data = [];
 for (let i = 0; i < fluxes.length; i++) {
@@ -37,7 +37,8 @@ let chart = new Chart(ctx, {
                 title: {
                     display: true,
                     text: 'Magnitude'
-                }
+                },
+                reverse: true
             }
         },
         plugins: {
@@ -69,11 +70,11 @@ let chart = new Chart(ctx, {
 function updateChart() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
     let fluxesFiltered = fluxes.filter(flux => !unwantedUsers.includes(flux.username));
-    fluxesFiltered.sort((flux1, flux2) => flux1.expBegin.localeCompare(flux2.expBegin));
+    fluxesFiltered.sort((flux1, flux2) => flux1.expMiddle.localeCompare(flux2.expMiddle));
 
     let data = [];
     for (let i = 0; i < fluxesFiltered.length; i++) {
-        data[i] = {x: fluxesFiltered[i].expBegin, y: fluxesFiltered[i].magnitude};
+        data[i] = {x: fluxesFiltered[i].expMiddle, y: fluxesFiltered[i].magnitude};
     }
     // data[data.length] = {x: "2021-11-12 16:31:25.355", y: 3};
     chart.data.datasets.forEach((dataset) => {
