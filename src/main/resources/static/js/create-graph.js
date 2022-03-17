@@ -8,7 +8,7 @@ for (let i = 0; i < fluxes.length; i++) {
 
 const ctx = document.getElementById('lightCurveCanvas');
 let chart = new Chart(ctx, {
-    type: 'line',
+    type: 'scatter',
     data: {
         datasets: [{
             data: data,

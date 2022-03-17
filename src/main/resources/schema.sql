@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users
     description VARCHAR(300)
 );
 
-CREATE TABLE IF NOT EXISTS object
+CREATE TABLE IF NOT EXISTS space_object
 (
     id          SERIAL NOT NULL,
     name        VARCHAR(40),
@@ -41,18 +41,28 @@ CREATE TABLE IF NOT EXISTS flux
     dec                 VARCHAR(20)  NOT NULL,
     coordinates         earth,
     ap_auto             float8,
-    object_id           int4         NOT NULL REFERENCES object (id),
+    object_id           int4         NOT NULL REFERENCES space_object (id),
     user_id             VARCHAR(100) NOT NULL REFERENCES users (google_sub),
     photo_properties_id int4         NOT NULL REFERENCES photo_properties (id),
     apertures           float8[],
     PRIMARY KEY (id)
 );
 
-CREATE INDEX IF NOT EXISTS flux_rec
-    ON flux (rec);
 
-CREATE INDEX IF NOT EXISTS flux_dec
-    ON flux (dec);
+CREATE INDEX IF NOT EXISTS object_coordinates_index
+    ON space_object(coordinates);
 
-CREATE INDEX IF NOT EXISTS object_catalog_id
-    ON object (catalog_id);
+CREATE INDEX IF NOT EXISTS object_catalog_index
+    ON space_object(catalog);
+
+CREATE INDEX IF NOT EXISTS object_catalog_mag_index
+    ON space_object(catalog_mag);
+
+CREATE INDEX IF NOT EXISTS flux_object_id_index
+    ON flux (object_id);
+
+CREATE INDEX IF NOT EXISTS flux_user_id_index
+    ON flux (user_id);
+
+CREATE INDEX IF NOT EXISTS flux_photo_properties_id_index
+    ON flux (photo_properties_id);
