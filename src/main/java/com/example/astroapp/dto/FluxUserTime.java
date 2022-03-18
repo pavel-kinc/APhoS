@@ -4,9 +4,11 @@ import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"rightAsc", "dec", "magnitude", "expBegin", "expEnd"})
+@JsonPropertyOrder({"expMiddle", "magnitude"})
 public class FluxUserTime {
+    @JsonIgnore
     String rightAsc;
+    @JsonIgnore
     String dec;
     @JsonIgnore
     String apAuto;
@@ -19,6 +21,7 @@ public class FluxUserTime {
     Float magnitude;
     Float errorTop;
     Float errorBottom;
+    @JsonIgnore
     String username;
     @JsonIgnore
     String userId;

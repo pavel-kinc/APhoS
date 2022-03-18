@@ -1,5 +1,12 @@
 
-function generateCSV(addData) {
+function generateCSV() {
+    let addData = false;
+    let textFileFormat = false;
+    if (document.getElementById("radioCsvFull").checked) {
+        addData = true;
+    } else if (document.getElementById("radioText").checked) {
+        textFileFormat = true;
+    }
     const searchParams = new URLSearchParams(window.location.search);
     let selects = document.getElementById("apertureSelects")
         .getElementsByTagName("select");
@@ -31,9 +38,9 @@ function generateCSV(addData) {
     formData.append("apertures", aperturesParam);
     formData.append("refApertures", aperturesRefParam);
     formData.append("addData", addData);
+    formData.append("textFileFormat", textFileFormat);
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/object/download', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.blob())
-        // TODO: name of the file
-        .then(blob => download(blob, objectId + "_magnitudes.csv"));
+        .then(blob => download(blob, objectId + "_magnitudes." + (textFileFormat ? "txt" : "csv")));
 }

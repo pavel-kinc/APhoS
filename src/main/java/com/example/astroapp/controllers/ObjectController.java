@@ -82,6 +82,7 @@ public class ObjectController {
                             @RequestParam(name = "apertures", required = false) String[] apertures,
                             @RequestParam(name = "refApertures", required = false) String[] refApertures,
                             @RequestParam Boolean addData,
+                            @RequestParam Boolean textFileFormat,
                             HttpServletResponse response) throws IOException {
         List<String> unwantedUsersList = Arrays.asList(unwantedUsers);
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);
@@ -93,7 +94,7 @@ public class ObjectController {
                 .collect(Collectors.toList());
         CsvMapper mapper = new CsvMapper();
         final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)
-                .withColumnSeparator(';');
+                .withColumnSeparator(textFileFormat ? ' ' : ';');
         File file = new File("file.csv");
         try (SequenceWriter seqWriter = mapper.writer(schema)
                 .writeValues(file)) {
@@ -123,7 +124,7 @@ public class ObjectController {
             seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
         }
-        seqWriter.write(new Object[]{"RA", "Dec", "Magnitude", "Exposure middle", "Uploaded by"});
+        seqWriter.write(new Object[]{"Exposure middle", "Magnitude"});
     }
 
     private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {

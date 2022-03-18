@@ -59,19 +59,40 @@
                         </div>
                     </div>
                     <button class="btn btn-lg btn-primary" type="button"
-                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download as CSV</button>
+                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download as file</button>
                     <div class="modal fade" id="confirmModal">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Add objects info to the csv?</h5>
+                                    <h5 class="modal-title">Choose type of file to download</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
+                                <div class="modal-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsvFull"
+                                               value="full" checked>
+                                        <label class="form-check-label" for="radioCsvFull">
+                                            CSV with additional info
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsv"
+                                               value="csv">
+                                        <label class="form-check-label" for="radioCsv">
+                                            Plain CSV
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioText"
+                                               value="text">
+                                        <label class="form-check-label" for="radioText">
+                                            Text file
+                                        </label>
+                                    </div>
+                                </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                                            onclick="generateCSV(false)">No</button>
                                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                            onclick="generateCSV(true)">Yes</button>
+                                            onclick="generateCSV()">Download</button>
                                 </div>
                             </div>
                         </div>
@@ -91,10 +112,10 @@
                             </script>
                         </canvas>
                     </div>
-                    <div class="modal-footer">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value=""
-                                   id="errorCheckbox" checked onclick="updateErrorPlotting()">
+                    <div class="modal-footer justify-content-between">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input " type="checkbox" value=""
+                                   id="errorCheckbox" onclick="updateErrorPlotting()">
                             <label class="form-check-label" for="errorCheckbox">
                                 Plot error bars
                             </label>
