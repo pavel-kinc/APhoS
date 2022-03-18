@@ -17,7 +17,6 @@ for (let i = 0; i < fluxes.length; i++) {
 }
 
 
-
 const ctx = document.getElementById('lightCurveCanvas');
 let chart = new Chart(ctx, {
     type: 'scatter',
@@ -81,6 +80,16 @@ let chart = new Chart(ctx, {
         },
     },
 });
+
+function updateErrorPlotting() {
+    let checkbox = document.getElementById("errorCheckbox");
+    if (!checkbox.checked) {
+        chart.options.plugins.annotation.annotations = [];
+    } else {
+        chart.options.plugins.annotation.annotations = annotations;
+    }
+    chart.update();
+}
 
 function updateChart() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);

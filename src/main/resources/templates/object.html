@@ -92,8 +92,14 @@
                         </canvas>
                     </div>
                     <div class="modal-footer">
-<!--                            <input type="range" class="form-range" min="0" max="5" id="customRange2">-->
-                            <button class="btn btn-primary" onclick="resetZoom()">Reset zoom</button>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value=""
+                                   id="errorCheckbox" checked onclick="updateErrorPlotting()">
+                            <label class="form-check-label" for="errorCheckbox">
+                                Plot error bars
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="resetZoom()">Reset zoom</button>
                     </div>
                 </div>
             </div>
