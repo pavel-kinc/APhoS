@@ -59,6 +59,7 @@ public class ObjectController {
         Consumer<FluxUserTime> consumer = flux ->
                 flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
         fluxes.forEach(consumer);
+        // filtering saturated values
         fluxes = fluxes
                 .stream()
                 .filter(flux -> !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))

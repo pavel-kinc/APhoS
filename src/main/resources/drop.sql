@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS flux;
-DROP TABLE IF EXISTS object;
+DROP TABLE IF EXISTS space_object;
 DROP TABLE IF EXISTS photo_properties;
 DROP TABLE IF EXISTS users;
 

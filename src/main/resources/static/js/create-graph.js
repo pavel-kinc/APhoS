@@ -5,6 +5,9 @@ for (let i = 0; i < fluxes.length; i++) {
     data[i] = {x: fluxes[i].expBegin, y: fluxes[i].magnitude};
 }
 
+// range = document.getElementById("customRange2");
+// range.addEventListener()
+
 
 const ctx = document.getElementById('lightCurveCanvas');
 let chart = new Chart(ctx, {
@@ -51,17 +54,17 @@ let chart = new Chart(ctx, {
             },
             zoom: {
                 zoom: {
-                    pan: {
-                        enabled: true,
-                    },
                     wheel: {
                         enabled: true,
                     },
                     pinch: {
                         enabled: true
                     },
-                    mode: 'xy',
-                }
+                    mode: 'xy'
+                },
+                pan: {
+                    enabled: true,
+                },
             }
         }
     },
@@ -71,14 +74,16 @@ function updateChart() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
     let fluxesFiltered = fluxes.filter(flux => !unwantedUsers.includes(flux.username));
     fluxesFiltered.sort((flux1, flux2) => flux1.expMiddle.localeCompare(flux2.expMiddle));
-
     let data = [];
     for (let i = 0; i < fluxesFiltered.length; i++) {
         data[i] = {x: fluxesFiltered[i].expMiddle, y: fluxesFiltered[i].magnitude};
     }
-    // data[data.length] = {x: "2021-11-12 16:31:25.355", y: 3};
     chart.data.datasets.forEach((dataset) => {
         dataset.data = data;
     });
     chart.update();
+}
+
+function resetZoom() {
+    chart.resetZoom();
 }

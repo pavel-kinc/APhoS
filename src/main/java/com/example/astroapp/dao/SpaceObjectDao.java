@@ -92,7 +92,7 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         }
         String insertQuery = "INSERT INTO space_object " +
                 "(id, name, catalog, catalog_id, catalog_rec, catalog_dec, coordinates, catalog_mag)" +
-                "VALUES (nextval('object_id_seq'), ?, ?, ?, ?, ?, ll_to_earth(?, ?), ?)";
+                "VALUES (nextval('space_object_id_seq'), ?, ?, ?, ?, ?, ll_to_earth(?, ?), ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         getJdbcTemplate().update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});

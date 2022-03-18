@@ -92,6 +92,8 @@
                         </canvas>
                     </div>
                     <div class="modal-footer">
+<!--                            <input type="range" class="form-range" min="0" max="5" id="customRange2">-->
+                            <button class="btn btn-primary" onclick="resetZoom()">Reset zoom</button>
                     </div>
                 </div>
             </div>
@@ -103,7 +105,7 @@
                 <tr>
                     <th class="text-center">Right Asc</th>
                     <th class="text-center">Declination</th>
-                    <th class="text-center">Exposure middle</th>
+                    <th class="text-center">Exposure middle (UTC)</th>
                     <th class="text-center">Ap auto</th>
                     <th class="text-center">Apertures</th>
                     <th class="text-center">Cmp ap auto</th>
@@ -186,7 +188,7 @@
 <script type="text/javascript" src="/webjars/js-cookie/js.cookie.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script th:src="@{js/hammer.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom/dist/chartjs-plugin-zoom.min.js"></script>
 <script th:src="@{js/create-graph.js}"></script>
 <script th:src="@{/js/aperture-select.js}"></script>
