@@ -1,12 +1,21 @@
 fluxes.sort((flux1, flux2) => flux1.expMiddle.localeCompare(flux2.expMiddle));
 
 const data = [];
+const annotations = [];
 for (let i = 0; i < fluxes.length; i++) {
-    data[i] = {x: fluxes[i].expBegin, y: fluxes[i].magnitude};
+    data[i] = {x: fluxes[i].expMiddle, y: fluxes[i].magnitude};
+    annotations[i] = {
+        type: 'line',
+        yMin: fluxes[i].errorBottom,
+        yMax: fluxes[i].errorTop,
+        xMin: fluxes[i].expMiddle,
+        xMax: fluxes[i].expMiddle,
+        borderColor: 'rgb(149,188,232)',
+        borderWidth: 1.8,
+        display: true,
+    }
 }
 
-// range = document.getElementById("customRange2");
-// range.addEventListener()
 
 
 const ctx = document.getElementById('lightCurveCanvas');
@@ -45,6 +54,9 @@ let chart = new Chart(ctx, {
             }
         },
         plugins: {
+            annotation: {
+                annotations: annotations,
+            },
             legend: {
                 position: 'top',
             },
@@ -66,7 +78,7 @@ let chart = new Chart(ctx, {
                     enabled: true,
                 },
             }
-        }
+        },
     },
 });
 

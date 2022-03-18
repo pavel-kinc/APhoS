@@ -56,8 +56,11 @@ public class ObjectController {
                 .distinct()
                 .collect(Collectors.toList());
         List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
-        Consumer<FluxUserTime> consumer = flux ->
-                flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
+        Consumer<FluxUserTime> consumer = flux -> {
+            flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
+            flux.setErrorBottom(flux.getMagnitude()*0.9F);
+            flux.setErrorTop(flux.getMagnitude()*1.1F);
+        };
         fluxes.forEach(consumer);
         // filtering saturated values
         fluxes = fluxes

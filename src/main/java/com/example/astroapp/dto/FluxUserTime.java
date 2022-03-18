@@ -17,6 +17,8 @@ public class FluxUserTime {
     @JsonIgnore
     String[] refApertures;
     Float magnitude;
+    Float errorTop;
+    Float errorBottom;
     String username;
     @JsonIgnore
     String userId;
@@ -113,5 +115,21 @@ public class FluxUserTime {
 
     public void setNight(Night night) {
         this.night = night;
+    }
+
+    public Float getErrorTop() {
+        return errorTop;
+    }
+
+    public void setErrorTop(Float errorTop) {
+        this.errorTop = errorTop;
+    }
+
+    public Float getErrorBottom() {
+        return errorBottom;
+    }
+
+    public void setErrorBottom(Float errorBottom) {
+        this.errorBottom = errorBottom;
     }
 }
