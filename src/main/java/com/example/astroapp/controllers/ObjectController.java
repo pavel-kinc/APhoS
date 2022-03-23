@@ -114,12 +114,12 @@ public class ObjectController {
                                   SpaceObject spaceObject, SpaceObject refObject) throws IOException {
         if (addData) {
             seqWriter.write(new Object[]{"Catalog ID", spaceObject.getCatalog()
-                    + " " + spaceObject.getCatalogID()});
+                    + " " + spaceObject.getCatalogId()});
             seqWriter.write(new Object[]{"Catalog Right Ascension", spaceObject.getCatalogRec()});
             seqWriter.write(new Object[]{"Catalog Declination", spaceObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Catalog Magnitude", spaceObject.getCatalogMag()});
             seqWriter.write(new Object[]{"Reference catalog ID", spaceObject.getCatalog()
-                    + " " + refObject.getCatalogID()});
+                    + " " + refObject.getCatalogId()});
             seqWriter.write(new Object[]{"Reference catalog Right Ascension", refObject.getCatalogRec()});
             seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});

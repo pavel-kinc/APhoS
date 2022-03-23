@@ -10,7 +10,7 @@ public class SpaceObject {
     @SequenceGenerator(name = "object_generator", sequenceName = "object_id_seq", allocationSize = 1)
     private Long id;
     @Column(name = "catalog_id")
-    private String catalogID;
+    private String catalogId;
     private String name;
     private String catalog;
     @Column(name = "catalog_dec")
@@ -22,9 +22,9 @@ public class SpaceObject {
     @OneToMany(mappedBy = "object")
     private List<Flux> fluxes;
 
-    public SpaceObject(String catalogID, String name, String catalog,
+    public SpaceObject(String catalogId, String name, String catalog,
                        String catalogDec, String catalogRec, Float catalogMag) {
-        this.catalogID = catalogID;
+        this.catalogId = catalogId;
         this.name = name;
         this.catalog = catalog;
         this.catalogDec = catalogDec;
@@ -51,12 +51,12 @@ public class SpaceObject {
         this.name = name;
     }
 
-    public String getCatalogID() {
-        return catalogID;
+    public String getCatalogId() {
+        return catalogId;
     }
 
-    public void setCatalogID(String catalogID) {
-        this.catalogID = catalogID;
+    public void setCatalogId(String catalogId) {
+        this.catalogId = catalogId;
     }
 
     public String getCatalog() {

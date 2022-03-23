@@ -128,7 +128,7 @@ public class FileHandlingService {
         float dec = Conversions.angleToFloatForm(catalogDec);
         float rec = Conversions.hourAngleToDegrees(catalogRec);
         float mag = Float.parseFloat(catalogMag);
-        String strRec = Conversions.addAngleSigns(catalogRec);
+        String strRec = Conversions.addHourAngleSigns(catalogRec);
         String strDec = Conversions.addAngleSigns(catalogDec);
         try {
             return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);

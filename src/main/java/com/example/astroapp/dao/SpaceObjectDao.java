@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Repository
@@ -119,11 +118,5 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         String query = "SELECT catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
                 "FROM space_object WHERE id=?";
         return getJdbcTemplate().queryForObject(query, new SpaceObjectMapper(), id);
-    }
-
-    public List<Long> getObjectsByCatId(String catalogId) {
-        assert getJdbcTemplate() != null;
-        return getJdbcTemplate().queryForList("SELECT id FROM space_object " +
-                "WHERE catalog_id=?", Long.class, catalogId);
     }
 }

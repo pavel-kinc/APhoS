@@ -17,6 +17,19 @@
         <java.version>11</java.version>
     </properties>
     <dependencies>
+        <!--This needs to be here-->
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-postgres</artifactId>
+            <version>1.2.10</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.zonky.test</groupId>
+            <artifactId>embedded-database-spring-test</artifactId>
+            <version>2.1.1</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>js-cookie</artifactId>
@@ -100,7 +113,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
-
 
 
     <build>
