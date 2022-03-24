@@ -22,13 +22,14 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/test-data.sql"})
+@Sql({"/schema.sql", "/test-data-object-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
-public class SpaceObjectDaoTest {
+public class SpaceObjectDaoIntegrationTest {
 
     @Autowired
     SpaceObjectDao spaceObjectDao;
+
 
     @Test
     public void returnCorrectObjectById() {
@@ -116,9 +117,24 @@ public class SpaceObjectDaoTest {
                 });
     }
 
+    @Test
+    public void savedObjectsIsReturnedBasedOnCoordinates() throws ParseException {
+        spaceObjectDao.saveObject("801-0", "", "UCAC4", "+70°01'57.26\"",
+                "21h10m38.791s", angleToFloatForm("+70 01 57.26"),
+                hourAngleToDegrees("21 10 38.791"), 6.81F);
+        SpaceObject expectedObject = new SpaceObject("801-0", "", "UCAC4",
+                "+70°01'57.26\"", "21h10m38.791s", 6.81F);
+        assertThat(spaceObjectDao.queryObjects("21:10:38.791", "70:01:57.26", "0.001", "",
+                "0", "15", "UCAC4", "").get(0))
+                .usingRecursiveComparison()
+                .ignoringFields("id", "fluxes", "numberOfFluxes")
+                .isEqualTo(expectedObject);
+    }
+
     private boolean twoPointsOnSphereInRadius(String ra, String dec,
                                               String raRef, String decRef,
                                               Float radius) throws ParseException {
+        // helper method to determine angular distance between two points on a sphere
         float raFloat = hourAngleToDegrees(ra);
         float decFloat = angleToFloatForm(dec);
         float raRefFloat = hourAngleToDegrees(raRef);
