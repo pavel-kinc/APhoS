@@ -40,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(oAuth2UserService)
                     .and()
                 .successHandler((request, response, authentication) -> {
-
                     OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
                     boolean newUser = userService.processOAuthPostLogin(
                             oauthUser.getAttribute("sub"));

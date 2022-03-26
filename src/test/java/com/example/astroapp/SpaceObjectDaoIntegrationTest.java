@@ -135,11 +135,18 @@ public class SpaceObjectDaoIntegrationTest {
                                               String raRef, String decRef,
                                               Float radius) throws ParseException {
         // helper method to determine angular distance between two points on a sphere
+        raRef = raRef.replace('h', ':');
+        raRef = raRef.replace('m', ':');
+        raRef = raRef.substring(0, raRef.length()-1);
+        decRef = decRef.replace('°', ':');
+        decRef = decRef.replace('\'', ':');
+        decRef = decRef.substring(0, decRef.length()-1);
         float raFloat = hourAngleToDegrees(ra);
         float decFloat = angleToFloatForm(dec);
         float raRefFloat = hourAngleToDegrees(raRef);
         float decRefFloat = angleToFloatForm(decRef);
-        return acos(sin(decFloat)*sin(decRefFloat)+
-                cos(decFloat)*cos(decRefFloat)*cos(raFloat-raRefFloat)) < radius;
+        double distance = acos(sin(decFloat)*sin(decRefFloat)+
+                cos(decFloat)*cos(decRefFloat)*cos(raFloat-raRefFloat));
+        return distance < radius;
     }
 }
