@@ -68,7 +68,6 @@ public class UploadController {
                         });
             }
         } catch (IOException | CsvContentException e) {
-            e.printStackTrace();
             unsuccessfulCount++;
         }
         return Integer.toString(unsuccessfulCount);

@@ -44,7 +44,7 @@ public class FileHandlingService {
     public void store(Path pathToFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
         File file = pathToFile.toFile();
-        // second element of pair is length of the header
+        // first element is the csv schema, second element is the length of the header
         Pair<List<String>, Integer> retPair = parseHeader(file, photoProperties);
         photoPropsDao.savePhotoProps(photoProperties);
         parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
@@ -87,18 +87,25 @@ public class FileHandlingService {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String row;
             int numOfLines = 0;
+            boolean exposureBeginFound = false;
+            boolean exposureEndFound = false;
             while ((row = br.readLine()) != null) {
                 numOfLines++;
                 String headerKey = row.split(";")[0];
                 if (headerKey.equals("ExposureBegin")) {
                     String jdbcTimestamp = row.split(";")[1].replace("T", " ");
                     photoProperties.setExposureBegin(Timestamp.valueOf(jdbcTimestamp));
+                    exposureBeginFound = true;
                 }
                 if (headerKey.equals("ExposureEnd")) {
                     String jdbcTimestamp = row.split(";")[1].replace("T", " ");
                     photoProperties.setExposureEnd(Timestamp.valueOf(jdbcTimestamp));
+                    exposureEndFound = true;
                 }
                 if (headerKey.equals("Name")) {
+                    if (!(exposureBeginFound && exposureEndFound)) {
+                        throw new CsvContentException("Exposure time info not found in the header.");
+                    }
                     return Pair.of(List.of(row.split(";")), numOfLines);
                 }
             }

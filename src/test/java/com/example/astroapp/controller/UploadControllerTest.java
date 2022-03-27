@@ -73,14 +73,28 @@ class UploadControllerTest {
     }
 
     @Test
-    public void correctFileExistingParsingTestShouldRetturnZeroIncorrectCount()
+    public void correctFileParsingTestShouldRetturnZeroIncorrectCount()
             throws Exception {
         User user = new User("1");
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
                 post("/upload/parse")
-                    .param("pathToDir", "/home/rastislav/Documents/skola/bakalarka/astroApp/src/test/resources/correctFiles"))
+                    .param("pathToDir", "src/test/resources/correctFiles"))
                 .andExpect(content().string("0"));
+    }
+
+    @Test
+    public void incorrectFileParsingTestShouldReturnOneIncorrectCount()
+            throws Exception {
+        String userDirectory = System.getProperty("user.dir");
+        System.out.println(userDirectory);
+        User user = new User("1");
+        user.setUsername("name");
+        Mockito.when(userService.getCurrentUser()).thenReturn(user);
+        mockMvc.perform(
+                        post("/upload/parse")
+                                .param("pathToDir", "src/test/resources/incorrectFiles"))
+                .andExpect(content().string("1"));
     }
 }

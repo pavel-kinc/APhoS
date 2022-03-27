@@ -1,6 +1,5 @@
 package com.example.astroapp.entities;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 public class PhotoProperties {
