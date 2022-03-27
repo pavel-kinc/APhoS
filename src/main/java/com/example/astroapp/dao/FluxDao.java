@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,11 @@ public class FluxDao extends JdbcDaoSupport {
             ps.setFloat(3, dec);
             ps.setFloat(4, rec);
             ps.setFloat(5, apertureAuto);
-            ps.setLong(6, spaceObjectId);
+            if (spaceObjectId != null) {
+                ps.setLong(6, spaceObjectId);
+            } else {
+                ps.setNull(6, Types.INTEGER);
+            }
             ps.setString(7, userId);
             ps.setLong(8, photoId);
             ps.setArray(9, connection.createArrayOf("float8", apertures));

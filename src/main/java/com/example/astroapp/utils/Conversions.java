@@ -2,6 +2,7 @@ package com.example.astroapp.utils;
 
 import com.example.astroapp.dto.FluxUserTime;
 import com.example.astroapp.helper.Night;
+import com.example.astroapp.exceptions.IllegalCoordinateFormatException;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -46,9 +47,8 @@ public class Conversions {
             float degrees = Float.parseFloat(angleArray[0]);
             return degrees > 0 ? degrees + seconds / 3600 : degrees - seconds / 3600;
         } catch (ArrayIndexOutOfBoundsException e) {
-            e.printStackTrace();
+            throw new IllegalCoordinateFormatException(e);
         }
-        return -1;
     }
 
     public static String addAngleSigns(String angle) {

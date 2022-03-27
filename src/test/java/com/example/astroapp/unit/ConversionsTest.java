@@ -1,6 +1,7 @@
 package com.example.astroapp.unit;
 
 
+import com.example.astroapp.exceptions.IllegalCoordinateFormatException;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -38,6 +39,11 @@ public class ConversionsTest {
     @Test
     public void convertIncorrectInputTest() {
         assertThrows(ParseException.class, () -> hourAngleToDegrees("a21 41 55.291"));
+    }
+
+    @Test
+    public void convertIncorrectDecMissingDegreesTest() {
+        assertThrows(IllegalCoordinateFormatException.class, () -> angleToFloatForm("41 55.291"));
     }
 
     @Test

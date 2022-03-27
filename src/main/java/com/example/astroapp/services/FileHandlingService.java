@@ -4,6 +4,8 @@ import com.example.astroapp.dao.*;
 import com.example.astroapp.entities.PhotoProperties;
 import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
+import com.example.astroapp.exceptions.CsvRowDataParseException;
+import com.example.astroapp.exceptions.IllegalCoordinateFormatException;
 import com.example.astroapp.utils.Conversions;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -115,18 +117,25 @@ public class FileHandlingService {
 
     public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser)
             throws ParseException {
-        Long spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
-                row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
-        int i = 1;
-        String aperture;
-        List<Float> apertures = new ArrayList<>();
-        // getting all columns in form of Ap1..Apn
-        while ((aperture = row.get("Ap"+i)) != null) {
-            apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
-            i++;
+        Long spaceObjectId = null;
+        try {
+            if (!(row.get("CatalogId") == null)) {
+                 spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
+                        row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
+            }
+            int i = 1;
+            String aperture;
+            List<Float> apertures = new ArrayList<>();
+            // getting all columns in form of Ap1..Apn
+            while ((aperture = row.get("Ap"+i)) != null) {
+                apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
+                i++;
+            }
+            saveFlux(row.get("RA"), row.get("Dec"),
+                    row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
+        } catch (NumberFormatException | IllegalCoordinateFormatException e) {
+            throw new CsvRowDataParseException(e);
         }
-        saveFlux(row.get("RA"), row.get("Dec"),
-                row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
     }
 
     public Long saveObject(String name, String catalog, String catalogId,
@@ -145,8 +154,12 @@ public class FileHandlingService {
     }
 
     public void saveFlux(String strRec, String strDec, String apAuto,
-                         Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser, List<Float> aperturesList)
+                         Long spaceObjectId, PhotoProperties photoProperties,
+                         User uploadingUser, List<Float> aperturesList)
             throws ParseException {
+        if (apAuto == null) {
+            throw new CsvRowDataParseException("Missing apAuto value");
+        }
         float dec = Conversions.angleToFloatForm(strDec);
         float rec = Conversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
