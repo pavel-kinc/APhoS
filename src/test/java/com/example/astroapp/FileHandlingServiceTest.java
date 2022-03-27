@@ -18,6 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -73,5 +74,30 @@ public class FileHandlingServiceTest {
         fileHandlingService.saveRow(defaultRow, photoProperties, sampleUser);
     }
 
+    @Test()
+    public void correctRowNoAperturesNoExceptionIsThrown() throws ParseException {
+        Map<String, String> rowWithoutApertures = new HashMap<>(defaultRow);
+        for (int i = 1; i < 7; i++) {
+            rowWithoutApertures.remove("Ap"+i);
+        }
+        fileHandlingService.saveRow(rowWithoutApertures, photoProperties, sampleUser);
+    }
 
+    @Test
+    public void correctRowMissingNonEssentialAttribute() throws ParseException {
+        Map<String, String> rowMissing = new HashMap<>(defaultRow);
+        rowMissing.remove("Name");
+        fileHandlingService.saveRow(rowMissing, photoProperties, sampleUser);
+    }
+
+    @Test
+    public void correctRowMissingCatalogAttributes() throws ParseException {
+        Map<String, String> rowMissing = new HashMap<>(defaultRow);
+        rowMissing.remove("Catalog");
+        rowMissing.remove("CatalogId");
+        rowMissing.remove("CatalogRA");
+        rowMissing.remove("CatalogDec");
+        rowMissing.remove("CatalogMag");
+        fileHandlingService.saveRow(rowMissing, photoProperties, sampleUser);
+    }
 }

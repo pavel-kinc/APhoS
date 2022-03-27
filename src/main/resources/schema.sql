@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS flux
     dec                 VARCHAR(20)  NOT NULL,
     coordinates         earth,
     ap_auto             float8,
-    object_id           int4         NOT NULL REFERENCES space_object (id),
+    object_id           int4         REFERENCES space_object (id),
     user_id             VARCHAR(100) NOT NULL REFERENCES users (google_sub),
     photo_properties_id int4         NOT NULL REFERENCES photo_properties (id),
     apertures           float8[],
