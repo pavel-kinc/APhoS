@@ -23,7 +23,7 @@ import static org.junit.Assert.assertEquals;
 @Sql({"/schema.sql", "/sql_test_data/test-data-objects-with-fluxes.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
-public class FluxDaoIntegrationTest {
+public class FluxDaoIntegrationTests {
 
     @Autowired
     FluxDao fluxDao;

@@ -10,7 +10,7 @@ import static com.example.astroapp.utils.Conversions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ConversionsTest {
+public class ConversionsTests {
 
     @Test
     public void convertBasicRAtoDegTest() throws ParseException {

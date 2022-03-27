@@ -73,14 +73,17 @@ public class FileHandlingService {
                     iterator.next();
                 }
             }
-            while (iterator.hasNextValue()) {
-                Map<String, String> row = iterator.nextValue();
-                if (!row.get("CatalogId").equals("")) {
-                    saveRow(row, photoProperties, uploadingUser);
+            try {
+                while (iterator.hasNextValue()) {
+                    Map<String, String> row = iterator.nextValue();
+                    if (!row.get("CatalogId").equals("")) {
+                        saveRow(row, photoProperties, uploadingUser);
+                    }
                 }
+            } catch (ParseException | CsvRowDataParseException e) {
+                // one unparsable row shouldn't be a problem
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 

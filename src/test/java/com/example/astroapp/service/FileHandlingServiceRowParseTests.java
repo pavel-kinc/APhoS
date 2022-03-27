@@ -32,16 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @Sql({"/schema.sql", "/sql_test_data/test-data-user-and-photoprops.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
-public class FileHandlingServiceRowParseTest {
+public class FileHandlingServiceRowParseTests {
 
     @Autowired
     SpaceObjectDao spaceObjectDao;
 
     @Autowired
     FluxDao fluxDao;
-
-    @Autowired
-    PhotoPropertiesDao photoPropertiesDao;
 
     @Autowired
     FileHandlingService fileHandlingService;

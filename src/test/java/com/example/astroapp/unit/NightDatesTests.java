@@ -11,7 +11,7 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class NightDatesTest {
+public class NightDatesTests {
 
     @Test
     void twoDatesFromSameMorningTest() throws ParseException {
