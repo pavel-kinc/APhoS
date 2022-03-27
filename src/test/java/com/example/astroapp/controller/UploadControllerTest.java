@@ -1,23 +1,19 @@
-package com.example.astroapp;
+package com.example.astroapp.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-
 
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -41,18 +37,9 @@ class UploadControllerTest {
     }
 
     @Test
-    public void fileDirectoryNotExisting() {
+    public void directoryWithFilesNotExisting() {
         assertThrows(FileNotFoundException.class, () -> mockMvc.perform(
                         post("/upload/parse")
                                 .param("pathToDir", "hehe")));
-    }
-
-    @Test
-    public void testingCorrectFile() throws Exception {
-        mockMvc.perform(
-                post("/upload/parse")
-                    .param("pathToDir", "/home/rastislav/Documents/skola/bakalarka/astroApp/src/test/resources/correctFiles")
-                        .with(oauth2Login()))
-                .andExpect(content().string("0"));
     }
 }

@@ -1,4 +1,4 @@
-package com.example.astroapp;
+package com.example.astroapp.dao;
 
 import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dto.FluxUserTime;

@@ -1,4 +1,4 @@
-package com.example.astroapp;
+package com.example.astroapp.dao;
 
 import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.entities.SpaceObject;

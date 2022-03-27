@@ -1,4 +1,4 @@
-package com.example.astroapp;
+package com.example.astroapp.unit;
 
 
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.example.astroapp;
+package com.example.astroapp.unit;
 
 import com.example.astroapp.helper.Night;
 import org.junit.jupiter.api.Test;

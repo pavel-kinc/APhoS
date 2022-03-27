@@ -11,7 +11,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.AdditionalMatchers.not;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
