@@ -4,7 +4,9 @@ import com.example.astroapp.dao.*;
 import com.example.astroapp.entities.PhotoProperties;
 import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
-import com.example.astroapp.utils.UnitConversions;
+import com.example.astroapp.exceptions.CsvRowDataParseException;
+import com.example.astroapp.exceptions.IllegalCoordinateFormatException;
+import com.example.astroapp.utils.Conversions;
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -26,7 +28,7 @@ import java.util.Map;
 public class FileHandlingService {
 
     @Autowired
-    PhotoPropsRepo propsRepo;
+    PhotoPropertiesDao photoPropsDao;
 
     @Autowired
     SpaceObjectDao spaceObjectDao;
@@ -44,9 +46,9 @@ public class FileHandlingService {
     public void store(Path pathToFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
         File file = pathToFile.toFile();
-        // second element of pair is length of the header
+        // first element is the csv schema, second element is the length of the header
         Pair<List<String>, Integer> retPair = parseHeader(file, photoProperties);
-        propsRepo.save(photoProperties);
+        photoPropsDao.savePhotoProps(photoProperties);
         parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
     }
 
@@ -71,14 +73,17 @@ public class FileHandlingService {
                     iterator.next();
                 }
             }
-            while (iterator.hasNextValue()) {
-                Map<String, String> row = iterator.nextValue();
-                if (!row.get("CatalogId").equals("")) {
-                    saveRow(row, photoProperties, uploadingUser);
+            try {
+                while (iterator.hasNextValue()) {
+                    Map<String, String> row = iterator.nextValue();
+                    if (!row.get("CatalogId").equals("")) {
+                        saveRow(row, photoProperties, uploadingUser);
+                    }
                 }
+            } catch (ParseException | CsvRowDataParseException e) {
+                // one unparsable row shouldn't be a problem
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 
@@ -87,18 +92,25 @@ public class FileHandlingService {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String row;
             int numOfLines = 0;
+            boolean exposureBeginFound = false;
+            boolean exposureEndFound = false;
             while ((row = br.readLine()) != null) {
                 numOfLines++;
                 String headerKey = row.split(";")[0];
                 if (headerKey.equals("ExposureBegin")) {
                     String jdbcTimestamp = row.split(";")[1].replace("T", " ");
                     photoProperties.setExposureBegin(Timestamp.valueOf(jdbcTimestamp));
+                    exposureBeginFound = true;
                 }
                 if (headerKey.equals("ExposureEnd")) {
                     String jdbcTimestamp = row.split(";")[1].replace("T", " ");
                     photoProperties.setExposureEnd(Timestamp.valueOf(jdbcTimestamp));
+                    exposureEndFound = true;
                 }
                 if (headerKey.equals("Name")) {
+                    if (!(exposureBeginFound && exposureEndFound)) {
+                        throw new CsvContentException("Exposure time info not found in the header.");
+                    }
                     return Pair.of(List.of(row.split(";")), numOfLines);
                 }
             }
@@ -108,42 +120,57 @@ public class FileHandlingService {
 
     public void saveRow(Map<String, String> row, PhotoProperties photoProperties, User uploadingUser)
             throws ParseException {
-        Long spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
-                row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
-        int i = 1;
-        String aperture;
-        List<Float> apertures = new ArrayList<>();
-        // getting all columns in form of Ap1..Apn
-        while ((aperture = row.get("Ap"+i)) != null) {
-            apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
-            i++;
+        Long spaceObjectId = null;
+        try {
+            if (!(row.get("CatalogId") == null)) {
+                 spaceObjectId = saveObject(row.get("Name"), row.get("Catalog"),
+                        row.get("CatalogId"), row.get("CatalogRA"), row.get("CatalogDec"), row.get("CatalogMag"));
+            }
+            int i = 1;
+            String aperture;
+            List<Float> apertures = new ArrayList<>();
+            // getting all columns in form of Ap1..Apn
+            while ((aperture = row.get("Ap"+i)) != null) {
+                apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
+                i++;
+            }
+            saveFlux(row.get("RA"), row.get("Dec"),
+                    row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
+        } catch (NumberFormatException | IllegalCoordinateFormatException e) {
+            throw new CsvRowDataParseException(e);
         }
-        saveFlux(row.get("RA"), row.get("Dec"),
-                row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
     }
 
     public Long saveObject(String name, String catalog, String catalogId,
                                   String catalogRec, String catalogDec, String catalogMag)
             throws ParseException {
-        float dec = UnitConversions.angleToFloatForm(catalogDec);
-        float rec = UnitConversions.hourAngleToDegrees(catalogRec);
+        float dec = Conversions.angleToFloatForm(catalogDec);
+        float rec = Conversions.hourAngleToDegrees(catalogRec);
         float mag = Float.parseFloat(catalogMag);
+        String strRec = Conversions.addHourAngleSigns(catalogRec);
+        String strDec = Conversions.addAngleSigns(catalogDec);
         try {
-            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+            return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         } catch (Exception e) {
-            return spaceObjectDao.saveObject(catalogId, name, catalog, dec, rec, mag);
+            return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         }
     }
 
     public void saveFlux(String strRec, String strDec, String apAuto,
-                         Long spaceObjectId, PhotoProperties photoProperties, User uploadingUser, List<Float> aperturesList)
+                         Long spaceObjectId, PhotoProperties photoProperties,
+                         User uploadingUser, List<Float> aperturesList)
             throws ParseException {
-        float dec = UnitConversions.angleToFloatForm(strDec);
-        float rec = UnitConversions.hourAngleToDegrees(strRec);
+        if (apAuto == null) {
+            throw new CsvRowDataParseException("Missing apAuto value");
+        }
+        float dec = Conversions.angleToFloatForm(strDec);
+        float rec = Conversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        fluxDao.saveFlux(rec, dec, apertureAuto, spaceObjectId, uploadingUser.getGoogleSub(),
-                photoProperties.getId(), apertures);
+        strRec = Conversions.addHourAngleSigns(strRec);
+        strDec = Conversions.addAngleSigns(strDec);
+        fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, spaceObjectId,
+                uploadingUser.getGoogleSub(), photoProperties.getId(), apertures);
     }
 }
 

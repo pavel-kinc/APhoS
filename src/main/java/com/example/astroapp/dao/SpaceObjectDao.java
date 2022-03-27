@@ -1,8 +1,10 @@
 package com.example.astroapp.dao;
 
 import com.example.astroapp.dto.ObjectFlux;
+import com.example.astroapp.entities.SpaceObject;
 import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
 import com.example.astroapp.mappers.ObjectPreparedStatementSetter;
+import com.example.astroapp.mappers.SpaceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -26,13 +28,13 @@ public class SpaceObjectDao extends JdbcDaoSupport {
 
     public List<ObjectFlux> queryObjects(String RA, String dec, String radius, String name, String minMag,
                                          String maxMag, String catalog, String objectId) {
-        StringBuilder query = new StringBuilder("SELECT object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
+        StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
-                " FROM object LEFT OUTER JOIN flux ON object_id=object.id");
+                " FROM space_object LEFT OUTER JOIN flux ON object_id=space_object.id");
         boolean appendAnd = false;
         if (!RA.isEmpty()) {
             query.append(" WHERE");
-            query.append(" earth_box(ll_to_earth(?, ?), ?) @> ll_to_earth(catalog_dec, catalog_rec)");
+            query.append(" earth_box(ll_to_earth(?, ?), ?) @> space_object.coordinates");
             appendAnd = true;
         }
         if (!name.isEmpty()) {
@@ -72,32 +74,32 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             }
             query.append(" catalog_id LIKE ?");
         }
-        query.append(" GROUP BY object.id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag LIMIT 100");
+        query.append(" GROUP BY space_object.id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag LIMIT 100");
         String finishedQuery = query.toString();
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().query(finishedQuery, new ObjectPreparedStatementSetter(
                 RA, dec, radius, name, minMag, maxMag, catalog, objectId), new ObjectFluxCountRowMapper());
     }
 
-    public long saveObject(String catalogId, String name, String catalog,
+    public long saveObject(String catalogId, String name, String catalog, String strDec, String strRec,
                            Float catalogDec, Float catalogRec, Float catalogMag) {
         assert getJdbcTemplate() != null;
-        List<Long> existingIds = getJdbcTemplate().queryForList("SELECT id FROM object " +
+        List<Long> existingIds = getJdbcTemplate().queryForList("SELECT id FROM space_object " +
                 "WHERE catalog_id=?", Long.class, catalogId);
         if (existingIds.size() != 0) {
             return existingIds.get(0);
         }
-        String insertQuery = "INSERT INTO object " +
+        String insertQuery = "INSERT INTO space_object " +
                 "(id, name, catalog, catalog_id, catalog_rec, catalog_dec, coordinates, catalog_mag)" +
-                "VALUES (nextval('object_id_seq'), ?, ?, ?, ?, ?, ll_to_earth(?, ?), ?)";
+                "VALUES (nextval('space_object_id_seq'), ?, ?, ?, ?, ?, ll_to_earth(?, ?), ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         getJdbcTemplate().update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
             ps.setString(1, name);
             ps.setString(2, catalog);
             ps.setString(3, catalogId);
-            ps.setFloat(4, catalogRec);
-            ps.setFloat(5, catalogDec);
+            ps.setString(4, strRec);
+            ps.setString(5, strDec);
             ps.setFloat(6, catalogDec);
             ps.setFloat(7, catalogRec);
             ps.setFloat(8, catalogMag);
@@ -106,9 +108,15 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public List<Long> getObjectsByCatId(String catalogId) {
+    public List<String> getAvailableCatalogues() {
         assert getJdbcTemplate() != null;
-        return getJdbcTemplate().queryForList("SELECT id FROM object " +
-                "WHERE catalog_id=?", Long.class, catalogId);
+        return getJdbcTemplate().queryForList("SELECT DISTINCT catalog FROM space_object", String.class);
+    }
+
+    public SpaceObject getSpaceObjectById(Long id) {
+        assert getJdbcTemplate() != null;
+        String query = "SELECT catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
+                "FROM space_object WHERE id=?";
+        return getJdbcTemplate().queryForObject(query, new SpaceObjectMapper(), id);
     }
 }

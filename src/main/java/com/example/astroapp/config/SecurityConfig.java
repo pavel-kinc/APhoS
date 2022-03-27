@@ -27,7 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf(c -> c
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeRequests()
-                    .antMatchers("/home/**", "/search" ,"/", "/about", "/object/**").permitAll()
+                    .antMatchers("/search" ,"/", "/about", "/reference/**", "/reference/js/**").permitAll()
+                    .antMatchers("/object/**", "/object/download", "/object/aperture").permitAll()
                     .antMatchers("/js/**", "/css/**", "/js/**","/images/**", "/webjars/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
@@ -39,7 +40,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .userService(oAuth2UserService)
                     .and()
                 .successHandler((request, response, authentication) -> {
-
                     OAuth2User oauthUser = (OAuth2User) authentication.getPrincipal();
                     boolean newUser = userService.processOAuthPostLogin(
                             oauthUser.getAttribute("sub"));

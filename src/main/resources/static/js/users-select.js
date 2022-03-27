@@ -5,6 +5,7 @@ unwantedSelect.addEventListener("dragover", allowDrop);
 wantedSelect.addEventListener("dragover", allowDrop);
 wantedSelect.addEventListener("drop", drop);
 let users = document.getElementById("userDropDownMenu").getElementsByTagName("option");
+
 for (let user of users) {
     user.addEventListener("dragstart", drag);
 }
@@ -28,16 +29,21 @@ function drop(event) {
 
 function filterUsers() {
     let unwantedUsers = Array.from(unwantedSelect.options).map(option => option.id);
-    const a = 1;
     let fluxTable = document.getElementById("fluxTable");
     let rows = fluxTable.getElementsByTagName("tr");
-    let unwantedRows = Array.from(rows)
+    let theadItems = fluxTable.tHead.rows[0].children;
+    let usernameIndex = 9;
+    for (let i = 0; i < theadItems.length; i++) {
+        if (theadItems[i].innerText.trim().includes("Uploaded by")) {
+            usernameIndex = i;
+        }
+    }
+    Array.from(rows)
         .map(function (row) {
-            if (unwantedUsers.includes(row.children.item(6).innerText)) {
+            if (unwantedUsers.includes(row.children.item(usernameIndex).innerText.trim())) {
                 row.style.display = "none";
             } else {
                 row.style.display = "";
             }
         });
-
 }

@@ -6,8 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.ParseException;
 
-import static com.example.astroapp.utils.UnitConversions.angleToFloatForm;
-import static com.example.astroapp.utils.UnitConversions.hourAngleToDegrees;
+import static com.example.astroapp.utils.Conversions.angleToFloatForm;
+import static com.example.astroapp.utils.Conversions.hourAngleToDegrees;
 
 public class ObjectPreparedStatementSetter implements PreparedStatementSetter {
 

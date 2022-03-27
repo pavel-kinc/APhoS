@@ -6,6 +6,10 @@ public class CsvContentException extends RuntimeException {
         super();
     }
 
+    public CsvContentException(Throwable cause) {
+        super(cause);
+    }
+
     public CsvContentException(String message) {
         super(message);
     }

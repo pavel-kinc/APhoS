@@ -1,19 +1,17 @@
 package com.example.astroapp.entities;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "photo_properties", schema = "public")
 public class PhotoProperties {
-    @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "photo_prop_generator")
-    @SequenceGenerator(name = "photo_prop_generator", sequenceName = "photo_properties_id_seq", allocationSize = 1)
     private long id;
     private Timestamp exposureBegin;
     private Timestamp exposureEnd;
 
     public PhotoProperties() {
+    }
+
+    public PhotoProperties(long id) {
+        this.id = id;
     }
 
     public long getId() {

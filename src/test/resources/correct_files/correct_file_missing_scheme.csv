@@ -1,0 +1,25 @@
+ExposureBegin;2021-11-06T16:27:45.652
+Exposure;2021-11-06T16:28:30.653
+ExposureEnd;2021-11-06T16:29:15.653
+ExposureTime;90.00000000
+JDBegin;2459525.18594505
+JDEnd;2459525.18698672
+GJD;2459525.18646589
+HJD;2459525.18849643
+Filter;V
+CenterRA;21h 46m 13.358s
+CenterDec;+68° 33' 34.59"
+CenterRAHour;21.77037736
+CenterRADeg;326.55566035
+CenterDecDeg;68.55960964
+Width;768
+Depth;512
+PixelScaleX;31.85907419
+PixelScaleY;31.85907419
+Object;
+Instrument;
+Telescope;
+Observer;
+Software;SIPS Version 3.32 64bit (x64)
+Name;X;Y;RA;Dec;Catalog;CatalogId;CatalogRA;CatalogDec;CatalogMag;ApAuto;Ap1;Ap2;Ap3;Ap4;Ap5;Ap6;Ap7;Ap8;Ap9;Ap10
+;694.70;211.43;21 41 55.318;+71 18 38.60;UCAC4;807-030174;21 41 55.291;+71 18 41.12;6.26;saturated;saturated;saturated;saturated;saturated;saturated;saturated;saturated;saturated;saturated;saturated

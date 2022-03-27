@@ -1,29 +1,17 @@
 package com.example.astroapp.entities;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Table(name = "object", schema = "public")
 public class SpaceObject {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "object_generator")
-    @SequenceGenerator(name = "object_generator", sequenceName = "object_id_seq", allocationSize = 1)
     private Long id;
-    @Column(name = "catalog_id")
-    private String catalogID;
+    private String catalogId;
     private String name;
     private String catalog;
-    @Column(name = "catalog_dec")
-    private Float catalogDec;
-    @Column(name = "catalog_rec")
-    private Float catalogRec;
-    @Column(name = "catalog_mag")
+    private String catalogDec;
+    private String catalogRec;
     private Float catalogMag;
-    @OneToMany(mappedBy = "object")
-    private List<Flux> fluxes;
 
-    public SpaceObject(String catalogID, String name, String catalog, Float catalogDec, Float catalogRec, Float catalogMag) {
-        this.catalogID = catalogID;
+    public SpaceObject(String catalogId, String name, String catalog,
+                       String catalogDec, String catalogRec, Float catalogMag) {
+        this.catalogId = catalogId;
         this.name = name;
         this.catalog = catalog;
         this.catalogDec = catalogDec;
@@ -50,12 +38,12 @@ public class SpaceObject {
         this.name = name;
     }
 
-    public String getCatalogID() {
-        return catalogID;
+    public String getCatalogId() {
+        return catalogId;
     }
 
-    public void setCatalogID(String catalogID) {
-        this.catalogID = catalogID;
+    public void setCatalogId(String catalogId) {
+        this.catalogId = catalogId;
     }
 
     public String getCatalog() {
@@ -66,19 +54,19 @@ public class SpaceObject {
         this.catalog = catalog;
     }
 
-    public Float getCatalogRec() {
+    public String getCatalogRec() {
         return catalogRec;
     }
 
-    public void setCatalogRec(Float catalogRec) {
+    public void setCatalogRec(String catalogRec) {
         this.catalogRec = catalogRec;
     }
 
-    public Float getCatalogDec() {
+    public String getCatalogDec() {
         return catalogDec;
     }
 
-    public void setCatalogDec(Float catalogDec) {
+    public void setCatalogDec(String catalogDec) {
         this.catalogDec = catalogDec;
     }
 
