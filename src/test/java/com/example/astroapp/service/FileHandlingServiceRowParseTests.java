@@ -46,11 +46,11 @@ public class FileHandlingServiceRowParseTests {
     @MockBean
     UserService userService;
 
-    private User sampleUser = new User("1");
+    private final User sampleUser = new User("1");
 
-    private PhotoProperties photoProperties = new PhotoProperties(0);
+    private final PhotoProperties photoProperties = new PhotoProperties(0);
 
-    private Map<String, String> defaultRow = Stream.of(new String[][]{
+    private final Map<String, String> defaultRow = Stream.of(new String[][]{
             {"Name", "GK Cep"},
             {"RA", "21 41 55.318"},
             {"Dec", "+71 18 38.60"},

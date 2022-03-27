@@ -1,4 +1,4 @@
-package com.example.astroapp;
+package com.example.astroapp.security;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

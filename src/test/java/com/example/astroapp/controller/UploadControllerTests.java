@@ -80,7 +80,7 @@ class UploadControllerTests {
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
                 post("/upload/parse")
-                    .param("pathToDir", "src/test/resources/correctFiles"))
+                    .param("pathToDir", "src/test/resources/correct_files"))
                 .andExpect(content().string("0"));
     }
 
@@ -92,7 +92,7 @@ class UploadControllerTests {
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
                         post("/upload/parse")
-                                .param("pathToDir", "src/test/resources/incorrectFiles"))
+                                .param("pathToDir", "src/test/resources/incorrect_files"))
                 .andExpect(content().string("1"));
     }
 }
