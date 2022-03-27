@@ -1,26 +1,13 @@
 package com.example.astroapp.entities;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Table(name = "object", schema = "public")
 public class SpaceObject {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "object_generator")
-    @SequenceGenerator(name = "object_generator", sequenceName = "object_id_seq", allocationSize = 1)
     private Long id;
-    @Column(name = "catalog_id")
     private String catalogId;
     private String name;
     private String catalog;
-    @Column(name = "catalog_dec")
     private String catalogDec;
-    @Column(name = "catalog_rec")
     private String catalogRec;
-    @Column(name = "catalog_mag")
     private Float catalogMag;
-    @OneToMany(mappedBy = "object")
-    private List<Flux> fluxes;
 
     public SpaceObject(String catalogId, String name, String catalog,
                        String catalogDec, String catalogRec, Float catalogMag) {
