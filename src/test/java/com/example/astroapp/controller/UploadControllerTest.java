@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@Sql({"/schema.sql", "/sql_test_data/test-data-user-photo-only.sql"})
+@Sql({"/schema.sql", "/sql_test_data/test-data-user-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 class UploadControllerTest {
@@ -87,8 +87,6 @@ class UploadControllerTest {
     @Test
     public void incorrectFileParsingTestShouldReturnOneIncorrectCount()
             throws Exception {
-        String userDirectory = System.getProperty("user.dir");
-        System.out.println(userDirectory);
         User user = new User("1");
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);

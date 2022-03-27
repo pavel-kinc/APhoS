@@ -58,4 +58,9 @@ public class FluxDao extends JdbcDaoSupport {
         return getJdbcTemplate().query(query, new FluxRowMapper(), originalObjectId, referenceObjectId);
     }
 
+    public long fluxExists(Long id) {
+        assert getJdbcTemplate() != null;
+        String query = "SELECT id FROM flux WHERE id = ?";
+        return getJdbcTemplate().queryForObject(query, Long.class, id);
+    }
 }

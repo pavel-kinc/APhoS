@@ -10,6 +10,10 @@ public class PhotoProperties {
     public PhotoProperties() {
     }
 
+    public PhotoProperties(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
