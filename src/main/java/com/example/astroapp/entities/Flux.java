@@ -22,9 +22,6 @@ public class Flux {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-//    @ManyToOne
-//    @JoinColumn(name = "object_id")
-//    private SpaceObject object;
 
     public Flux() {
     }

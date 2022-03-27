@@ -1,6 +1,5 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dto.FluxUserTime;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
@@ -18,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/test-data-objects-with-fluxes.sql"})
+@Sql({"/schema.sql", "/sql_test_data/test-data-objects-with-fluxes.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class FluxDaoIntegrationTest {

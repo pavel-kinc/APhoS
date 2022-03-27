@@ -26,7 +26,7 @@ import java.util.Map;
 public class FileHandlingService {
 
     @Autowired
-    PhotoPropsRepo propsRepo;
+    PhotoPropertiesDao photoPropsDao;
 
     @Autowired
     SpaceObjectDao spaceObjectDao;
@@ -46,7 +46,7 @@ public class FileHandlingService {
         File file = pathToFile.toFile();
         // second element of pair is length of the header
         Pair<List<String>, Integer> retPair = parseHeader(file, photoProperties);
-        propsRepo.save(photoProperties);
+        photoPropsDao.savePhotoProps(photoProperties);
         parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
     }
 

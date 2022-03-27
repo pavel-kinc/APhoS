@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "photo_properties", schema = "public")
 public class PhotoProperties {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator = "photo_prop_generator")

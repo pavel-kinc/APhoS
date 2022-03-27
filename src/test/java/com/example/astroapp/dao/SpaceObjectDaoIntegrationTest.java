@@ -1,6 +1,5 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.entities.SpaceObject;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
@@ -22,14 +21,13 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/test-data-object-only.sql"})
+@Sql({"/schema.sql", "/sql_test_data/test-data-object-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class SpaceObjectDaoIntegrationTest {
 
     @Autowired
     SpaceObjectDao spaceObjectDao;
-
 
     @Test
     public void returnCorrectObjectById() {
