@@ -53,7 +53,7 @@ public class AuthenticationTests {
     @Test
     public void postRequestForbiddenWithoutCsrf() throws Exception {
         mockMvc.perform(
-                        post("/upload/parse").param("pathToDir", "aa")
+                        post("/upload/parse").param("path-to-dir", "aa")
                                 .with(oauth2Login()))
                 .andExpect(status().isForbidden());
     }
@@ -62,7 +62,8 @@ public class AuthenticationTests {
     public void postRequestNotForbiddenWithCsrf() throws Exception {
         // access is not forbidden but excpetion is thrown because of sample dir name
         assertThrows(FileNotFoundException.class, () -> mockMvc.perform(
-                post("/upload/parse").param("pathToDir", "aa")
+                post("/upload/parse").param("path-to-dir", "aa")
+                        .param("file-count", "2")
                         .with(oauth2Login())
                         .with(csrf())));
     }

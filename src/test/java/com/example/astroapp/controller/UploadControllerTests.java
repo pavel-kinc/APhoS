@@ -61,7 +61,7 @@ class UploadControllerTests {
         mockMvc.perform(
                         multipart("/upload/save")
                                 .file(emptyFile)
-                                .param("dirName", "create_new"))
+                                .param("dir-name", "create_new"))
                 .andExpect(status().isOk());
     }
 
@@ -69,7 +69,8 @@ class UploadControllerTests {
     public void directoryWithFilesNotExisting() {
         assertThrows(FileNotFoundException.class, () -> mockMvc.perform(
                         post("/upload/parse")
-                                .param("pathToDir", "hehe")));
+                                .param("path-to-dir", "hehe")
+                                .param("file-count", "1")));
     }
 
     @Test
@@ -80,19 +81,21 @@ class UploadControllerTests {
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
                 post("/upload/parse")
-                    .param("pathToDir", "src/test/resources/correct_files"))
+                    .param("path-to-dir", "src/test/resources/correct_files")
+                        .param("file-count", "1"))
                 .andExpect(content().string("0"));
     }
 
     @Test
-    public void incorrectFileParsingTestShouldReturnOneIncorrectCount()
+    public void incorrectFileParsingTestShouldReturnTwoIncorrectCount()
             throws Exception {
         User user = new User("1");
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
                         post("/upload/parse")
-                                .param("pathToDir", "src/test/resources/incorrect_files"))
-                .andExpect(content().string("1"));
+                                .param("path-to-dir", "src/test/resources/incorrect_files")
+                                .param("file-count", "1"))
+                .andExpect(content().string("2"));
     }
 }

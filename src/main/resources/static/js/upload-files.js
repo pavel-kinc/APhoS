@@ -17,7 +17,7 @@ function uploadFiles() {
     const myHeaders = new Headers();
     let formData = new FormData();
     formData.append("file", files[0]);
-    formData.append("dirName", "create_new");
+    formData.append("dir-name", "create_new");
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.text())
@@ -29,12 +29,12 @@ function uploadFiles() {
                 let formData = new FormData();
                 let file = files[i];
                 let finalFetchBody = new FormData();
-                finalFetchBody.append("pathToDir", pathToDir)
+                finalFetchBody.append("path-to-dir", pathToDir)
                 if (uploadedFilesCount === filesLength) {
                     postFiles(myHeaders, finalFetchBody, filesLength);
                 }
                 formData.append("file", file);
-                formData.append("dirName", pathToDir);
+                formData.append("dir-name", pathToDir);
                 fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
                     .then(response => response.ok)
                     .then(success => {
@@ -51,6 +51,7 @@ function uploadFiles() {
 }
 
 function postFiles(headers, body, filesLength) {
+    body.append("file-count", filesLength);
     fetch("/upload/parse", {
         method: "POST",
         headers: headers, body: body

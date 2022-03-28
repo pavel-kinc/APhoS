@@ -1,5 +1,7 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.dao.UploadErrorMessagesDao;
+import com.example.astroapp.dao.UploadLogsDao;
 import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.services.FileHandlingService;
@@ -33,6 +35,12 @@ public class UploadController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UploadLogsDao uploadLogsDao;
+
+    @Autowired
+    UploadErrorMessagesDao uploadErrorMessagesDao;
+
     @GetMapping("")
     public String showAboutPage() {
         return "upload";
@@ -41,7 +49,7 @@ public class UploadController {
     @PostMapping("/save")
     @ResponseBody
     public String storeUploadedFiles(@RequestParam(name = "file") MultipartFile file,
-                                     @RequestParam String dirName)
+                                     @RequestParam(name = "dir-name") String dirName)
             throws IOException {
         String path;
         if (dirName.equals("create_new")) {
@@ -58,7 +66,9 @@ public class UploadController {
 
     @PostMapping("/parse")
     @ResponseBody
-    public String parseAndSave(@RequestParam String pathToDir) throws FileNotFoundException {
+    public String parseAndSave(@RequestParam(name = "path-to-dir") String pathToDir,
+                               @RequestParam(name = "file-count") int numOfFiles)
+            throws FileNotFoundException {
         User uploadingUser = userService.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
@@ -75,15 +85,27 @@ public class UploadController {
                     try {
                         fileHandlingService.store(file);
                     } catch (IOException | CsvContentException e) {
+                        unsuccessfulCount++;
                         fileErrorMessagePairsList.add(Pair.of(
                                 file.getFileName().toString(), e.getMessage()));
                     }
                 }
             }
         } catch (IOException e) {
-            // error accesing files
+            logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles, new ArrayList<>());
             return "IOError";
         }
+        logUploadData(uploadingUser, currentTime, numOfFiles,
+                unsuccessfulCount, fileErrorMessagePairsList);
         return Integer.toString(unsuccessfulCount);
+    }
+
+    private void logUploadData(User uploadingUser, Timestamp uploadTime, int numOfFiles,
+                               int numOfErrors, List<Pair<String, String>> fileErrorMessagePairsList) {
+        long logId = uploadLogsDao.saveUploadLog(uploadingUser, uploadTime, numOfFiles, numOfErrors);
+        for (Pair<String, String> errorMessagePair : fileErrorMessagePairsList) {
+            uploadErrorMessagesDao.saveUploadErrorMessage(logId, errorMessagePair);
+        }
+
     }
 }
