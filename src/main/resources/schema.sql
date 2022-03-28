@@ -41,22 +41,41 @@ CREATE TABLE IF NOT EXISTS flux
     dec                 VARCHAR(20)  NOT NULL,
     coordinates         earth,
     ap_auto             float8,
-    object_id           int4         REFERENCES space_object (id),
+    object_id           int4 REFERENCES space_object (id),
     user_id             VARCHAR(100) NOT NULL REFERENCES users (google_sub),
     photo_properties_id int4         NOT NULL REFERENCES photo_properties (id),
     apertures           float8[],
     PRIMARY KEY (id)
 );
 
+CREATE TABLE IF NOT EXISTS uploading_logs
+(
+    id             SERIAL       NOT NULL,
+    user_id        VARCHAR(100) NOT NULL REFERENCES users (google_sub),
+    time_of_upload timestamp,
+    success_cnt    int4,
+    error_cnt      int4,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE IF NOT EXISTS uploading_error_messages
+(
+    id               SERIAL NOT NULL,
+    uploading_log_id int4 REFERENCES uploading_logs (id),
+    filename         VARCHAR(50),
+    error_message    VARCHAR(100),
+    PRIMARY KEY (id)
+);
 
 CREATE INDEX IF NOT EXISTS object_coordinates_index
-    ON space_object(coordinates);
+    ON space_object (coordinates);
 
 CREATE INDEX IF NOT EXISTS object_catalog_index
-    ON space_object(catalog);
+    ON space_object (catalog);
 
 CREATE INDEX IF NOT EXISTS object_catalog_mag_index
-    ON space_object(catalog_mag);
+    ON space_object (catalog_mag);
 
 CREATE INDEX IF NOT EXISTS flux_object_id_index
     ON flux (object_id);

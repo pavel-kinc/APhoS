@@ -1,12 +1,14 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.services.FileHandlingService;
+import com.example.astroapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,6 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +29,9 @@ public class UploadController {
 
     @Autowired
     FileHandlingService fileHandlingService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("")
     public String showAboutPage() {
@@ -51,24 +59,30 @@ public class UploadController {
     @PostMapping("/parse")
     @ResponseBody
     public String parseAndSave(@RequestParam String pathToDir) throws FileNotFoundException {
+        User uploadingUser = userService.getCurrentUser();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
         if (!Files.isDirectory(Paths.get(pathToDir))) {
             throw new FileNotFoundException("Given path to the directory is not correct.");
         }
         int unsuccessfulCount = 0;
         try {
             try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
-                filePaths
+                List<Path> regularFiles = filePaths
                         .filter(Files::isRegularFile)
-                        .forEach(path -> {
-                            try {
-                                fileHandlingService.store(path);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
+                        .collect(Collectors.toList());
+                for (Path file : regularFiles) {
+                    try {
+                        fileHandlingService.store(file);
+                    } catch (IOException | CsvContentException e) {
+                        fileErrorMessagePairsList.add(Pair.of(
+                                file.getFileName().toString(), e.getMessage()));
+                    }
+                }
             }
-        } catch (IOException | CsvContentException e) {
-            unsuccessfulCount++;
+        } catch (IOException e) {
+            // error accesing files
+            return "IOError";
         }
         return Integer.toString(unsuccessfulCount);
     }

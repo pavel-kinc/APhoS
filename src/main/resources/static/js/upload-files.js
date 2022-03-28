@@ -62,7 +62,12 @@ function postFiles(headers, body, filesLength) {
 }
 
 function finishedSaving(fileCount, errorCount) {
-    let successCount = (fileCount.valueOf() - errorCount.valueOf()).toString()
+    let successCount;
+    if (errorCount === "IOError") {
+        successCount = 0;
+    } else {
+        successCount = (fileCount.valueOf() - errorCount.valueOf()).toString()
+    }
     document.getElementById("processingSpinner").style.visibility = "hidden";
     document.getElementById("processingCheck").style.visibility = "visible";
     let messageFinished = document.getElementById("processingMessage");
