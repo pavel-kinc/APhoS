@@ -27,18 +27,18 @@ function generateCSV() {
         }
     }
     const objectId = searchParams.get("id");
-    const refObjectId = searchParams.get("refId");
+    const refObjectId = searchParams.get("ref-id");
     let unwantedUsers = Array.from(unwantedSelect.options)
         .map(option => option.id.toString());
     const myHeaders = new Headers();
     let formData = new FormData();
-    formData.append("objectId", objectId);
-    formData.append("refObjectId", refObjectId);
-    formData.append("unwantedUsers", unwantedUsers);
+    formData.append("object-id", objectId);
+    formData.append("ref-object-id", refObjectId);
+    formData.append("unwanted-users", unwantedUsers);
     formData.append("apertures", aperturesParam);
-    formData.append("refApertures", aperturesRefParam);
-    formData.append("addData", addData);
-    formData.append("textFileFormat", textFileFormat);
+    formData.append("ref-apertures", aperturesRefParam);
+    formData.append("add-data", addData);
+    formData.append("text-file-format", textFileFormat);
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/object/download', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.blob())

@@ -6,7 +6,7 @@ if (apertures) {
     }
 }
 
-let refApertures = new URLSearchParams(window.location.search).get("refApertures");
+let refApertures = new URLSearchParams(window.location.search).get("ref-apertures");
 if (refApertures) {
     let apsRefArray = refApertures.split(",");
     for (let i = 0; i < apsRefArray.length; i++) {
@@ -17,7 +17,7 @@ if (refApertures) {
 function selectAperture() {
     let searchParams = new URLSearchParams(window.location.search);
     searchParams.delete("apertures");
-    searchParams.delete("refApertures");
+    searchParams.delete("ref-apertures");
     let selects = document.getElementById("apertureSelects")
         .getElementsByTagName("select");
     let selectsArray = Array.from(selects).filter(select => !select.id.includes("ref"));
@@ -37,5 +37,5 @@ function selectAperture() {
         }
     }
     window.location.replace("object?" + searchParams.toString()
-        + "&apertures=" + aperturesParam + "&refApertures=" + aperturesRefParam);
+        + "&apertures=" + aperturesParam + "&ref-apertures=" + aperturesRefParam);
 }

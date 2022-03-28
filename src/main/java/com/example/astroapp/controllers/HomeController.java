@@ -32,14 +32,14 @@ public class HomeController {
     }
 
     @GetMapping("search")
-    public String displayResults(@RequestParam String rightAscension,
+    public String displayResults(@RequestParam(name="right-ascension") String rightAscension,
                                  @RequestParam String dec,
                                  @RequestParam String radius,
                                  @RequestParam String name,
-                                 @RequestParam(name = "min_mag") String minMag,
-                                 @RequestParam(name = "max_mag") String maxMag,
+                                 @RequestParam(name = "min-mag") String minMag,
+                                 @RequestParam(name = "max-mag") String maxMag,
                                  @RequestParam String catalog,
-                                 @RequestParam(name = "object_id") String objectId, Model model) {
+                                 @RequestParam(name = "object-id") String objectId, Model model) {
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
@@ -58,7 +58,7 @@ public class HomeController {
 
     @GetMapping("reference")
     public String displayReferenceObjectFinder(@RequestParam(name = "id") Long originalId,
-                                               @RequestParam(name = "catId") String originalCatId,
+                                               @RequestParam(name = "cat-id") String originalCatId,
                                                Model model) {
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
         model.addAttribute("availableCatalogues", availableCatalogues);
@@ -70,15 +70,15 @@ public class HomeController {
     @GetMapping("reference/search")
     public String displayReferenceObjectResults(
             @RequestParam(name = "id") Long originalId,
-            @RequestParam(name = "catId") String originalCatId,
-            @RequestParam String rightAscension,
+            @RequestParam(name = "cat-id") String originalCatId,
+            @RequestParam(name = "right-ascension") String rightAscension,
             @RequestParam String dec,
             @RequestParam String radius,
             @RequestParam String name,
-            @RequestParam(name = "min_mag") String minMag,
-            @RequestParam(name = "max_mag") String maxMag,
+            @RequestParam(name = "min-mag") String minMag,
+            @RequestParam(name = "max-mag") String maxMag,
             @RequestParam String catalog,
-            @RequestParam(name = "object_id") String objectId, Model model) {
+            @RequestParam(name = "object-id") String objectId, Model model) {
         List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();

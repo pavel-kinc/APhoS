@@ -40,8 +40,8 @@ public class HomeControllerTests {
 
     @Test
     public void homeControllerSearchingObjectReturnsHtml() throws Exception {
-        mockMvc.perform(get("/search?rightAscension=&dec=" +
-                        "&radius=&name=&min_mag=0&max_mag=15&catalog=UCAC4&object_id="))
+        mockMvc.perform(get("/search?right-ascension=&dec=" +
+                        "&radius=&name=&min-mag=0&max-mag=15&catalog=UCAC4&object-id="))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Choose an object:")));
     }

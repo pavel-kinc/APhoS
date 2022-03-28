@@ -42,12 +42,12 @@ public class ObjectController {
     FluxDao fluxDao;
 
     @GetMapping("/object")
-    public String displayObjectFluxes(@RequestParam(name = "refId") Long referenceObjectId,
-                                      @RequestParam(name = "refCatId") String refObjectCatalogId,
+    public String displayObjectFluxes(@RequestParam(name = "ref-id") Long referenceObjectId,
+                                      @RequestParam(name = "ref-cat-id") String refObjectCatalogId,
                                       @RequestParam(name = "id") Long id,
-                                      @RequestParam(name = "catalogId") String catalogId,
+                                      @RequestParam(name = "catalog-id") String catalogId,
                                       @RequestParam(name = "apertures", required = false) String[] apertures,
-                                      @RequestParam(name = "refApertures", required = false) String[] refApertures,
+                                      @RequestParam(name = "ref-apertures", required = false) String[] refApertures,
                                       Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
@@ -58,8 +58,8 @@ public class ObjectController {
         List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
         Consumer<FluxUserTime> consumer = flux -> {
             flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
-            flux.setErrorBottom(flux.getMagnitude()*0.9F);
-            flux.setErrorTop(flux.getMagnitude()*1.1F);
+            flux.setErrorBottom(flux.getMagnitude() * 0.9F);
+            flux.setErrorTop(flux.getMagnitude() * 1.1F);
         };
         fluxes.forEach(consumer);
         // filtering saturated values
@@ -76,13 +76,13 @@ public class ObjectController {
     }
 
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public void generateCSV(@RequestParam Long objectId,
-                            @RequestParam(name = "refObjectId") Long referenceObjectId,
-                            @RequestParam String[] unwantedUsers,
+    public void generateCSV(@RequestParam(name = "object-id") Long objectId,
+                            @RequestParam(name = "ref-object-id") Long referenceObjectId,
+                            @RequestParam(name = "unwanted-users") String[] unwantedUsers,
                             @RequestParam(name = "apertures", required = false) String[] apertures,
-                            @RequestParam(name = "refApertures", required = false) String[] refApertures,
-                            @RequestParam Boolean addData,
-                            @RequestParam Boolean textFileFormat,
+                            @RequestParam(name = "ref-apertures", required = false) String[] refApertures,
+                            @RequestParam(name = "add-data") Boolean addData,
+                            @RequestParam(name = "text-file-format") Boolean textFileFormat,
                             HttpServletResponse response) throws IOException {
         List<String> unwantedUsersList = Arrays.asList(unwantedUsers);
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(objectId, referenceObjectId);

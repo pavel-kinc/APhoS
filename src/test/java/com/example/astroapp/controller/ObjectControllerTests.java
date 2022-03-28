@@ -33,8 +33,8 @@ public class ObjectControllerTests {
 
     @Test
     public void objectControllerReturnsCorrectHtml() throws Exception {
-        mockMvc.perform(get("/object?refId=10985&refCatId=" +
-                        "784-035568&id=8962&catalogId=781-038873"))
+        mockMvc.perform(get("/object?ref-id=10985&ref-cat-id=" +
+                        "784-035568&id=8962&catalog-id=781-038873"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("781-038873")))
                 .andExpect(content().string(containsString("784-035568")));
