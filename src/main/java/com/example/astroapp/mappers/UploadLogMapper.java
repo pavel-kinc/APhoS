@@ -16,6 +16,7 @@ public class UploadLogMapper implements RowMapper<UploadLog> {
         uploadLog.setUploadTime(rs.getTimestamp("time_of_upload"));
         uploadLog.setNumOfFiles(rs.getInt("success_cnt"));
         uploadLog.setNumOfErrors(rs.getInt("error_cnt"));
+        uploadLog.setNumOfSuccessful(uploadLog.getNumOfFiles() - uploadLog.getNumOfErrors());
         return uploadLog;
     }
 }

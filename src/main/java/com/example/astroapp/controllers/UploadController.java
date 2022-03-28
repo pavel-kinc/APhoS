@@ -106,6 +106,5 @@ public class UploadController {
         for (Pair<String, String> errorMessagePair : fileErrorMessagePairsList) {
             uploadErrorMessagesDao.saveUploadErrorMessage(logId, errorMessagePair);
         }
-
     }
 }

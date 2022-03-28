@@ -1,6 +1,9 @@
 package com.example.astroapp.controllers;
 
+import com.example.astroapp.dao.UploadErrorMessagesDao;
+import com.example.astroapp.dao.UploadLogsDao;
 import com.example.astroapp.dao.UserRepo;
+import com.example.astroapp.dto.UploadLog;
 import com.example.astroapp.entities.User;
 import com.example.astroapp.exceptions.UnauthorizedAccessException;
 import com.example.astroapp.services.UserService;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/profile")
 public class ProfileController {
@@ -23,6 +28,12 @@ public class ProfileController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    UploadLogsDao uploadLogsDao;
+
+    @Autowired
+    UploadErrorMessagesDao uploadErrorMessagesDao;
 
     @GetMapping("/")
     public String displayProfile(@RequestParam(defaultValue = "current") String id,
@@ -35,7 +46,14 @@ public class ProfileController {
             throw new UnauthorizedAccessException("Not authorized to access.");
         }
         if (id.equals(userService.getCurrentUser().getGoogleSub())) {
+            List<UploadLog> uploads = uploadLogsDao.getLogsForUser(id);
+            for (UploadLog uploadLog : uploads) {
+                uploadLog.setFileErrorMessagePairsList(
+                        uploadErrorMessagesDao.getMessagesForLog(uploadLog.getId()));
+            }
+            model.addAttribute("userUploads", uploads);
             model.addAttribute("currentUserSignedIn", true);
+
         }
         model.addAttribute("user", user);
         return editable ? "editableProfile" : "profile";

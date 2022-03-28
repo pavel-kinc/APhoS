@@ -42,9 +42,9 @@ public class UploadLogsDao extends JdbcDaoSupport {
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public List<UploadLog> getLogsForUser(User user) {
+    public List<UploadLog> getLogsForUser(String userId) {
         assert getJdbcTemplate() != null;
         String query = "SELECT * FROM uploading_logs WHERE user_id = ?";
-        return getJdbcTemplate().query(query, new UploadLogMapper(), user.getGoogleSub());
+        return getJdbcTemplate().query(query, new UploadLogMapper(), userId);
     }
 }

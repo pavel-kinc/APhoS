@@ -11,6 +11,7 @@ public class UploadLog {
     private Timestamp uploadTime;
     private int numOfFiles;
     private int numOfErrors;
+    private int numOfSuccessful;
     private List<Pair<String, String>> fileErrorMessagePairsList;
 
     public UploadLog() {
@@ -46,6 +47,14 @@ public class UploadLog {
 
     public void setNumOfErrors(int numOfErrors) {
         this.numOfErrors = numOfErrors;
+    }
+
+    public int getNumOfSuccessful() {
+        return numOfSuccessful;
+    }
+
+    public void setNumOfSuccessful(int numOfSuccessful) {
+        this.numOfSuccessful = numOfSuccessful;
     }
 
     public List<Pair<String, String>> getFileErrorMessagePairsList() {
