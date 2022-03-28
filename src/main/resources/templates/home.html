@@ -11,9 +11,6 @@
         <h3 th:unless="${resultingRows}"
             th:text="${originalId} ? ${'Search for a comparison object:'} : ${'Search for an object:'}">
         </h3>
-        <h3 th:if="${resultingRows}"
-            th:text="${originalId} ? ${'Choose a comparison object:'} : ${'Choose an object:'}">
-        </h3>
     </div>
     <div class="row">
         <div class="col-md-6">
@@ -94,6 +91,11 @@
                     </button>
                 </div>
             </form>
+        </div>
+        <div class=" mt-3">
+            <h3 th:if="${resultingRows}"
+                th:text="${originalId} ? ${'Choose a comparison object:'} : ${'Choose an object:'}">
+            </h3>
         </div>
         <div class="row my-4" th:if="${resultingRows}">
             <div class="col-md-8">
