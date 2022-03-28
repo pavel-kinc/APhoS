@@ -48,6 +48,8 @@ public class ObjectController {
                                       @RequestParam(name = "catalog-id") String catalogId,
                                       @RequestParam(name = "apertures", required = false) String[] apertures,
                                       @RequestParam(name = "ref-apertures", required = false) String[] refApertures,
+                                      @RequestParam(name = "show-saturated", defaultValue = "true")
+                                                  boolean showSaturated,
                                       Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
@@ -62,14 +64,22 @@ public class ObjectController {
             flux.setErrorTop(flux.getMagnitude() * 1.1F);
         };
         fluxes.forEach(consumer);
+        List<FluxUserTime> fluxesToDisplayInTable = null;
+        if (showSaturated) {
+            fluxesToDisplayInTable = fluxes;
+        }
         // filtering saturated values
         fluxes = fluxes
                 .stream()
                 .filter(flux -> !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
                 .collect(Collectors.toList());
+        if (!showSaturated) {
+            fluxesToDisplayInTable = fluxes;
+        }
         model.addAttribute("nights", nights);
         model.addAttribute("users", users);
         model.addAttribute("fluxes", fluxes);
+        model.addAttribute("fluxesForTable", fluxesToDisplayInTable);
         model.addAttribute("catalogId", catalogId);
         model.addAttribute("refCatalogId", refObjectCatalogId);
         return "object";
