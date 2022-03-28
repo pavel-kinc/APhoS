@@ -1,5 +1,6 @@
 package com.example.astroapp.dao;
 
+import com.example.astroapp.mappers.UploadMessageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -32,5 +34,11 @@ public class UploadErrorMessagesDao extends JdbcDaoSupport {
             ps.setString(3, fileErrorMessagePair.getSecond());
             return ps;
         }, keyHolder);
+    }
+
+    public List<Pair<String, String>> getMessagesForLog(long logId) {
+        assert getJdbcTemplate() != null;
+        String query = "SELECT * FROM uploading_error_messages WHERE uploading_log_id = ?";
+        return getJdbcTemplate().query(query, new UploadMessageMapper(), logId);
     }
 }

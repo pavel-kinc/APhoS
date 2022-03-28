@@ -1,7 +1,8 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.entities.PhotoProperties;
+import com.example.astroapp.dto.UploadLog;
 import com.example.astroapp.entities.User;
+import com.example.astroapp.mappers.UploadLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -38,5 +40,11 @@ public class UploadLogsDao extends JdbcDaoSupport {
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
+    }
+
+    public List<UploadLog> getLogsForUser(User user) {
+        assert getJdbcTemplate() != null;
+        String query = "SELECT * FROM uploading_logs WHERE user_id = ?";
+        return getJdbcTemplate().query(query, new UploadLogMapper(), user.getGoogleSub());
     }
 }
