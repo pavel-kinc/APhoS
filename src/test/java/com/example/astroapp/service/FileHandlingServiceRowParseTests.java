@@ -2,10 +2,9 @@ package com.example.astroapp.service;
 
 
 import com.example.astroapp.dao.FluxDao;
-import com.example.astroapp.dao.PhotoPropertiesDao;
 import com.example.astroapp.dao.SpaceObjectDao;
-import com.example.astroapp.entities.PhotoProperties;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.PhotoProperties;
+import com.example.astroapp.dto.User;
 import com.example.astroapp.exceptions.CsvRowDataParseException;
 import com.example.astroapp.services.FileHandlingService;
 import com.example.astroapp.services.UserService;

@@ -1,7 +1,7 @@
 package com.example.astroapp.dao;
 
 import com.example.astroapp.dto.UploadLog;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.User;
 import com.example.astroapp.mappers.UploadLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;

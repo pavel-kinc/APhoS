@@ -3,7 +3,7 @@ package com.example.astroapp.controller;
 import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.PhotoPropertiesDao;
 import com.example.astroapp.dao.SpaceObjectDao;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.User;
 import com.example.astroapp.services.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;

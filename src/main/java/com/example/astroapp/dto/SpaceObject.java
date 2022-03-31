@@ -1,4 +1,4 @@
-package com.example.astroapp.entities;
+package com.example.astroapp.dto;
 
 public class SpaceObject {
     private Long id;

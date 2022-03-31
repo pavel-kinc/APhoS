@@ -1,6 +1,6 @@
 package com.example.astroapp.mappers;
 
-import com.example.astroapp.entities.SpaceObject;
+import com.example.astroapp.dto.SpaceObject;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

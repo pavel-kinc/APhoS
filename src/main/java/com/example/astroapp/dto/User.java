@@ -1,10 +1,8 @@
-package com.example.astroapp.entities;
+package com.example.astroapp.dto;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 @Entity
 @Table(name = "users", schema = "public")

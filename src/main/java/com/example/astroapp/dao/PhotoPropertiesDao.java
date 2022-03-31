@@ -1,6 +1,6 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.entities.PhotoProperties;
+import com.example.astroapp.dto.PhotoProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

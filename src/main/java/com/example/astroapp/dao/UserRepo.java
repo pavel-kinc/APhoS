@@ -1,6 +1,6 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

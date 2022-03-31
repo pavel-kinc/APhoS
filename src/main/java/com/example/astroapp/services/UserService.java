@@ -1,7 +1,7 @@
 package com.example.astroapp.services;
 
 import com.example.astroapp.dao.UserRepo;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;

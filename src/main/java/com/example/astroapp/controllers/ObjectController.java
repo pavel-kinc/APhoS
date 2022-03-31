@@ -4,7 +4,7 @@ import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.SpaceObjectDao;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
-import com.example.astroapp.entities.SpaceObject;
+import com.example.astroapp.dto.SpaceObject;
 import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;

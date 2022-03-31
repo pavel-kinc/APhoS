@@ -1,6 +1,6 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.entities.SpaceObject;
+import com.example.astroapp.dto.SpaceObject;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;

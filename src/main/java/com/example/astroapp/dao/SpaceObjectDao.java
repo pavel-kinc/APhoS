@@ -1,9 +1,9 @@
 package com.example.astroapp.dao;
 
 import com.example.astroapp.dto.ObjectFlux;
-import com.example.astroapp.entities.SpaceObject;
+import com.example.astroapp.dto.SpaceObject;
 import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
-import com.example.astroapp.mappers.ObjectPreparedStatementSetter;
+import com.example.astroapp.setters.ObjectPreparedStatementSetter;
 import com.example.astroapp.mappers.SpaceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;

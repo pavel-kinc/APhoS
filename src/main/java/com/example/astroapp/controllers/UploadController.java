@@ -2,13 +2,14 @@ package com.example.astroapp.controllers;
 
 import com.example.astroapp.dao.UploadErrorMessagesDao;
 import com.example.astroapp.dao.UploadLogsDao;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.services.FileHandlingService;
 import com.example.astroapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,6 +66,7 @@ public class UploadController {
     }
 
     @PostMapping("/parse")
+    @Transactional
     @ResponseBody
     public String parseAndSave(@RequestParam(name = "path-to-dir") String pathToDir,
                                @RequestParam(name = "file-count") int numOfFiles)

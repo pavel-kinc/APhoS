@@ -1,8 +1,8 @@
 package com.example.astroapp.services;
 
 import com.example.astroapp.dao.*;
-import com.example.astroapp.entities.PhotoProperties;
-import com.example.astroapp.entities.User;
+import com.example.astroapp.dto.PhotoProperties;
+import com.example.astroapp.dto.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.exceptions.CsvRowDataParseException;
 import com.example.astroapp.exceptions.IllegalCoordinateFormatException;
