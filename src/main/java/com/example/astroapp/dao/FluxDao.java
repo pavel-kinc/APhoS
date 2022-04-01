@@ -25,12 +25,13 @@ public class FluxDao extends JdbcDaoSupport {
     }
 
     public long saveFlux(String recString, String decString, Float rec,
-                         Float dec, Float apertureAuto, Long spaceObjectId,
-                         String userId, Long photoId, Float[] apertures) {
+                         Float dec, Float apertureAuto, Float apertureAutoDev, Long spaceObjectId,
+                         String userId, Long photoId, Float[] apertures, Float[] apertureDevs) {
         assert getJdbcTemplate() != null;
         String insertQuery = "INSERT INTO flux " +
-                "(id, rec, dec, coordinates, ap_auto, object_id, user_id, photo_properties_id, apertures)" +
-                "VALUES (nextval('flux_id_seq'), ?, ?, ll_to_earth(?, ?) ,?, ?, ?, ?, ?)";
+                "(id, rec, dec, coordinates, ap_auto, ap_auto_dev, object_id, user_id, " +
+                "photo_properties_id, apertures, aperture_devs)" +
+                "VALUES (nextval('flux_id_seq'), ?, ?, ll_to_earth(?, ?) ,?, ?, ?, ?, ?, ?, ?)";
         GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
         getJdbcTemplate().update(connection -> {
             PreparedStatement ps = connection.prepareStatement(insertQuery, new String[]{"id"});
@@ -39,14 +40,16 @@ public class FluxDao extends JdbcDaoSupport {
             ps.setFloat(3, dec);
             ps.setFloat(4, rec);
             ps.setFloat(5, apertureAuto);
+            ps.setFloat(6, apertureAutoDev);
             if (spaceObjectId != null) {
-                ps.setLong(6, spaceObjectId);
+                ps.setLong(7, spaceObjectId);
             } else {
-                ps.setNull(6, Types.INTEGER);
+                ps.setNull(7, Types.INTEGER);
             }
-            ps.setString(7, userId);
-            ps.setLong(8, photoId);
-            ps.setArray(9, connection.createArrayOf("float8", apertures));
+            ps.setString(8, userId);
+            ps.setLong(9, photoId);
+            ps.setArray(10, connection.createArrayOf("float8", apertures));
+            ps.setArray(11, connection.createArrayOf("float8", apertureDevs));
             return ps;
         }, keyHolder);
         return Objects.requireNonNull(keyHolder.getKey()).longValue();

@@ -43,8 +43,8 @@ public class FluxDaoIntegrationTests {
     @Test
     public void savedFluxIsReturned() throws ParseException {
         Long id = fluxDao.saveFlux("21h24m53.861s", "+69°47'42.94\"", hourAngleToDegrees("21 24 53.861"),
-                angleToFloatForm("69 47 42.94"), 29474.0507F, 10059L,
-                "108133573258632378409", 295L, new Float[10]);
+                angleToFloatForm("69 47 42.94"), 29474.0507F, 0F, 10059L,
+                "108133573258632378409", 295L, new Float[10], new Float[10]);
         assertEquals(fluxDao.fluxExists(id), id.longValue());
 
     }

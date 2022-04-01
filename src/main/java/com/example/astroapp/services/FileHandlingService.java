@@ -134,8 +134,17 @@ public class FileHandlingService {
                 apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
                 i++;
             }
+            i = 1;
+            String apertureDev;
+            List<Float> apertureDevs = new ArrayList<>();
+            // getting all columns in form of Ap1Dev..ApnDev
+            while ((apertureDev = row.get("Ap" + i + "Dev")) != null) {
+                apertureDevs.add(!apertureDev.equals("") ? Float.parseFloat(apertureDev) : 0);
+                i++;
+            }
             saveFlux(row.get("RA"), row.get("Dec"),
-                    row.get("ApAuto"), spaceObjectId, photoProperties, uploadingUser, apertures);
+                    row.get("ApAuto"), row.get("ApAutoDev"), spaceObjectId, photoProperties,
+                    uploadingUser, apertures, apertureDevs);
         } catch (NumberFormatException | IllegalCoordinateFormatException e) {
             throw new CsvRowDataParseException(e);
         }
@@ -157,8 +166,8 @@ public class FileHandlingService {
     }
 
     public void saveFlux(String strRec, String strDec, String apAuto,
-                         Long spaceObjectId, PhotoProperties photoProperties,
-                         User uploadingUser, List<Float> aperturesList)
+                         String apAutoDev, Long spaceObjectId, PhotoProperties photoProperties,
+                         User uploadingUser, List<Float> aperturesList, List<Float> apertureDevsList)
             throws ParseException {
         if (apAuto == null) {
             throw new CsvRowDataParseException("Missing apAuto value");
@@ -166,11 +175,13 @@ public class FileHandlingService {
         float dec = Conversions.angleToFloatForm(strDec);
         float rec = Conversions.hourAngleToDegrees(strRec);
         Float[] apertures = aperturesList.toArray(new Float[0]);
+        Float[] apertureDevs = apertureDevsList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
+        Float apertureAutoDev = (!apAutoDev.equals("") ? Float.parseFloat(apAutoDev) : 0);
         strRec = Conversions.addHourAngleSigns(strRec);
         strDec = Conversions.addAngleSigns(strDec);
-        fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, spaceObjectId,
-                uploadingUser.getGoogleSub(), photoProperties.getId(), apertures);
+        fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, apertureAutoDev, spaceObjectId,
+                uploadingUser.getGoogleSub(), photoProperties.getId(), apertures, apertureDevs);
     }
 }
 

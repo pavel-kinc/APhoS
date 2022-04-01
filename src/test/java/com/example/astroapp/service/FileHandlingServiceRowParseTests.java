@@ -64,7 +64,14 @@ public class FileHandlingServiceRowParseTests {
             {"Ap3", "161769.494"},
             {"Ap4", "119508.426"},
             {"Ap5", "184859.687"},
-            {"Ap6", "saturated"}
+            {"Ap6", "saturated"},
+            {"ApAutoDev", "271001.483"},
+            {"Ap1Dev", "145813.047"},
+            {"Ap2Dev", "167942.751"},
+            {"Ap3Dev", "161769.494"},
+            {"Ap4Dev", "119508.426"},
+            {"Ap5Dev", "184859.687"},
+            {"Ap6Dev", ""}
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     @Test()
