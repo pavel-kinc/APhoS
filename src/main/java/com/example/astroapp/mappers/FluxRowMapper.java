@@ -22,19 +22,23 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         Float apAuto = rs.getFloat("ap_auto");
         String apAutoStr = apAuto.equals(0.0f) ? "saturated" : apAuto.toString();
         fluxUserTime.setApAuto(apAutoStr);
+        fluxUserTime.setApAutoDev(rs.getFloat("ap_auto_dev"));
         Double[] aperturesArray = (Double[]) rs.getArray("apertures").getArray();
         String[] aperturesStr = Arrays.stream(aperturesArray)
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
         fluxUserTime.setApertures(aperturesStr);
+        fluxUserTime.setApertureDevs((Double[]) rs.getArray("aperture_devs").getArray());
         Float refApAuto = rs.getFloat("ref_ap_auto");
         String refApAutoStr = refApAuto.equals(0.0f) ? "saturated" : refApAuto.toString();
         fluxUserTime.setRefApAuto(refApAutoStr);
+        fluxUserTime.setRefApAutoDev(rs.getFloat("ref_ap_auto_dev"));
         Double[] refAperturesArray = (Double[]) rs.getArray("ref_apertures").getArray();
         String[] refAperturesStr = Arrays.stream(refAperturesArray)
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
         fluxUserTime.setRefApertures(refAperturesStr);
+        fluxUserTime.setRefApertureDevs((Double[]) rs.getArray("ref_ap_devs").getArray());
         fluxUserTime.setUsername(rs.getString("username"));
         long expBegin = rs.getTimestamp("exposure_begin").getTime();
         long expEnd = rs.getTimestamp("exposure_end").getTime();

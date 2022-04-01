@@ -6,8 +6,8 @@ for (let i = 0; i < fluxes.length; i++) {
     data[i] = {x: fluxes[i].expMiddle, y: fluxes[i].magnitude};
     annotations[i] = {
         type: 'line',
-        yMin: fluxes[i].errorBottom,
-        yMax: fluxes[i].errorTop,
+        yMin: fluxes[i].magnitude + fluxes[i].deviation,
+        yMax: fluxes[i].magnitude - fluxes[i].deviation,
         xMin: fluxes[i].expMiddle,
         xMax: fluxes[i].expMiddle,
         borderColor: 'rgb(149,188,232)',

@@ -2,17 +2,13 @@ package com.example.astroapp.controllers;
 
 import com.example.astroapp.dao.FluxDao;
 import com.example.astroapp.dao.SpaceObjectDao;
-import com.example.astroapp.dao.UserRepo;
-import com.example.astroapp.dto.FluxUserTime;
-import com.example.astroapp.dto.ObjectFlux;
+import com.example.astroapp.dto.ObjectFluxCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Controller
@@ -40,11 +36,11 @@ public class HomeController {
                                  @RequestParam(name = "max-mag") String maxMag,
                                  @RequestParam String catalog,
                                  @RequestParam(name = "object-id") String objectId, Model model) {
-        List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
+        List<ObjectFluxCount> objectFluxCountList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
         model.addAttribute("availableCatalogues", availableCatalogues);
-        model.addAttribute("resultingRows", objectFluxList);
+        model.addAttribute("resultingRows", objectFluxCountList);
         model.addAttribute("RA", rightAscension);
         model.addAttribute("dec", dec);
         model.addAttribute("radius", radius);
@@ -79,13 +75,13 @@ public class HomeController {
             @RequestParam(name = "max-mag") String maxMag,
             @RequestParam String catalog,
             @RequestParam(name = "object-id") String objectId, Model model) {
-        List<ObjectFlux> objectFluxList = spaceObjectDao.queryObjects(
+        List<ObjectFluxCount> objectFluxCountList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
         model.addAttribute("originalId", originalId);
         model.addAttribute("originalCatId", originalCatId);
         model.addAttribute("availableCatalogues", availableCatalogues);
-        model.addAttribute("resultingRows", objectFluxList);
+        model.addAttribute("resultingRows", objectFluxCountList);
         model.addAttribute("RA", rightAscension);
         model.addAttribute("dec", dec);
         model.addAttribute("radius", radius);

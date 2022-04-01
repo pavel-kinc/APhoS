@@ -13,14 +13,21 @@ public class FluxUserTime {
     @JsonIgnore
     String apAuto;
     @JsonIgnore
+    Float apAutoDev;
+    @JsonIgnore
     String[] apertures;
+    @JsonIgnore
+    Double[] apertureDevs;
     @JsonIgnore
     String refApAuto;
     @JsonIgnore
+    Float refApAutoDev;
+    @JsonIgnore
     String[] refApertures;
+    @JsonIgnore
+    Double[] refApertureDevs;
     Float magnitude;
-    Float errorTop;
-    Float errorBottom;
+    Float deviation;
     @JsonIgnore
     String username;
     @JsonIgnore
@@ -120,19 +127,43 @@ public class FluxUserTime {
         this.night = night;
     }
 
-    public Float getErrorTop() {
-        return errorTop;
+    public Float getDeviation() {
+        return deviation;
     }
 
-    public void setErrorTop(Float errorTop) {
-        this.errorTop = errorTop;
+    public void setDeviation(Float deviation) {
+        this.deviation = deviation;
     }
 
-    public Float getErrorBottom() {
-        return errorBottom;
+    public Float getApAutoDev() {
+        return apAutoDev;
     }
 
-    public void setErrorBottom(Float errorBottom) {
-        this.errorBottom = errorBottom;
+    public void setApAutoDev(Float apAutoDev) {
+        this.apAutoDev = apAutoDev;
+    }
+
+    public Double[] getApertureDevs() {
+        return apertureDevs;
+    }
+
+    public void setApertureDevs(Double[] apertureDevs) {
+        this.apertureDevs = apertureDevs;
+    }
+
+    public double getRefApAutoDev() {
+        return refApAutoDev;
+    }
+
+    public void setRefApAutoDev(Float refApAutoDev) {
+        this.refApAutoDev = refApAutoDev;
+    }
+
+    public Double[] getRefApertureDevs() {
+        return refApertureDevs;
+    }
+
+    public void setRefApertureDevs(Double[] refApertureDevs) {
+        this.refApertureDevs = refApertureDevs;
     }
 }
