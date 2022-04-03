@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static com.example.astroapp.utils.Conversions.convertFluxesToMagnitude;
+import static com.example.astroapp.utils.Conversions.calculateMagnitudeAndDeviation;
 
 @Controller
 public class ObjectController {
@@ -58,12 +58,6 @@ public class ObjectController {
                 .distinct()
                 .collect(Collectors.toList());
         List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
-        Consumer<FluxUserTime> consumer = flux -> {
-            flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
-            flux.setErrorBottom(flux.getMagnitude() * 0.9F);
-            flux.setErrorTop(flux.getMagnitude() * 1.1F);
-        };
-        fluxes.forEach(consumer);
         List<FluxUserTime> fluxesToDisplayInTable = null;
         if (showSaturated) {
             fluxesToDisplayInTable = fluxes;
@@ -100,7 +94,8 @@ public class ObjectController {
         fluxes = fluxes
                 .stream()
                 .filter(flux ->
-                        !unwantedUsersList.contains(flux.getUsername()))
+                        !unwantedUsersList.contains(flux.getUsername())
+                && !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
                 .collect(Collectors.toList());
         CsvMapper mapper = new CsvMapper();
         final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)
@@ -134,7 +129,7 @@ public class ObjectController {
             seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
         }
-        seqWriter.write(new Object[]{"Exposure middle", "Magnitude"});
+        seqWriter.write(new Object[]{"Exposure middle", "Magnitude", "Deviation"});
     }
 
     private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {
@@ -156,7 +151,7 @@ public class ObjectController {
             }
         }
         Consumer<FluxUserTime> consumer = flux ->
-                flux.setMagnitude(convertFluxesToMagnitude(flux, nights));
+                calculateMagnitudeAndDeviation(flux, nights);
         fluxes.forEach(consumer);
         return nights;
     }

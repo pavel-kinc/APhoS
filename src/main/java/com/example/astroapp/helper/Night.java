@@ -51,6 +51,15 @@ public class Night implements Comparable<Night> {
         this.username = username;
     }
 
+    public Night(String firstDateOfTheNight, String secondDateOfTheNight, String username, int idOnPage, String apToBeUsed, String refApToBeUsed) {
+        this.firstDateOfTheNight = firstDateOfTheNight;
+        this.secondDateOfTheNight = secondDateOfTheNight;
+        this.username = username;
+        this.idOnPage = idOnPage;
+        this.apToBeUsed = apToBeUsed;
+        this.refApToBeUsed = refApToBeUsed;
+    }
+
     public String getApToBeUsed() {
         return apToBeUsed;
     }

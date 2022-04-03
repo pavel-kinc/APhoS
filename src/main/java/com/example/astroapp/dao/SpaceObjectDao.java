@@ -1,6 +1,6 @@
 package com.example.astroapp.dao;
 
-import com.example.astroapp.dto.ObjectFlux;
+import com.example.astroapp.dto.ObjectFluxCount;
 import com.example.astroapp.dto.SpaceObject;
 import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
 import com.example.astroapp.setters.ObjectPreparedStatementSetter;
@@ -26,8 +26,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<ObjectFlux> queryObjects(String RA, String dec, String radius, String name, String minMag,
-                                         String maxMag, String catalog, String objectId) {
+    public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius, String name, String minMag,
+                                              String maxMag, String catalog, String objectId) {
         StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
                 " FROM space_object LEFT OUTER JOIN flux ON object_id=space_object.id");

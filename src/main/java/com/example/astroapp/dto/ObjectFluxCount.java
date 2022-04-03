@@ -1,6 +1,6 @@
 package com.example.astroapp.dto;
 
-public class ObjectFlux {
+public class ObjectFluxCount {
 
     private long id;
     private String name;
@@ -11,7 +11,7 @@ public class ObjectFlux {
     private Float catalogMag;
     private int numberOfFluxes;
 
-    public ObjectFlux() {
+    public ObjectFluxCount() {
     }
 
     public long getId() {
