@@ -4,7 +4,7 @@ import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"expMiddle", "magnitude"})
+@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
 public class FluxUserTime {
     @JsonIgnore
     String rightAsc;
@@ -37,6 +37,28 @@ public class FluxUserTime {
     String expMiddle;
 
     public FluxUserTime() {
+    }
+
+    public FluxUserTime(String rightAsc, String dec, String apAuto, Float apAutoDev,
+                        String[] apertures, Double[] apertureDevs, String refApAuto, Float refApAutoDev,
+                        String[] refApertures, Double[] refApertureDevs, Float magnitude, Float deviation,
+                        String username, String userId, Night night, String expMiddle) {
+        this.rightAsc = rightAsc;
+        this.dec = dec;
+        this.apAuto = apAuto;
+        this.apAutoDev = apAutoDev;
+        this.apertures = apertures;
+        this.apertureDevs = apertureDevs;
+        this.refApAuto = refApAuto;
+        this.refApAutoDev = refApAutoDev;
+        this.refApertures = refApertures;
+        this.refApertureDevs = refApertureDevs;
+        this.magnitude = magnitude;
+        this.deviation = deviation;
+        this.username = username;
+        this.userId = userId;
+        this.night = night;
+        this.expMiddle = expMiddle;
     }
 
     public String getRightAsc() {

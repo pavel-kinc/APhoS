@@ -13,6 +13,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
@@ -42,7 +43,7 @@ public class FileHandlingService {
     @Autowired
     UserRepo userRepo;
 
-    @Transactional
+    @Transactional(noRollbackFor = CsvContentException.class)
     public void store(Path pathToFile) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
         File file = pathToFile.toFile();
@@ -128,18 +129,19 @@ public class FileHandlingService {
             }
             int i = 1;
             String aperture;
-            List<Float> apertures = new ArrayList<>();
-            // getting all columns in form of Ap1..Apn
-            while ((aperture = row.get("Ap"+i)) != null) {
-                apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
-                i++;
-            }
-            i = 1;
             String apertureDev;
             List<Float> apertureDevs = new ArrayList<>();
+            List<Float> apertures = new ArrayList<>();
+            // getting all columns in form of Ap1..Apn
             // getting all columns in form of Ap1Dev..ApnDev
+            while ((aperture = row.get("Ap"+i)) != null) {
+                apertures.add(!aperture.equals("saturated") ? Float.parseFloat(aperture) : 0);
+                apertureDev = row.get("Ap" + i + "Dev");
+                apertureDevs.add(!(apertureDev == null || apertureDev.equals(""))
+                        ? Float.parseFloat(apertureDev) : 0);
+                i++;
+            }
             while ((apertureDev = row.get("Ap" + i + "Dev")) != null) {
-                apertureDevs.add(!apertureDev.equals("") ? Float.parseFloat(apertureDev) : 0);
                 i++;
             }
             saveFlux(row.get("RA"), row.get("Dec"),
@@ -177,7 +179,8 @@ public class FileHandlingService {
         Float[] apertures = aperturesList.toArray(new Float[0]);
         Float[] apertureDevs = apertureDevsList.toArray(new Float[0]);
         Float apertureAuto = (!apAuto.equals("saturated") ? Float.parseFloat(apAuto) : 0);
-        Float apertureAutoDev = (!apAutoDev.equals("") ? Float.parseFloat(apAutoDev) : 0);
+        Float apertureAutoDev = (!(apAutoDev == null || apAutoDev.equals(""))
+                ? Float.parseFloat(apAutoDev) : 0);
         strRec = Conversions.addHourAngleSigns(strRec);
         strDec = Conversions.addAngleSigns(strDec);
         fluxDao.saveFlux(strRec, strDec, rec, dec, apertureAuto, apertureAutoDev, spaceObjectId,

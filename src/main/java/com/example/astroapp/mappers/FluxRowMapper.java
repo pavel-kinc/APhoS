@@ -4,12 +4,15 @@ import com.example.astroapp.dto.FluxUserTime;
 import com.example.astroapp.helper.Night;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
@@ -28,7 +31,16 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
         fluxUserTime.setApertures(aperturesStr);
-        fluxUserTime.setApertureDevs((Double[]) rs.getArray("aperture_devs").getArray());
+        Array arr = rs.getArray("aperture_devs");
+        List<Double> zeroList = new ArrayList<>();
+        for (int i = 0; i < aperturesArray.length; i++) {
+            zeroList.add(0D);
+        }
+        if (arr != null) {
+            fluxUserTime.setApertureDevs((Double[]) arr.getArray());
+        } else {
+            fluxUserTime.setApertureDevs(zeroList.toArray(new Double[]{}));
+        }
         Float refApAuto = rs.getFloat("ref_ap_auto");
         String refApAutoStr = refApAuto.equals(0.0f) ? "saturated" : refApAuto.toString();
         fluxUserTime.setRefApAuto(refApAutoStr);
@@ -38,7 +50,12 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
                 .map(ap -> ap.equals(0.0d) ? "saturated" : ap.toString())
                 .toArray(String[]::new);
         fluxUserTime.setRefApertures(refAperturesStr);
-        fluxUserTime.setRefApertureDevs((Double[]) rs.getArray("ref_ap_devs").getArray());
+        Array arrRef = rs.getArray("ref_ap_devs");
+        if (arr != null) {
+            fluxUserTime.setRefApertureDevs((Double[]) arrRef.getArray());
+        } else {
+            fluxUserTime.setRefApertureDevs(zeroList.toArray(new Double[]{}));
+        }
         fluxUserTime.setUsername(rs.getString("username"));
         long expBegin = rs.getTimestamp("exposure_begin").getTime();
         long expEnd = rs.getTimestamp("exposure_end").getTime();

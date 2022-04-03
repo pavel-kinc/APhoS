@@ -94,7 +94,8 @@ public class ObjectController {
         fluxes = fluxes
                 .stream()
                 .filter(flux ->
-                        !unwantedUsersList.contains(flux.getUsername()))
+                        !unwantedUsersList.contains(flux.getUsername())
+                && !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
                 .collect(Collectors.toList());
         CsvMapper mapper = new CsvMapper();
         final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)
@@ -128,7 +129,7 @@ public class ObjectController {
             seqWriter.write(new Object[]{"Reference catalog Declination", refObject.getCatalogDec()});
             seqWriter.write(new Object[]{"Reference catalog Magnitude", refObject.getCatalogMag()});
         }
-        seqWriter.write(new Object[]{"Exposure middle", "Magnitude"});
+        seqWriter.write(new Object[]{"Exposure middle", "Magnitude", "Deviation"});
     }
 
     private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {

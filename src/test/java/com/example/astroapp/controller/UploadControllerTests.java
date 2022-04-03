@@ -95,7 +95,7 @@ class UploadControllerTests {
         mockMvc.perform(
                         post("/upload/parse")
                                 .param("path-to-dir", "src/test/resources/incorrect_files")
-                                .param("file-count", "1"))
+                                .param("file-count", "2"))
                 .andExpect(content().string("2"));
     }
 }
