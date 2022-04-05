@@ -78,19 +78,17 @@ public class UploadController {
             throw new FileNotFoundException("Given path to the directory is not correct.");
         }
         int unsuccessfulCount = 0;
-        try {
-            try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
-                List<Path> regularFiles = filePaths
-                        .filter(Files::isRegularFile)
-                        .collect(Collectors.toList());
-                for (Path file : regularFiles) {
-                    try {
-                        fileHandlingService.store(file);
-                    } catch (IOException | CsvContentException e) {
-                        unsuccessfulCount++;
-                        fileErrorMessagePairsList.add(Pair.of(
-                                file.getFileName().toString(), e.getMessage()));
-                    }
+        try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
+            List<Path> regularFiles = filePaths
+                    .filter(Files::isRegularFile)
+                    .collect(Collectors.toList());
+            for (Path file : regularFiles) {
+                try {
+                    fileHandlingService.store(file);
+                } catch (IOException | CsvContentException e) {
+                    unsuccessfulCount++;
+                    fileErrorMessagePairsList.add(Pair.of(
+                            file.getFileName().toString(), e.getMessage()));
                 }
             }
         } catch (IOException e) {

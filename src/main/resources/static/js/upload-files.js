@@ -21,11 +21,12 @@ function uploadFiles() {
     myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
     fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
         .then(response => response.text())
-        .then(pathToDir => {
+        .then(async pathToDir => {
             let i = 1;
             printUploadMessages(true, files[0].name,
                 uploadProgress, filesLength, uploadMessageArea, pathToDir);
             do {
+                await new Promise(r => setTimeout(r, 200));
                 let formData = new FormData();
                 let file = files[i];
                 let finalFetchBody = new FormData();
