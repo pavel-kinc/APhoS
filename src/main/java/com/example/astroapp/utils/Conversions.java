@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Conversions {
 
+    public static float DEV_CONSTANT = (float) (2.5 / Math.log(10));
 
     /**
      * Hour angle to degrees in float value. Primarily for converting Right ascension.
@@ -65,30 +66,50 @@ public class Conversions {
         return hourAngle;
     }
 
-    public static float convertFluxesToMagnitude(FluxUserTime flux, List<Night> nights) {
+    public static void calculateMagnitudeAndDeviation(FluxUserTime flux, List<Night> nights) {
         Night correspondingNight = nights.get(nights.indexOf(flux.getNight()));
         String apToBeUsed = correspondingNight.getApToBeUsed();
         String refApToBeUsed = correspondingNight.getRefApToBeUsed();
         String fluxValue;
         String refFluxValue;
+        double devValue;
+        double refDevValue;
         if (apToBeUsed.equals("auto")) {
             fluxValue = flux.getApAuto();
+            devValue = flux.getApAutoDev();
         } else {
             int apToBeUsedInt = Integer.parseInt(apToBeUsed);
             fluxValue = apToBeUsedInt - 1 < flux.getApertures().length ?
                     flux.getApertures()[apToBeUsedInt - 1] : flux.getApAuto();
+            devValue = apToBeUsedInt - 1 < flux.getApertureDevs().length ?
+                    flux.getApertureDevs()[apToBeUsedInt - 1] : flux.getApAutoDev();
         }
         if (refApToBeUsed.equals("auto")) {
             refFluxValue = flux.getRefApAuto();
+            refDevValue = flux.getRefApAutoDev();
         } else {
             int apToBeUsedInt = Integer.parseInt(refApToBeUsed);
             refFluxValue = apToBeUsedInt - 1 < flux.getRefApertures().length ?
                     flux.getRefApertures()[apToBeUsedInt - 1] : flux.getRefApAuto();
+            refDevValue = apToBeUsedInt - 1 < flux.getRefApertureDevs().length ?
+                    flux.getRefApertureDevs()[apToBeUsedInt - 1] : flux.getRefApAutoDev();
         }
         if (fluxValue.equals("saturated") || refFluxValue.equals("saturated")) {
-            return Float.NEGATIVE_INFINITY;
+            flux.setMagnitude(Float.NEGATIVE_INFINITY);
+        } else {
+            // magnitude calculation
+            float fluxFloat = Float.parseFloat(fluxValue);
+            float fluxRefFloat = Float.parseFloat(refFluxValue);
+            flux.setMagnitude((float) (-2.5 * Math.log10(fluxFloat / fluxRefFloat)));
+            if (devValue == 0 || refDevValue == 0) {
+                flux.setDeviation(0F);
+            } else {
+                // standard deviation calculation
+                double a = devValue / fluxFloat;
+                double b = refDevValue / fluxRefFloat;
+                flux.setDeviation((float) (DEV_CONSTANT * Math.sqrt(a * a + b * b)));
+            }
         }
-        return (float) (-2.5 * Math.log10(Double.parseDouble(fluxValue) / Double.parseDouble(refFluxValue)));
     }
 
 }

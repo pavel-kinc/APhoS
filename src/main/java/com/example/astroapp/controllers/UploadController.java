@@ -66,7 +66,6 @@ public class UploadController {
     }
 
     @PostMapping("/parse")
-    @Transactional
     @ResponseBody
     public String parseAndSave(@RequestParam(name = "path-to-dir") String pathToDir,
                                @RequestParam(name = "file-count") int numOfFiles)

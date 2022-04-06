@@ -4,7 +4,7 @@ import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder({"expMiddle", "magnitude"})
+@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
 public class FluxUserTime {
     @JsonIgnore
     String rightAsc;
@@ -13,14 +13,21 @@ public class FluxUserTime {
     @JsonIgnore
     String apAuto;
     @JsonIgnore
+    Float apAutoDev;
+    @JsonIgnore
     String[] apertures;
+    @JsonIgnore
+    Double[] apertureDevs;
     @JsonIgnore
     String refApAuto;
     @JsonIgnore
+    Float refApAutoDev;
+    @JsonIgnore
     String[] refApertures;
+    @JsonIgnore
+    Double[] refApertureDevs;
     Float magnitude;
-    Float errorTop;
-    Float errorBottom;
+    Float deviation;
     @JsonIgnore
     String username;
     @JsonIgnore
@@ -30,6 +37,28 @@ public class FluxUserTime {
     String expMiddle;
 
     public FluxUserTime() {
+    }
+
+    public FluxUserTime(String rightAsc, String dec, String apAuto, Float apAutoDev,
+                        String[] apertures, Double[] apertureDevs, String refApAuto, Float refApAutoDev,
+                        String[] refApertures, Double[] refApertureDevs, Float magnitude, Float deviation,
+                        String username, String userId, Night night, String expMiddle) {
+        this.rightAsc = rightAsc;
+        this.dec = dec;
+        this.apAuto = apAuto;
+        this.apAutoDev = apAutoDev;
+        this.apertures = apertures;
+        this.apertureDevs = apertureDevs;
+        this.refApAuto = refApAuto;
+        this.refApAutoDev = refApAutoDev;
+        this.refApertures = refApertures;
+        this.refApertureDevs = refApertureDevs;
+        this.magnitude = magnitude;
+        this.deviation = deviation;
+        this.username = username;
+        this.userId = userId;
+        this.night = night;
+        this.expMiddle = expMiddle;
     }
 
     public String getRightAsc() {
@@ -120,19 +149,43 @@ public class FluxUserTime {
         this.night = night;
     }
 
-    public Float getErrorTop() {
-        return errorTop;
+    public Float getDeviation() {
+        return deviation;
     }
 
-    public void setErrorTop(Float errorTop) {
-        this.errorTop = errorTop;
+    public void setDeviation(Float deviation) {
+        this.deviation = deviation;
     }
 
-    public Float getErrorBottom() {
-        return errorBottom;
+    public Float getApAutoDev() {
+        return apAutoDev;
     }
 
-    public void setErrorBottom(Float errorBottom) {
-        this.errorBottom = errorBottom;
+    public void setApAutoDev(Float apAutoDev) {
+        this.apAutoDev = apAutoDev;
+    }
+
+    public Double[] getApertureDevs() {
+        return apertureDevs;
+    }
+
+    public void setApertureDevs(Double[] apertureDevs) {
+        this.apertureDevs = apertureDevs;
+    }
+
+    public double getRefApAutoDev() {
+        return refApAutoDev;
+    }
+
+    public void setRefApAutoDev(Float refApAutoDev) {
+        this.refApAutoDev = refApAutoDev;
+    }
+
+    public Double[] getRefApertureDevs() {
+        return refApertureDevs;
+    }
+
+    public void setRefApertureDevs(Double[] refApertureDevs) {
+        this.refApertureDevs = refApertureDevs;
     }
 }
