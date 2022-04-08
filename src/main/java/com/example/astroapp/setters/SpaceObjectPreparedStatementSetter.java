@@ -9,7 +9,7 @@ import java.text.ParseException;
 import static com.example.astroapp.utils.Conversions.angleToFloatForm;
 import static com.example.astroapp.utils.Conversions.hourAngleToDegrees;
 
-public class ObjectPreparedStatementSetter implements PreparedStatementSetter {
+public class SpaceObjectPreparedStatementSetter implements PreparedStatementSetter {
 
     private final String RA;
     private final String dec;
@@ -20,8 +20,8 @@ public class ObjectPreparedStatementSetter implements PreparedStatementSetter {
     private final String catalog;
     private final String objectId;
 
-    public ObjectPreparedStatementSetter(String RA, String dec, String radius, String name,
-                                         String minMag, String maxMag, String catalog, String objectId) {
+    public SpaceObjectPreparedStatementSetter(String RA, String dec, String radius, String name,
+                                              String minMag, String maxMag, String catalog, String objectId) {
         this.dec = dec;
         this.RA = RA;
         this.radius = radius;

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -162,7 +164,7 @@ public class FileHandlingService {
         String strDec = Conversions.addAngleSigns(catalogDec);
         try {
             return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             return spaceObjectDao.saveObject(catalogId, name, catalog, strDec, strRec, dec, rec, mag);
         }
     }
