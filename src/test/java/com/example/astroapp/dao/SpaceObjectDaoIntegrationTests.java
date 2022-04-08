@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/sql_test_data/test-data-object-only.sql"})
+@Sql({"/sql/schema.sql", "/sql_test_data/test-data-object-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class SpaceObjectDaoIntegrationTests {

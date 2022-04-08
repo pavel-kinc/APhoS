@@ -63,8 +63,8 @@ public class FluxDao extends JdbcDaoSupport {
                "(SELECT * FROM flux WHERE object_id=?) AS OF INNER JOIN " +
         "(SELECT ap_auto, apertures, ap_auto_dev, aperture_devs, photo_properties_id " +
                 "FROM flux WHERE object_id=?) AS RF " +
-        "ON OF.photo_properties_id=RF.photo_properties_id LEFT OUTER JOIN users ON users.google_sub=user_id " +
-        "LEFT OUTER JOIN photo_properties on OF.photo_properties_id=photo_properties.id";
+        "ON OF.photo_properties_id=RF.photo_properties_id INNER JOIN users ON users.google_sub=user_id " +
+        "INNER JOIN photo_properties on OF.photo_properties_id=photo_properties.id";
         return getJdbcTemplate().query(query, new FluxRowMapper(), originalObjectId, referenceObjectId);
     }
 

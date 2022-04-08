@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
-@Sql({"/schema.sql", "/sql_test_data/test-data-user-only.sql"})
+@Sql({"/sql/schema.sql", "/sql_test_data/test-data-user-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 class UploadControllerTests {
