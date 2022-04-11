@@ -1,3 +1,7 @@
+/*
+    Script to change the chosen apertures in the url params on change in the selects.
+*/
+
 let apertures = new URLSearchParams(window.location.search).get("apertures");
 if (apertures) {
     let apsArray = apertures.split(",");

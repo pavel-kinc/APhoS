@@ -1,3 +1,8 @@
+/*
+    Script for min magnitude slider to be be less than max magnitude slider.
+ */
+
+
 minRange = document.getElementById("minRange");
 maxRange = document.getElementById("maxRange");
 minInput = document.getElementById("minInput");

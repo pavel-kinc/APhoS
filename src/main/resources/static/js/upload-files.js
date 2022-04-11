@@ -1,3 +1,9 @@
+/*
+    Script supplying the whole file upload functionality:
+    Posting the requests as well as changing the GUI.
+ */
+
+
 let uploadedFilesCount;
 
 async function uploadFiles() {

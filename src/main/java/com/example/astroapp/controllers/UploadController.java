@@ -67,8 +67,8 @@ public class UploadController {
 
     @PostMapping("/parse")
     @ResponseBody
-    public String parseAndSave(@RequestParam(name = "path-to-dir") String pathToDir,
-                               @RequestParam(name = "file-count") int numOfFiles)
+    public String parseAndPersist(@RequestParam(name = "path-to-dir") String pathToDir,
+                                  @RequestParam(name = "file-count") int numOfFiles)
             throws FileNotFoundException {
         User uploadingUser = userService.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());

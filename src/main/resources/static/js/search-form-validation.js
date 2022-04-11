@@ -1,3 +1,8 @@
+/*
+    Validation of the object search form.
+*/
+
+
 const searchForm = document.getElementById("searchForm");
 
 searchForm.addEventListener('submit', function (event) {
