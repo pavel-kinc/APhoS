@@ -1,61 +1,45 @@
 let uploadedFilesCount;
 
-//TODO refactor this garbage!!!
-function uploadFiles() {
+async function uploadFiles() {
     uploadedFilesCount = 0;
     const uploadMessageArea = createScrollPanel();
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
-    document.getElementById("progressBar").style.visibility = "visible";
-    document.getElementById("progressSpinner").style.visibility = "visible";
-    document.getElementById("processingSign").style.visibility = "hidden";
-    document.getElementById("processingCheck").style.visibility = "hidden";
-    document.getElementById("processingMessage").style.visibility = "hidden";
+    let filesLength = files.length;
+    displayUploadBeginningElements();
     const uploadProgress = document.getElementById("uploadProgress");
     uploadProgress.style.width = "0";
-    let filesLength = files.length;
-    const myHeaders = new Headers();
+    const reqHeaders = new Headers();
     let formData = new FormData();
-    formData.append("file", files[0]);
-    formData.append("dir-name", "create_new");
-    myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
-    fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
-        .then(response => response.text())
-        .then(async pathToDir => {
-            let i = 1;
-            printUploadMessages(true, files[0].name,
-                uploadProgress, filesLength, uploadMessageArea, pathToDir);
-            do {
-                await new Promise(r => setTimeout(r, 200));
-                let formData = new FormData();
-                let file = files[i];
-                let finalFetchBody = new FormData();
-                finalFetchBody.append("path-to-dir", pathToDir)
-                if (uploadedFilesCount === filesLength) {
-                    postFiles(myHeaders, finalFetchBody, filesLength);
-                }
-                formData.append("file", file);
-                formData.append("dir-name", pathToDir);
-                fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
-                    .then(response => response.ok)
-                    .then(success => {
-                        printUploadMessages(success, file.name,
-                            uploadProgress, filesLength, uploadMessageArea);
-                        if (uploadedFilesCount === filesLength) {
-                            postFiles(myHeaders, finalFetchBody, filesLength)
-                        }
-                    });
-                i++;
-            } while (i < filesLength);
-        })
-    document.getElementById("submitButton").disabled = true;
+    let pathToDir = "create_new";
+    let success = false;
+    reqHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
+    for (let i = 0; i < filesLength; i++) {
+        await new Promise(r => setTimeout(r, 100));
+        formData.set("file", files[i]);
+        formData.set("dir-name", pathToDir);
+        // we want to create the tmp folder with the first file
+        if (i === 0) {
+            pathToDir = (await (await fetch('/upload/save',
+                {method: "POST", headers: reqHeaders, body: formData})).text()).valueOf();
+            success = true;
+        } else {
+            success = (await fetch('/upload/save',
+                {method: "POST", headers: reqHeaders, body: formData})).ok;
+        }
+        printUploadMessages(success, files[i].name,
+            uploadProgress, filesLength, uploadMessageArea);
+    }
+    parseFiles(reqHeaders, pathToDir, filesLength);
 }
 
-function postFiles(headers, body, filesLength) {
-    body.append("file-count", filesLength);
+function parseFiles(headers, pathToDir, filesLength) {
+    let parseRequestBody = new FormData();
+    parseRequestBody.append("file-count", filesLength.toString());
+    parseRequestBody.append("path-to-dir", pathToDir);
     fetch("/upload/parse", {
         method: "POST",
-        headers: headers, body: body
+        headers: headers, body: parseRequestBody
     })
         .then(response => response.text())
         .then(body => finishedSaving(filesLength.toString(), body));
@@ -105,4 +89,14 @@ function createScrollPanel() {
     scrollPanel.id = "uploadMessages";
     mainColumn.appendChild(scrollPanel);
     return scrollPanel;
+}
+
+
+function displayUploadBeginningElements() {
+    document.getElementById("progressBar").style.visibility = "visible";
+    document.getElementById("progressSpinner").style.visibility = "visible";
+    document.getElementById("processingSign").style.visibility = "hidden";
+    document.getElementById("processingCheck").style.visibility = "hidden";
+    document.getElementById("processingMessage").style.visibility = "hidden";
+    document.getElementById("submitButton").disabled = true;
 }
