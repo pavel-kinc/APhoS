@@ -8,7 +8,7 @@ import java.util.List;
 public class UploadLog {
 
     private long id;
-    private Timestamp uploadTime;
+    private String uploadTime;
     private int numOfFiles;
     private int numOfErrors;
     private int numOfSuccessful;
@@ -25,11 +25,11 @@ public class UploadLog {
         this.id = id;
     }
 
-    public Timestamp getUploadTime() {
+    public String getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(Timestamp uploadTime) {
+    public void setUploadTime(String uploadTime) {
         this.uploadTime = uploadTime;
     }
 

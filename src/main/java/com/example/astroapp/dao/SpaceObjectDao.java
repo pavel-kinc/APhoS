@@ -26,9 +26,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius, String name, String minMag,
+    public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius,
+                                              String name, String minMag,
                                               String maxMag, String catalog, String objectId) {
-        StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
+        StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, " +
+                "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
                 " FROM space_object LEFT OUTER JOIN flux ON object_id=space_object.id");
         boolean appendAnd = false;
@@ -74,7 +76,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             }
             query.append(" catalog_id LIKE ?");
         }
-        query.append(" GROUP BY space_object.id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag LIMIT 100");
+        query.append(" GROUP BY space_object.id, name, catalog, catalog_id," +
+                " catalog_rec, catalog_dec, catalog_mag LIMIT 100");
         String finishedQuery = query.toString();
         assert getJdbcTemplate() != null;
         return getJdbcTemplate().query(finishedQuery, new SpaceObjectPreparedStatementSetter(
@@ -110,7 +113,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
 
     public List<String> getAvailableCatalogues() {
         assert getJdbcTemplate() != null;
-        return getJdbcTemplate().queryForList("SELECT DISTINCT catalog FROM space_object", String.class);
+        return getJdbcTemplate()
+                .queryForList("SELECT DISTINCT catalog FROM space_object", String.class);
     }
 
     public SpaceObject getSpaceObjectById(Long id) {

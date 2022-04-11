@@ -59,7 +59,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         fluxUserTime.setUsername(rs.getString("username"));
         long expBegin = rs.getTimestamp("exposure_begin").getTime();
         long expEnd = rs.getTimestamp("exposure_end").getTime();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         fluxUserTime.setExpMiddle(dateFormatter.format(new Date((expBegin + expEnd) / 2)));
         try {
             Night night = new Night(rs.getTimestamp("exposure_begin"),
