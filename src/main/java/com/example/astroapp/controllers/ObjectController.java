@@ -58,6 +58,8 @@ public class ObjectController {
                 .distinct()
                 .collect(Collectors.toList());
         List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
+        // if show-saturated is true we need all the fluxes for the table and
+        // non-saturated fluxes for csv and graph so two lists of fluxes are needed
         List<FluxUserTime> fluxesToDisplayInTable = null;
         if (showSaturated) {
             fluxesToDisplayInTable = fluxes;

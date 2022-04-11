@@ -28,27 +28,16 @@ public class HomeController {
     }
 
     @GetMapping("search")
-    public String displayResults(@RequestParam(name="right-ascension") String rightAscension,
-                                 @RequestParam String dec,
-                                 @RequestParam String radius,
-                                 @RequestParam String name,
-                                 @RequestParam(name = "min-mag") String minMag,
-                                 @RequestParam(name = "max-mag") String maxMag,
-                                 @RequestParam String catalog,
-                                 @RequestParam(name = "object-id") String objectId, Model model) {
-        List<ObjectFluxCount> objectFluxCountList = spaceObjectDao.queryObjects(
-                rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
-        List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
-        model.addAttribute("availableCatalogues", availableCatalogues);
-        model.addAttribute("resultingRows", objectFluxCountList);
-        model.addAttribute("RA", rightAscension);
-        model.addAttribute("dec", dec);
-        model.addAttribute("radius", radius);
-        model.addAttribute("name", name);
-        model.addAttribute("minMag", minMag);
-        model.addAttribute("maxMag", maxMag);
-        model.addAttribute("catalog", catalog);
-        model.addAttribute("objectId", objectId);
+    public String displayObjectResults(@RequestParam(name="right-ascension") String rightAscension,
+                                       @RequestParam String dec,
+                                       @RequestParam String radius,
+                                       @RequestParam String name,
+                                       @RequestParam(name = "min-mag") String minMag,
+                                       @RequestParam(name = "max-mag") String maxMag,
+                                       @RequestParam String catalog,
+                                       @RequestParam(name = "object-id") String objectId, Model model) {
+        addModelAttributes(rightAscension, dec, radius, name, minMag, maxMag,
+                catalog, objectId, model);
         return "home";
     }
 
@@ -75,11 +64,18 @@ public class HomeController {
             @RequestParam(name = "max-mag") String maxMag,
             @RequestParam String catalog,
             @RequestParam(name = "object-id") String objectId, Model model) {
+        model.addAttribute("originalId", originalId);
+        model.addAttribute("originalCatId", originalCatId);
+        addModelAttributes(rightAscension, dec, radius, name, minMag, maxMag, catalog,
+                objectId, model);
+        return "home";
+    }
+
+    private void addModelAttributes(String rightAscension, String dec, String radius, String name, String minMag,
+                                            String maxMag, String catalog, String objectId, Model model) {
         List<ObjectFluxCount> objectFluxCountList = spaceObjectDao.queryObjects(
                 rightAscension, dec, radius, name, minMag, maxMag, catalog, objectId);
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
-        model.addAttribute("originalId", originalId);
-        model.addAttribute("originalCatId", originalCatId);
         model.addAttribute("availableCatalogues", availableCatalogues);
         model.addAttribute("resultingRows", objectFluxCountList);
         model.addAttribute("RA", rightAscension);
@@ -90,6 +86,5 @@ public class HomeController {
         model.addAttribute("maxMag", maxMag);
         model.addAttribute("catalog", catalog);
         model.addAttribute("objectId", objectId);
-        return "home";
     }
 }
