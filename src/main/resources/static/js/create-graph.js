@@ -71,7 +71,7 @@ let chart = new Chart(ctx, {
                     pinch: {
                         enabled: true
                     },
-                    mode: 'xy'
+                    mode: 'x'
                 },
                 pan: {
                     enabled: true,

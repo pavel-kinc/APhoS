@@ -81,9 +81,3 @@ CREATE INDEX IF NOT EXISTS object_catalog_mag_index
 
 CREATE INDEX IF NOT EXISTS flux_object_id_index
     ON flux (object_id);
-
-CREATE INDEX IF NOT EXISTS flux_user_id_index
-    ON flux (user_id);
-
-CREATE INDEX IF NOT EXISTS flux_photo_properties_id_index
-    ON flux (photo_properties_id);
