@@ -1,5 +1,8 @@
 package com.example.astroapp.exceptions;
 
+/**
+ * The Exception for the unexpected format of a specific csv row.
+ */
 public class CsvRowDataParseException extends CsvContentException {
 
     public CsvRowDataParseException() {

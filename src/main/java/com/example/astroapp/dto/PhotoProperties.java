@@ -2,6 +2,9 @@ package com.example.astroapp.dto;
 
 import java.sql.Timestamp;
 
+/**
+ * The Data Transfer Object for the photo properties.
+ */
 public class PhotoProperties {
     private long id;
     private Timestamp exposureBegin;

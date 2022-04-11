@@ -14,10 +14,12 @@ import java.sql.Types;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The Data Access Object for the flux entity.
+ */
 @Repository
 @Transactional
 public class FluxDao extends JdbcDaoSupport {
-
 
     @Autowired
     FluxDao(DataSource dataSource) {
@@ -69,6 +71,7 @@ public class FluxDao extends JdbcDaoSupport {
     }
 
     public long fluxExists(Long id) {
+        // method for testing purposes
         assert getJdbcTemplate() != null;
         String query = "SELECT id FROM flux WHERE id = ?";
         return getJdbcTemplate().queryForObject(query, Long.class, id);

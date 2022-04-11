@@ -5,6 +5,9 @@ import org.springframework.data.util.Pair;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * The Data Transfer Object for the upload log.
+ */
 public class UploadLog {
 
     private long id;

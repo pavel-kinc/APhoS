@@ -11,6 +11,9 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.util.Objects;
 
+/**
+ * The Data Access Object for the photo_properties entity.
+ */
 @Repository
 @Transactional
 public class PhotoPropertiesDao extends JdbcDaoSupport {
@@ -19,6 +22,7 @@ public class PhotoPropertiesDao extends JdbcDaoSupport {
     PhotoPropertiesDao(DataSource dataSource) {
         this.setDataSource(dataSource);
     }
+
 
     public void savePhotoProps(PhotoProperties photoProperties) {
         assert getJdbcTemplate() != null;

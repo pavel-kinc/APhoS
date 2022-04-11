@@ -4,6 +4,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * The User hibernate entity.
+ */
 @Entity
 @Table(name = "users", schema = "public")
 public class User {

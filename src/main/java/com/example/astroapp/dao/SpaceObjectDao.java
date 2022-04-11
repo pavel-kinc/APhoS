@@ -16,6 +16,9 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The Data Access Object for the space_object entity.
+ */
 @Repository
 @Transactional
 public class SpaceObjectDao extends JdbcDaoSupport {
@@ -26,6 +29,9 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
+    /**
+     * Method to query objects based on the parameters given in the search form
+     */
     public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius,
                                               String name, String minMag,
                                               String maxMag, String catalog, String objectId) {

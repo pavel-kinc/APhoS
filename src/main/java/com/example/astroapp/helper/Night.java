@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * The type Night to represent a night during which a certain set of photos was taken.
- * This is a helper class to identify a certain night with the intention of setting aperture
+ * This is a helper class to identify a certain night with the intention of setting aperture and deviation
  * for that night. One night includes times from 12:00 of the first date to 12:00 of the second date.
  */
 public class Night implements Comparable<Night> {
@@ -51,7 +51,20 @@ public class Night implements Comparable<Night> {
         this.username = username;
     }
 
-    public Night(String firstDateOfTheNight, String secondDateOfTheNight, String username, int idOnPage, String apToBeUsed, String refApToBeUsed) {
+
+    /**
+     * Instantiates a new Night. The night on the page is identified by id which is its
+     * position when sorted by time and in case of match by the username of the uploader
+     *
+     * @param firstDateOfTheNight  the first date of the night
+     * @param secondDateOfTheNight the second date of the night
+     * @param username             the username of the uploader
+     * @param idOnPage             the id on page
+     * @param apToBeUsed           the aperture to be used
+     * @param refApToBeUsed        the ref aperture to be used
+     */
+    public Night(String firstDateOfTheNight, String secondDateOfTheNight,
+                 String username, int idOnPage, String apToBeUsed, String refApToBeUsed) {
         this.firstDateOfTheNight = firstDateOfTheNight;
         this.secondDateOfTheNight = secondDateOfTheNight;
         this.username = username;
@@ -84,56 +97,28 @@ public class Night implements Comparable<Night> {
         this.idOnPage = idOnPage;
     }
 
-    /**
-     * Gets first date of the night.
-     *
-     * @return the first date of the night
-     */
     public String getFirstDateOfTheNight() {
         return firstDateOfTheNight;
     }
 
-    /**
-     * Gets second date of the night.
-     *
-     * @return the second date of the night
-     */
+
     public String getSecondDateOfTheNight() {
         return secondDateOfTheNight;
     }
 
-    /**
-     * Gets username.
-     *
-     * @return the username
-     */
+
     public String getUsername() {
         return username;
     }
 
-    /**
-     * Sets first date of the night.
-     *
-     * @param firstDateOfTheNight the first date of the night
-     */
     public void setFirstDateOfTheNight(String firstDateOfTheNight) {
         this.firstDateOfTheNight = firstDateOfTheNight;
     }
 
-    /**
-     * Sets second date of the night.
-     *
-     * @param secondDateOfTheNight the second date of the night
-     */
     public void setSecondDateOfTheNight(String secondDateOfTheNight) {
         this.secondDateOfTheNight = secondDateOfTheNight;
     }
 
-    /**
-     * Sets username.
-     *
-     * @param username the username
-     */
     public void setUsername(String username) {
         this.username = username;
     }

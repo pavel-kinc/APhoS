@@ -2,6 +2,10 @@ package com.example.astroapp.exceptions;
 
 import java.util.IllegalFormatException;
 
+
+/**
+ * The Exception for the incorrectly formatted coordinate input.
+ */
 public class IllegalCoordinateFormatException extends RuntimeException {
 
     public IllegalCoordinateFormatException() {
