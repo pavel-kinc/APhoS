@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  * The Data Transfer Object for the upload log.
+ * The error messages are stored in list of pairs of filename and error in that file.
  */
 public class UploadLog {
 

@@ -76,7 +76,7 @@ public class FileHandlingServiceRowParseTests {
 
     @Test()
     public void correctRowNoExceptionIsThrown() throws ParseException {
-        fileHandlingService.saveRow(defaultRow, photoProperties, sampleUser);
+        fileHandlingService.parseAndSaveRow(defaultRow, photoProperties, sampleUser);
     }
 
     @Test()
@@ -85,14 +85,14 @@ public class FileHandlingServiceRowParseTests {
         for (int i = 1; i < 7; i++) {
             rowWithoutApertures.remove("Ap"+i);
         }
-        fileHandlingService.saveRow(rowWithoutApertures, photoProperties, sampleUser);
+        fileHandlingService.parseAndSaveRow(rowWithoutApertures, photoProperties, sampleUser);
     }
 
     @Test
     public void correctRowMissingNonEssentialAttribute() throws ParseException {
         Map<String, String> rowMissing = new HashMap<>(defaultRow);
         rowMissing.remove("Name");
-        fileHandlingService.saveRow(rowMissing, photoProperties, sampleUser);
+        fileHandlingService.parseAndSaveRow(rowMissing, photoProperties, sampleUser);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class FileHandlingServiceRowParseTests {
         rowMissing.remove("CatalogRA");
         rowMissing.remove("CatalogDec");
         rowMissing.remove("CatalogMag");
-        fileHandlingService.saveRow(rowMissing, photoProperties, sampleUser);
+        fileHandlingService.parseAndSaveRow(rowMissing, photoProperties, sampleUser);
     }
 
     @Test
@@ -111,7 +111,7 @@ public class FileHandlingServiceRowParseTests {
         Map<String, String> rowMissing = new HashMap<>(defaultRow);
         rowMissing.remove("ApAuto");
         assertThrows(CsvRowDataParseException.class, () ->
-                fileHandlingService.saveRow(rowMissing, photoProperties, sampleUser));
+                fileHandlingService.parseAndSaveRow(rowMissing, photoProperties, sampleUser));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class FileHandlingServiceRowParseTests {
         Map<String, String> rowNotNumericMag = new HashMap<>(defaultRow);
         rowNotNumericMag.put("CatalogMag", "not a number");
         assertThrows(CsvRowDataParseException.class, () ->
-                fileHandlingService.saveRow(rowNotNumericMag, photoProperties, sampleUser));
+                fileHandlingService.parseAndSaveRow(rowNotNumericMag, photoProperties, sampleUser));
     }
 
     @Test
@@ -127,7 +127,7 @@ public class FileHandlingServiceRowParseTests {
         Map<String, String> rowWrongRa = new HashMap<>(defaultRow);
         rowWrongRa.put("RA", "21 a 55.318");
         assertThrows(ParseException.class, () ->
-                fileHandlingService.saveRow(rowWrongRa, photoProperties, sampleUser));
+                fileHandlingService.parseAndSaveRow(rowWrongRa, photoProperties, sampleUser));
     }
 
     @Test
@@ -135,6 +135,6 @@ public class FileHandlingServiceRowParseTests {
         Map<String, String> rowWrongDec = new HashMap<>(defaultRow);
         rowWrongDec.put("Dec", "18 38.60");
         assertThrows(CsvRowDataParseException.class, () ->
-                fileHandlingService.saveRow(rowWrongDec, photoProperties, sampleUser));
+                fileHandlingService.parseAndSaveRow(rowWrongDec, photoProperties, sampleUser));
     }
 }
