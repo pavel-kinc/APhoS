@@ -6,9 +6,16 @@
 const searchForm = document.getElementById("searchForm");
 
 searchForm.addEventListener('submit', function (event) {
+    let messages = [];
+    let alertsBox = document.getElementById("alertsBox");
+    alertsBox.innerHTML = '';
     if (!searchForm.checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
+    }
+    let inputs = searchForm.getElementsByTagName("input");
+    for (let input of inputs) {
+        input.classList.remove("is-invalid");
     }
     let minInput = document.getElementById("minInput");
     let maxInput = document.getElementById("maxInput");
@@ -17,6 +24,7 @@ searchForm.addEventListener('submit', function (event) {
         event.stopPropagation();
         minInput.classList.add("is-invalid");
         maxInput.classList.add("is-invalid");
+        messages.push("Magnitude values incorrect range");
     }
     let raInput = document.getElementById("raInput");
     let decInput = document.getElementById("decInput");
@@ -36,11 +44,20 @@ searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
         event.stopPropagation();
         emptyCoorInputs.map(input => input.classList.add("is-invalid"))
+        messages.push("Please fill out all of coordinate values");
     }
-    let inputs = searchForm.getElementsByTagName("input");
     for (let input of inputs) {
         if (!input.checkValidity()) {
             input.classList.add("is-invalid");
+            messages.push("Incorrect coordinates format")
         }
+    }
+    for (let message of messages) {
+        let alert = document.createElement("div");
+        alert.classList.add('alert');
+        alert.classList.add('alert-danger');
+        alert.setAttribute('role', 'alert');
+        alert.innerText = message;
+        alertsBox.appendChild(alert);
     }
 })
