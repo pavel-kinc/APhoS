@@ -63,15 +63,19 @@
                         <div class="input-group px-3">
                             <span class="input-group-text"> Min </span>
                             <input id="minInput" type="text" class="form-control" name="min-mag"
-                                   th:value="0" pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
+                                   th:value="${minMag != null ? minMag : 0}"
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
                             <div class="my-2">
-                                <input id="minRange" type="range" value="0" max="15" step="0.1">
+                                <input id="minRange" type="range" th:value="${minMag != null ? minMag : 0}"
+                                       max="15" step="0.1">
                             </div>
                             <span class="input-group-text"> Max </span>
-                            <input id="maxInput" name="max-mag" type="text" class="form-control" value="15"
+                            <input id="maxInput" name="max-mag" type="text" class="form-control"
+                                   th:value="${maxMag != null ? maxMag : 15}"
                                    pattern="([0-9]*[.])?[0-9]+" aria-label="Input max mag value">
                             <div class="my-2">
-                                <input id="maxRange" type="range" value="15" max="15" step="0.1">
+                                <input id="maxRange" type="range" th:value="${maxMag != null ? maxMag : 15}"
+                                       max="15" step="0.1">
                             </div>
                         </div>
                     </div>
@@ -79,8 +83,8 @@
                 <div class="input-group mt-1">
                     <div class="col-md-2">
                         <select id="catalogSelect" class="form-select" data-style="btn-primary" name="catalog">
-                            <option th:each="catalog : ${availableCatalogues}"
-                                    th:text="${catalog}" th:value="${catalog}">
+                            <option th:each="cat : ${availableCatalogues}"
+                                    th:text="${cat}" th:value="${cat}" th:selected="${catalog == cat}">
                             </option>
                         </select>
                     </div>

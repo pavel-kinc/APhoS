@@ -7,13 +7,7 @@ minRange = document.getElementById("minRange");
 maxRange = document.getElementById("maxRange");
 minInput = document.getElementById("minInput");
 maxInput = document.getElementById("maxInput");
-minRange.addEventListener("change", function (event) {
 
-})
-
-maxRange.addEventListener("change", function (event) {
-
-})
 minRange.oninput = function () {
     if (parseInt(minRange.value) > parseInt(maxRange.value)) {
         minRange.value = maxRange.value;
