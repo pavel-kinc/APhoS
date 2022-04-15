@@ -70,8 +70,7 @@ public class UploadController {
 
     @GetMapping("/parse")
     public SseEmitter parseAndPersist(@RequestParam(name = "path-to-dir") String pathToDir,
-                                  @RequestParam(name = "file-count") int numOfFiles)
-            throws FileNotFoundException {
+                                      @RequestParam(name = "file-count") int numOfFiles) {
         // need to get user beforehand because security context is lost in a new thread
         User uploadingUser = userService.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
@@ -86,9 +85,9 @@ public class UploadController {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
                 // Prevent getting path outside tmp, comment in case of testing
-                if (!pathToDir.matches("/tmp/[^/]*")) {
-                    throw new FileNotFoundException("Given path to the directory is not correct.");
-                }
+//                if (!pathToDir.matches("/tmp/[^/]*")) {
+//                    throw new FileNotFoundException("Given path to the directory is not correct.");
+//                }
                 try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
                     List<Path> regularFiles = filePaths
                             .filter(Files::isRegularFile)

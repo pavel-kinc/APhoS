@@ -18,16 +18,19 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -66,11 +69,10 @@ class UploadControllerTests {
     }
 
     @Test
-    public void directoryWithFilesNotExisting() {
-        assertThrows(FileNotFoundException.class, () -> mockMvc.perform(
-                        post("/upload/parse")
-                                .param("path-to-dir", "hehe")
-                                .param("file-count", "1")));
+    public void directoryWithFilesNotExisting() throws Exception {
+        mockMvc.perform(get("/upload/parse")
+                .param("path-to-dir", "notexisting")
+                .param("file-count", "1"));
     }
 
     @Test
@@ -80,10 +82,15 @@ class UploadControllerTests {
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
-                post("/upload/parse")
-                    .param("path-to-dir", "src/test/resources/correct_files")
-                        .param("file-count", "1"))
-                .andExpect(content().string("0"));
+                        get("/upload/parse")
+                                .param("path-to-dir", "src/test/resources/correct_files")
+                                .param("file-count", "1"))
+                .andExpect(request().asyncStarted())
+                .andExpect(status().isOk())
+                .andExpect(request().asyncResult(nullValue()))
+                .andExpect(content().string(containsString(
+                        "event:COMPLETED\n" +
+                        "data:0\n")));
     }
 
     @Test
@@ -93,9 +100,14 @@ class UploadControllerTests {
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(
-                        post("/upload/parse")
+                        get("/upload/parse")
                                 .param("path-to-dir", "src/test/resources/incorrect_files")
                                 .param("file-count", "2"))
-                .andExpect(content().string("2"));
+                .andExpect(request().asyncStarted())
+                .andExpect(status().isOk())
+                .andExpect(request().asyncResult(nullValue()))
+                .andExpect(content().string(containsString(
+                        "event:COMPLETED\n" +
+                                "data:2\n")));
     }
 }
