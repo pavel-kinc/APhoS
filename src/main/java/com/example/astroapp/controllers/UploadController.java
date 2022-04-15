@@ -93,7 +93,8 @@ public class UploadController {
                         try {
                             fileHandlingService.parseAndPersist(file, uploadingUser);
                             emitter.send(SseEmitter.event()
-                                    .name("FILE_STORED"));
+                                    .name("FILE_STORED")
+                                    .data(file.getFileName()));
                         } catch (IOException | CsvContentException e) {
                             unsuccessfulCount.getAndIncrement();
                             fileErrorMessagePairsList.add(Pair.of(
@@ -101,7 +102,8 @@ public class UploadController {
                         }
                     }
                     emitter.send(SseEmitter.event()
-                            .name("COMPLETED"));
+                            .name("COMPLETED")
+                            .data(unsuccessfulCount));
                     emitter.complete();
                 } catch (IOException e) {
                     logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles,

@@ -23,18 +23,22 @@
                             <button class="btn btn-primary" id="submitButton" onclick="uploadFiles()" disabled> Upload Files </button>
                         </div>
                     </div>
-                    <h5 id="uploading" style="display: none">Uploading files</h5>
-                    <div class="row justify-content-start" id="processingRow" style="display: none">
+                    <div id="uploading" class="row justify-content-start" style="display: none">
+                        <h5>Uploading files</h5>
+                    </div>
+                    <div id="error" class="row justify-content-start" style="display: none">
+                        <h5>Unexpected error happened, please try again later.</h5>
+                    </div>
+                    <div id="processingRow" style="display: none">
                         <div id="processingSign" class="col-auto" style="visibility: hidden">
-                            <h5>Processing files</h5>
+                            <div class="d-flex flex-row">
+                                <h5>Processing files</h5>
+                                <i id="processingCheck" class="bi bi-check-lg" style="visibility: hidden"></i>
+                                <div id="processingSpinner" class="spinner-border spinner-border-sm"
+                                     role="status" style="visibility: hidden"></div>
+                            </div>
                             <p>You can find the results later in profile -> Upload logs.</p>
                         </div>
-                        <div class="col-auto">
-                            <i id="processingCheck" class="bi bi-check-lg" style="visibility: hidden"></i>
-                            <div id="processingSpinner" class="spinner-border spinner-border-sm"
-                                 role="status" style="visibility: hidden"></div>
-                        </div>
-                        <p id="processingMessage" style="visibility: hidden"> files saved successfully.</p>
                     </div>
                     <div class="row">
                         <div class="col-md-11">
@@ -42,13 +46,9 @@
                                 <div class="progress-bar" id="uploadProgress" role="progressbar" style="width: 0"
                                      aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                            <p class="mt-2" id="processingMessage" style="visibility: hidden">
+                                files saved successfully.</p>
                         </div>
-<!--                        <div class="col-md-1">-->
-<!--                            <div class="d-flex align-items-center">-->
-<!--                                <div class="spinner-border spinner-border-sm" id="progressSpinner"-->
-<!--                                     role="status" style="visibility: hidden"></div>-->
-<!--                            </div>-->
-<!--                        </div>-->
                     </div>
                     <div class="scrollable mt-4" id="uploadMessages"></div>
                 </div>

@@ -39,18 +39,22 @@ async function uploadFiles() {
 }
 
 function parseFiles(headers, pathToDir, filesLength) {
-    progressBarCount=0;
+    progressBarCount = 0;
     updateProgress(filesLength);
     let emitter = new EventSource(
-        '/upload/parse?path-to-dir=' + pathToDir + '&file-count='+filesLength);
+        '/upload/parse?path-to-dir=' + pathToDir + '&file-count=' + filesLength);
     emitter.addEventListener("FILE_STORED", function () {
         ++progressBarCount;
         updateProgress(filesLength);
     });
-    emitter.addEventListener("COMPLETED", function () {
-       emitter.close();
-       finishedSaving(filesLength, 0); // TODO return successcount on complete
+    emitter.addEventListener("COMPLETED", function (e) {
+        let numOfUnsuccessfull = e.data;
+        emitter.close();
+        finishedSaving(filesLength, numOfUnsuccessfull);
     });
+    emitter.onerror = function (e) {
+        document.getElementById("error").style.display = "inline";
+    };
     document.getElementById("uploading").style.display = "none";
     document.getElementById("processingRow").style.display = "inline";
     document.getElementById("processingSign").style.visibility = "visible";
@@ -106,6 +110,7 @@ function updateProgress(filesCount) {
 
 function displayUploadBeginningElements() {
     progressBar.style.visibility = "visible";
+    document.getElementById("processingCheck").style.visibility = "hidden";
     document.getElementById("processingSign").style.visibility = "hidden";
     document.getElementById("processingRow").style.display = "none";
     document.getElementById("uploading").style.display = "inline";
