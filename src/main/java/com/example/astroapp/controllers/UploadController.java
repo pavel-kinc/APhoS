@@ -85,6 +85,10 @@ public class UploadController {
                 if (!Files.isDirectory(Paths.get(pathToDir))) {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
+                // Prevent getting path outside tmp, comment in case of testing
+                if (!pathToDir.matches("/tmp/[^/]*")) {
+                    throw new FileNotFoundException("Given path to the directory is not correct.");
+                }
                 try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
                     List<Path> regularFiles = filePaths
                             .filter(Files::isRegularFile)
