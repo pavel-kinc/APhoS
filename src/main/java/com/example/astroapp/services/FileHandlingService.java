@@ -50,16 +50,17 @@ public class FileHandlingService {
      * Entry point of the service.
      *
      * @param pathToFile the path to file to parse
+     * @param uploadingUser
      * @throws IOException the io exception
      */
     @Transactional(noRollbackFor = CsvContentException.class)
-    public void parseAndPersist(Path pathToFile) throws IOException {
+    public void parseAndPersist(Path pathToFile, User uploadingUser) throws IOException {
         PhotoProperties photoProperties = new PhotoProperties();
         File file = pathToFile.toFile();
         // first element is the csv schema, second element is the length of the header
         Pair<List<String>, Integer> retPair = parseHeader(file, photoProperties);
         photoPropsDao.savePhotoProps(photoProperties);
-        parseCsv(retPair.getFirst(), retPair.getSecond(), file, photoProperties);
+        parseCsv(retPair.getFirst(), retPair.getSecond(), uploadingUser, file, photoProperties);
     }
 
     /**
@@ -71,9 +72,8 @@ public class FileHandlingService {
      * @param photoProperties the photo properties object of the file
      * @throws IOException the io exception
      */
-    public void parseCsv(List<String> schemaRow, Integer startingLine,
+    public void parseCsv(List<String> schemaRow, Integer startingLine, User uploadingUser,
                           File file, PhotoProperties photoProperties) throws IOException {
-        User uploadingUser = userService.getCurrentUser();
         CsvMapper csvMapper = new CsvMapper();
         try (Reader fileReader = new FileReader(file, StandardCharsets.ISO_8859_1)) {
             CsvSchema.Builder csvBuilder = CsvSchema.builder();

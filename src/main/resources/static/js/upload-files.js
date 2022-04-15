@@ -4,17 +4,17 @@
  */
 
 
-let uploadedFilesCount;
+let progressBarCount;
+const progressBar = document.getElementById("uploadProgress");
 
 async function uploadFiles() {
-    uploadedFilesCount = 0;
+    progressBarCount = 0;
     const uploadMessageArea = createScrollPanel();
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
     let filesLength = files.length;
+    updateProgress(filesLength);
     displayUploadBeginningElements();
-    const uploadProgress = document.getElementById("uploadProgress");
-    uploadProgress.style.width = "0";
     const reqHeaders = new Headers();
     let formData = new FormData();
     let pathToDir = "create_new";
@@ -33,22 +33,26 @@ async function uploadFiles() {
             success = (await fetch('/upload/save',
                 {method: "POST", headers: reqHeaders, body: formData})).ok;
         }
-        printUploadMessages(success, files[i].name,
-            uploadProgress, filesLength, uploadMessageArea);
+        printUploadMessages(success, files[i].name, filesLength, uploadMessageArea);
     }
     parseFiles(reqHeaders, pathToDir, filesLength);
 }
 
 function parseFiles(headers, pathToDir, filesLength) {
-    let parseRequestBody = new FormData();
-    parseRequestBody.append("file-count", filesLength.toString());
-    parseRequestBody.append("path-to-dir", pathToDir);
-    fetch("/upload/parse", {
-        method: "POST",
-        headers: headers, body: parseRequestBody
-    })
-        .then(response => response.text())
-        .then(body => finishedSaving(filesLength.toString(), body));
+    progressBarCount=0;
+    updateProgress(filesLength);
+    let emitter = new EventSource(
+        '/upload/parse?path-to-dir=' + pathToDir + '&file-count='+filesLength);
+    emitter.addEventListener("FILE_STORED", function () {
+        ++progressBarCount;
+        updateProgress(filesLength);
+    });
+    emitter.addEventListener("COMPLETED", function () {
+       emitter.close();
+       finishedSaving(filesLength, 0); // TODO return successcount on complete
+    });
+    document.getElementById("uploading").style.display = "none";
+    document.getElementById("processingRow").style.display = "inline";
     document.getElementById("processingSign").style.visibility = "visible";
     document.getElementById("processingSpinner").style.visibility = "visible";
 }
@@ -58,7 +62,7 @@ function finishedSaving(fileCount, errorCount) {
     if (errorCount === "IOError") {
         successCount = 0;
     } else {
-        successCount = (fileCount.valueOf() - errorCount.valueOf()).toString()
+        successCount = (fileCount.valueOf() - errorCount.valueOf()).toString();
     }
     document.getElementById("processingSpinner").style.visibility = "hidden";
     document.getElementById("processingCheck").style.visibility = "visible";
@@ -67,20 +71,16 @@ function finishedSaving(fileCount, errorCount) {
     messageFinished.style.visibility = "visible";
 }
 
-function printUploadMessages(success, fileName, uploadProgress, filesLength, uploadMessageArea) {
+function printUploadMessages(success, fileName, filesLength, uploadMessageArea) {
     const paragraph = document.createElement("p");
     const message = document.createTextNode(
         success ?
             fileName + " uploaded successfully" :
             "There's been an error uploading " + fileName);
+    progressBarCount++;
+    updateProgress(filesLength);
     paragraph.appendChild(message);
-    let progress = Math.ceil((++uploadedFilesCount) / (filesLength / 100)).toString();
     uploadMessageArea.appendChild(paragraph);
-    uploadProgress.ariaValueNow = progress;
-    uploadProgress.style.width = progress + "%";
-    if (progress === "100") {
-        document.getElementById("progressSpinner").style.visibility = "hidden";
-    }
 }
 
 
@@ -98,11 +98,16 @@ function createScrollPanel() {
 }
 
 
+function updateProgress(filesCount) {
+    let progress = Math.ceil((progressBarCount) / (filesCount / 100)).toString();
+    progressBar.ariaValueNow = progress;
+    progressBar.style.width = progress + "%";
+}
+
 function displayUploadBeginningElements() {
-    document.getElementById("progressBar").style.visibility = "visible";
-    document.getElementById("progressSpinner").style.visibility = "visible";
+    progressBar.style.visibility = "visible";
     document.getElementById("processingSign").style.visibility = "hidden";
-    document.getElementById("processingCheck").style.visibility = "hidden";
-    document.getElementById("processingMessage").style.visibility = "hidden";
+    document.getElementById("processingRow").style.display = "none";
+    document.getElementById("uploading").style.display = "inline";
     document.getElementById("submitButton").disabled = true;
 }
