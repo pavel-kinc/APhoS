@@ -73,17 +73,11 @@ CREATE TABLE IF NOT EXISTS uploading_error_messages
 CREATE INDEX IF NOT EXISTS object_coordinates_index
     ON space_object (coordinates);
 
-CREATE INDEX IF NOT EXISTS object_catalog_index
-    ON space_object (catalog);
+CREATE INDEX IF NOT EXISTS object_name_index
+    ON space_object (name);
 
 CREATE INDEX IF NOT EXISTS object_catalog_mag_index
     ON space_object (catalog_mag);
 
 CREATE INDEX IF NOT EXISTS flux_object_id_index
     ON flux (object_id);
-
-CREATE INDEX IF NOT EXISTS flux_user_id_index
-    ON flux (user_id);
-
-CREATE INDEX IF NOT EXISTS flux_photo_properties_id_index
-    ON flux (photo_properties_id);

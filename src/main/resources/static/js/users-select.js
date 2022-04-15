@@ -1,3 +1,8 @@
+/*
+    Drag and drop filter for users when displaying fluxes.
+ */
+
+
 let unwantedSelect = document.getElementById("unwantedUsersSelect");
 let wantedSelect = document.getElementById("wantedUsersSelect");
 unwantedSelect.addEventListener("drop", drop);

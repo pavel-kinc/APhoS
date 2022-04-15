@@ -48,8 +48,8 @@ public class ObjectController {
                                       @RequestParam(name = "catalog-id") String catalogId,
                                       @RequestParam(name = "apertures", required = false) String[] apertures,
                                       @RequestParam(name = "ref-apertures", required = false) String[] refApertures,
-                                      @RequestParam(name = "show-saturated", defaultValue = "true")
-                                                  boolean showSaturated,
+                                      @RequestParam(name = "show-saturated",
+                                              defaultValue = "false") boolean showSaturated,
                                       Model model) {
         List<FluxUserTime> fluxes = fluxDao.getFluxesByObjId(id, referenceObjectId);
         List<String> users = fluxes
@@ -58,6 +58,8 @@ public class ObjectController {
                 .distinct()
                 .collect(Collectors.toList());
         List<Night> nights = setMagnitudes(fluxes, apertures, refApertures);
+        // if show-saturated is true we need all the fluxes for the table and
+        // non-saturated fluxes for csv and graph so two lists of fluxes are needed
         List<FluxUserTime> fluxesToDisplayInTable = null;
         if (showSaturated) {
             fluxesToDisplayInTable = fluxes;

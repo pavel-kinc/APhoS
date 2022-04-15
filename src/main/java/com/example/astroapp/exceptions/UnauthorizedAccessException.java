@@ -1,5 +1,9 @@
 package com.example.astroapp.exceptions;
 
+
+/**
+ * The Exception thrown when accessing secured endpoint without authentication.
+ */
 public class UnauthorizedAccessException extends RuntimeException {
     public UnauthorizedAccessException() {
     }

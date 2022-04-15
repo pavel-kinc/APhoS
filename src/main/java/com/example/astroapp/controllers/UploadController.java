@@ -9,9 +9,9 @@ import com.example.astroapp.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +22,9 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,40 +68,59 @@ public class UploadController {
         return path;
     }
 
-    @PostMapping("/parse")
-    @ResponseBody
-    public String parseAndSave(@RequestParam(name = "path-to-dir") String pathToDir,
-                               @RequestParam(name = "file-count") int numOfFiles)
-            throws FileNotFoundException {
+    @GetMapping("/parse")
+    public SseEmitter parseAndPersist(@RequestParam(name = "path-to-dir") String pathToDir,
+                                      @RequestParam(name = "file-count") int numOfFiles) {
+        // need to get user beforehand because security context is lost in a new thread
         User uploadingUser = userService.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
-        if (!Files.isDirectory(Paths.get(pathToDir))) {
-            throw new FileNotFoundException("Given path to the directory is not correct.");
-        }
-        int unsuccessfulCount = 0;
-        try {
-            try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
-                List<Path> regularFiles = filePaths
-                        .filter(Files::isRegularFile)
-                        .collect(Collectors.toList());
-                for (Path file : regularFiles) {
-                    try {
-                        fileHandlingService.store(file);
-                    } catch (IOException | CsvContentException e) {
-                        unsuccessfulCount++;
-                        fileErrorMessagePairsList.add(Pair.of(
-                                file.getFileName().toString(), e.getMessage()));
-                    }
+        AtomicInteger unsuccessfulCount = new AtomicInteger();
+        SseEmitter emitter = new SseEmitter();
+        ExecutorService sseExecutor = Executors.newSingleThreadExecutor();
+        // separate thread because of SseEmitter
+        sseExecutor.execute(() -> {
+            try {
+                if (!Files.isDirectory(Paths.get(pathToDir))) {
+                    throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
+                // Prevent getting path outside tmp, comment in case of testing
+//                if (!pathToDir.matches("/tmp/[^/]*")) {
+//                    throw new FileNotFoundException("Given path to the directory is not correct.");
+//                }
+                try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
+                    List<Path> regularFiles = filePaths
+                            .filter(Files::isRegularFile)
+                            .collect(Collectors.toList());
+                    for (Path file : regularFiles) {
+                        try {
+                            fileHandlingService.parseAndPersist(file, uploadingUser);
+                            emitter.send(SseEmitter.event()
+                                    .name("FILE_STORED")
+                                    .data(file.getFileName()));
+                        } catch (IOException | CsvContentException e) {
+                            unsuccessfulCount.getAndIncrement();
+                            fileErrorMessagePairsList.add(Pair.of(
+                                    file.getFileName().toString(), e.getMessage()));
+                        }
+                    }
+                    emitter.send(SseEmitter.event()
+                            .name("COMPLETED")
+                            .data(unsuccessfulCount));
+                    emitter.complete();
+                } catch (IOException e) {
+                    logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles,
+                            new ArrayList<>());
+                    emitter.completeWithError(e);
+                }
+                logUploadData(uploadingUser, currentTime, numOfFiles,
+                        unsuccessfulCount.get(), fileErrorMessagePairsList);
+            } catch (Exception e) {
+                emitter.completeWithError(e);
             }
-        } catch (IOException e) {
-            logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles, new ArrayList<>());
-            return "IOError";
-        }
-        logUploadData(uploadingUser, currentTime, numOfFiles,
-                unsuccessfulCount, fileErrorMessagePairsList);
-        return Integer.toString(unsuccessfulCount);
+        });
+        sseExecutor.shutdown();
+        return emitter;
     }
 
     private void logUploadData(User uploadingUser, Timestamp uploadTime, int numOfFiles,

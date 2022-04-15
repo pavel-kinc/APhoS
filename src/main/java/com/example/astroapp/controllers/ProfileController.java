@@ -52,7 +52,6 @@ public class ProfileController {
             }
             model.addAttribute("userUploads", uploads);
             model.addAttribute("currentUserSignedIn", true);
-
         }
         model.addAttribute("user", user);
         return editable ? "editableProfile" : "profile";
@@ -64,11 +63,11 @@ public class ProfileController {
         user.setDescription(description);
         if (userRepo.existsByUsernameEquals(username) && !username.equals(user.getUsername())) {
             userRepo.save(user);
-            return "redirect:/profile/?id="+user.getGoogleSub()+"&editable=true";
+            return "redirect:/profile/?id=" + user.getGoogleSub() + "&editable=true";
         }
         user.setUsername(username);
         userRepo.save(user);
-        return "redirect:/profile/?id="+user.getGoogleSub();
+        return "redirect:/profile/?id=" + user.getGoogleSub();
     }
 
     @GetMapping("/username")
@@ -85,7 +84,7 @@ public class ProfileController {
         User user = userService.getCurrentUser();
         user.setUsername(username);
         userRepo.save(user);
-        return "redirect:/profile/?id="+user.getGoogleSub();
+        return "redirect:/profile/?id=" + user.getGoogleSub();
     }
 
 }

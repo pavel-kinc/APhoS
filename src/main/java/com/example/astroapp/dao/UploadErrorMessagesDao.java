@@ -12,6 +12,9 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.util.List;
 
+/**
+ * The Data Access Object for the uploading_error_messages entity.
+ */
 @Repository
 @Transactional
 public class UploadErrorMessagesDao extends JdbcDaoSupport {

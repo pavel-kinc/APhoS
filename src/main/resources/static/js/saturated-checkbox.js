@@ -1,5 +1,10 @@
+/*
+    Filter out saturated fluxes from the table.
+*/
+
+
 let searchParams = new URLSearchParams(window.location.search);
-if (searchParams.get("show-saturated")==="true") {
+if (searchParams.get("show-saturated") === "true") {
     document.getElementById("saturatedCheckbox").checked = true;
 }
 

@@ -15,6 +15,9 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The Data Access Object for the uploading_logs entity.
+ */
 @Repository
 @Transactional
 public class UploadLogsDao extends JdbcDaoSupport {

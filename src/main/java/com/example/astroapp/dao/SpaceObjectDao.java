@@ -3,7 +3,7 @@ package com.example.astroapp.dao;
 import com.example.astroapp.dto.ObjectFluxCount;
 import com.example.astroapp.dto.SpaceObject;
 import com.example.astroapp.mappers.ObjectFluxCountRowMapper;
-import com.example.astroapp.setters.ObjectPreparedStatementSetter;
+import com.example.astroapp.setters.SpaceObjectPreparedStatementSetter;
 import com.example.astroapp.mappers.SpaceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -16,6 +16,9 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The Data Access Object for the space_object entity.
+ */
 @Repository
 @Transactional
 public class SpaceObjectDao extends JdbcDaoSupport {
@@ -26,9 +29,14 @@ public class SpaceObjectDao extends JdbcDaoSupport {
         this.setDataSource(dataSource);
     }
 
-    public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius, String name, String minMag,
+    /**
+     * Method to query objects based on the parameters given in the search form
+     */
+    public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius,
+                                              String name, String minMag,
                                               String maxMag, String catalog, String objectId) {
-        StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, name, catalog, catalog_id, catalog_rec, catalog_dec, " +
+        StringBuilder query = new StringBuilder("SELECT space_object.id AS obj_id, " +
+                "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag, count(flux.id) AS flux_count" +
                 " FROM space_object LEFT OUTER JOIN flux ON object_id=space_object.id");
         boolean appendAnd = false;
@@ -74,10 +82,11 @@ public class SpaceObjectDao extends JdbcDaoSupport {
             }
             query.append(" catalog_id LIKE ?");
         }
-        query.append(" GROUP BY space_object.id, name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag LIMIT 100");
+        query.append(" GROUP BY space_object.id, name, catalog, catalog_id," +
+                " catalog_rec, catalog_dec, catalog_mag LIMIT 100");
         String finishedQuery = query.toString();
         assert getJdbcTemplate() != null;
-        return getJdbcTemplate().query(finishedQuery, new ObjectPreparedStatementSetter(
+        return getJdbcTemplate().query(finishedQuery, new SpaceObjectPreparedStatementSetter(
                 RA, dec, radius, name, minMag, maxMag, catalog, objectId), new ObjectFluxCountRowMapper());
     }
 
@@ -110,7 +119,8 @@ public class SpaceObjectDao extends JdbcDaoSupport {
 
     public List<String> getAvailableCatalogues() {
         assert getJdbcTemplate() != null;
-        return getJdbcTemplate().queryForList("SELECT DISTINCT catalog FROM space_object", String.class);
+        return getJdbcTemplate()
+                .queryForList("SELECT DISTINCT catalog FROM space_object", String.class);
     }
 
     public SpaceObject getSpaceObjectById(Long id) {

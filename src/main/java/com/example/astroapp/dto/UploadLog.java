@@ -5,10 +5,14 @@ import org.springframework.data.util.Pair;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * The Data Transfer Object for the upload log.
+ * The error messages are stored in list of pairs of filename and error in that file.
+ */
 public class UploadLog {
 
     private long id;
-    private Timestamp uploadTime;
+    private String uploadTime;
     private int numOfFiles;
     private int numOfErrors;
     private int numOfSuccessful;
@@ -25,11 +29,11 @@ public class UploadLog {
         this.id = id;
     }
 
-    public Timestamp getUploadTime() {
+    public String getUploadTime() {
         return uploadTime;
     }
 
-    public void setUploadTime(Timestamp uploadTime) {
+    public void setUploadTime(String uploadTime) {
         this.uploadTime = uploadTime;
     }
 

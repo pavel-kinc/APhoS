@@ -1,63 +1,62 @@
-let uploadedFilesCount;
+/*
+    Script supplying the whole file upload functionality:
+    Posting the requests as well as changing the GUI.
+ */
 
-//TODO refactor this garbage!!!
-function uploadFiles() {
-    uploadedFilesCount = 0;
+
+let progressBarCount;
+const progressBar = document.getElementById("uploadProgress");
+
+async function uploadFiles() {
+    progressBarCount = 0;
     const uploadMessageArea = createScrollPanel();
     const inputElement = document.getElementById("fileSubmitter");
     const files = inputElement.files;
-    document.getElementById("progressBar").style.visibility = "visible";
-    document.getElementById("progressSpinner").style.visibility = "visible";
-    document.getElementById("processingSign").style.visibility = "hidden";
-    document.getElementById("processingCheck").style.visibility = "hidden";
-    document.getElementById("processingMessage").style.visibility = "hidden";
-    const uploadProgress = document.getElementById("uploadProgress");
-    uploadProgress.style.width = "0";
     let filesLength = files.length;
-    const myHeaders = new Headers();
+    updateProgress(filesLength);
+    displayUploadBeginningElements();
+    const reqHeaders = new Headers();
     let formData = new FormData();
-    formData.append("file", files[0]);
-    formData.append("dir-name", "create_new");
-    myHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
-    fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
-        .then(response => response.text())
-        .then(pathToDir => {
-            let i = 1;
-            printUploadMessages(true, files[0].name,
-                uploadProgress, filesLength, uploadMessageArea, pathToDir);
-            do {
-                let formData = new FormData();
-                let file = files[i];
-                let finalFetchBody = new FormData();
-                finalFetchBody.append("path-to-dir", pathToDir)
-                if (uploadedFilesCount === filesLength) {
-                    postFiles(myHeaders, finalFetchBody, filesLength);
-                }
-                formData.append("file", file);
-                formData.append("dir-name", pathToDir);
-                fetch('/upload/save', {method: "POST", headers: myHeaders, body: formData})
-                    .then(response => response.ok)
-                    .then(success => {
-                        printUploadMessages(success, file.name,
-                            uploadProgress, filesLength, uploadMessageArea);
-                        if (uploadedFilesCount === filesLength) {
-                            postFiles(myHeaders, finalFetchBody, filesLength)
-                        }
-                    });
-                i++;
-            } while (i < filesLength);
-        })
-    document.getElementById("submitButton").disabled = true;
+    let pathToDir = "create_new";
+    let success = false;
+    reqHeaders.append('X-XSRF-TOKEN', Cookies.get('XSRF-TOKEN'));
+    for (let i = 0; i < filesLength; i++) {
+        await new Promise(r => setTimeout(r, 100));
+        formData.set("file", files[i]);
+        formData.set("dir-name", pathToDir);
+        // we want to create the tmp folder with the first file
+        if (i === 0) {
+            pathToDir = (await (await fetch('/upload/save',
+                {method: "POST", headers: reqHeaders, body: formData})).text()).valueOf();
+            success = true;
+        } else {
+            success = (await fetch('/upload/save',
+                {method: "POST", headers: reqHeaders, body: formData})).ok;
+        }
+        printUploadMessages(success, files[i].name, filesLength, uploadMessageArea);
+    }
+    parseFiles(reqHeaders, pathToDir, filesLength);
 }
 
-function postFiles(headers, body, filesLength) {
-    body.append("file-count", filesLength);
-    fetch("/upload/parse", {
-        method: "POST",
-        headers: headers, body: body
-    })
-        .then(response => response.text())
-        .then(body => finishedSaving(filesLength.toString(), body));
+function parseFiles(headers, pathToDir, filesLength) {
+    progressBarCount = 0;
+    updateProgress(filesLength);
+    let emitter = new EventSource(
+        '/upload/parse?path-to-dir=' + pathToDir + '&file-count=' + filesLength);
+    emitter.addEventListener("FILE_STORED", function () {
+        ++progressBarCount;
+        updateProgress(filesLength);
+    });
+    emitter.addEventListener("COMPLETED", function (e) {
+        let numOfUnsuccessfull = e.data;
+        emitter.close();
+        finishedSaving(filesLength, numOfUnsuccessfull);
+    });
+    emitter.onerror = function (e) {
+        document.getElementById("error").style.display = "inline";
+    };
+    document.getElementById("uploading").style.display = "none";
+    document.getElementById("processingRow").style.display = "inline";
     document.getElementById("processingSign").style.visibility = "visible";
     document.getElementById("processingSpinner").style.visibility = "visible";
 }
@@ -67,7 +66,7 @@ function finishedSaving(fileCount, errorCount) {
     if (errorCount === "IOError") {
         successCount = 0;
     } else {
-        successCount = (fileCount.valueOf() - errorCount.valueOf()).toString()
+        successCount = (fileCount.valueOf() - errorCount.valueOf()).toString();
     }
     document.getElementById("processingSpinner").style.visibility = "hidden";
     document.getElementById("processingCheck").style.visibility = "visible";
@@ -76,20 +75,16 @@ function finishedSaving(fileCount, errorCount) {
     messageFinished.style.visibility = "visible";
 }
 
-function printUploadMessages(success, fileName, uploadProgress, filesLength, uploadMessageArea) {
+function printUploadMessages(success, fileName, filesLength, uploadMessageArea) {
     const paragraph = document.createElement("p");
     const message = document.createTextNode(
         success ?
             fileName + " uploaded successfully" :
             "There's been an error uploading " + fileName);
+    progressBarCount++;
+    updateProgress(filesLength);
     paragraph.appendChild(message);
-    let progress = Math.ceil((++uploadedFilesCount) / (filesLength / 100)).toString();
     uploadMessageArea.appendChild(paragraph);
-    uploadProgress.ariaValueNow = progress;
-    uploadProgress.style.width = progress + "%";
-    if (progress === "100") {
-        document.getElementById("progressSpinner").style.visibility = "hidden";
-    }
 }
 
 
@@ -104,4 +99,20 @@ function createScrollPanel() {
     scrollPanel.id = "uploadMessages";
     mainColumn.appendChild(scrollPanel);
     return scrollPanel;
+}
+
+
+function updateProgress(filesCount) {
+    let progress = Math.ceil((progressBarCount) / (filesCount / 100)).toString();
+    progressBar.ariaValueNow = progress;
+    progressBar.style.width = progress + "%";
+}
+
+function displayUploadBeginningElements() {
+    progressBar.style.visibility = "visible";
+    document.getElementById("processingCheck").style.visibility = "hidden";
+    document.getElementById("processingSign").style.visibility = "hidden";
+    document.getElementById("processingRow").style.display = "none";
+    document.getElementById("uploading").style.display = "inline";
+    document.getElementById("submitButton").disabled = true;
 }

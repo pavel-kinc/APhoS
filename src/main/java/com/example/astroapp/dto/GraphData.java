@@ -1,5 +1,8 @@
 package com.example.astroapp.dto;
 
+/**
+ * The Data Transfer Object for the graph data: the time and the magnitude.
+ */
 public class GraphData {
 
     String time;

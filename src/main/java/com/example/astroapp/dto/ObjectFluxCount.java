@@ -1,5 +1,9 @@
 package com.example.astroapp.dto;
 
+/**
+ * The Data Transfer Object for the stars found after searching.
+ * It consists of the object catalog info and number of its fluxes in the database.
+ */
 public class ObjectFluxCount {
 
     private long id;

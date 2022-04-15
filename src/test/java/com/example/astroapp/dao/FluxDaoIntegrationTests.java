@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/sql_test_data/test-data-objects-with-fluxes.sql"})
+@Sql({"/sql/schema.sql", "/sql_test_data/test-data-objects-with-fluxes.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class FluxDaoIntegrationTests {

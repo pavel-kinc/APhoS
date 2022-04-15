@@ -4,6 +4,10 @@ import com.example.astroapp.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+/**
+ * The Data Transfer Object for storing the information about a flux value, the night
+ * and the time of the exposition, along with the user uploading it.
+ */
 @JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
 public class FluxUserTime {
     @JsonIgnore

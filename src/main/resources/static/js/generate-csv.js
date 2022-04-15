@@ -1,3 +1,7 @@
+/*
+    Script for generating the request to download the file.
+*/
+
 
 function generateCSV() {
     let addData = false;
@@ -14,6 +18,7 @@ function generateCSV() {
     let selectsRefArray = Array.from(selects).filter(select => select.id.includes("ref"));
     selectsArray.sort((a, b) => a.id - b.id);
     selectsRefArray.sort((a, b) => a.id - b.id);
+    // collecting apertures from the query params
     let aperturesParam = "";
     let aperturesRefParam = "";
     for (let i = 0; i < selectsArray.length; i++) {

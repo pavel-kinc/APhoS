@@ -1,5 +1,8 @@
 package com.example.astroapp.dto;
 
+/**
+ * The Data Transfer Object for the Star.
+ */
 public class SpaceObject {
     private Long id;
     private String catalogId;

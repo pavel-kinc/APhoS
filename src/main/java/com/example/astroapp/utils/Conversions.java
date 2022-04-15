@@ -15,6 +15,9 @@ import java.util.List;
  */
 public class Conversions {
 
+    /**
+     * The constant DEV_CONSTANT.
+     */
     public static float DEV_CONSTANT = (float) (2.5 / Math.log(10));
 
     /**
@@ -22,6 +25,7 @@ public class Conversions {
      *
      * @param hourAngle the angle in the format "HH MM SS"
      * @return the angle in degrees
+     * @throws ParseException the parse exception
      */
     public static float hourAngleToDegrees(String hourAngle) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -52,6 +56,12 @@ public class Conversions {
         }
     }
 
+    /**
+     * Add degree, minute and seconds signs for presenting.
+     *
+     * @param angle the angle
+     * @return the string
+     */
     public static String addAngleSigns(String angle) {
         angle = angle.replaceFirst(" ", "°");
         angle = angle.replaceFirst(" ", "'");
@@ -59,6 +69,12 @@ public class Conversions {
         return angle;
     }
 
+    /**
+     * Add hour, minute, second characters.
+     *
+     * @param hourAngle the hour angle
+     * @return the string
+     */
     public static String addHourAngleSigns(String hourAngle) {
         hourAngle = hourAngle.replaceFirst(" ", "h");
         hourAngle = hourAngle.replaceFirst(" ", "m");
@@ -66,6 +82,15 @@ public class Conversions {
         return hourAngle;
     }
 
+    /**
+     * Calculate magnitude and deviation. On the page user chooses an aperture value
+     * to be used for each night. These values are stored in the nights list. Each flux has
+     * a night object representing the night it comes from. Its night is found in the nights
+     * list and the apertures are set according to the values chosen by user for that night.
+     *
+     * @param flux   the flux to calculate magnitude and deviation on
+     * @param nights the night objects with aperture to be used set by the user
+     */
     public static void calculateMagnitudeAndDeviation(FluxUserTime flux, List<Night> nights) {
         Night correspondingNight = nights.get(nights.indexOf(flux.getNight()));
         String apToBeUsed = correspondingNight.getApToBeUsed();

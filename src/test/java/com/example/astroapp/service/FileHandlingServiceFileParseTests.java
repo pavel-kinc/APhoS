@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@Sql({"/schema.sql", "/sql_test_data/test-data-user-only.sql"})
+@Sql({"/sql/schema.sql", "/sql_test_data/test-data-user-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class FileHandlingServiceFileParseTests {
@@ -59,25 +59,25 @@ public class FileHandlingServiceFileParseTests {
     @Test
     public void correctFileNoExceptionThrown() throws IOException {
         Path filePath = Paths.get("src/test/resources/correct_files/correct_file.csv");
-        fileHandlingService.store(filePath);
+        fileHandlingService.parseAndPersist(filePath, sampleUser);
     }
 
     @Test
     public void correctFileMissingNotEssentialHeaderPartNoExceptionThrown() throws IOException {
         Path filePath = Paths.get("src/test/resources/correct_files/correct_file_shorter_header.csv");
-        fileHandlingService.store(filePath);
+        fileHandlingService.parseAndPersist(filePath, sampleUser);
     }
 
     @Test
     public void correctFileMissingNonEssentialSchemeNoExceptionThrown() throws IOException {
         Path filePath = Paths.get("src/test/resources/correct_files/correct_file_missing_scheme.csv");
-        fileHandlingService.store(filePath);
+        fileHandlingService.parseAndPersist(filePath, sampleUser);
     }
 
     @Test
     public void fewLinesIncorrectOtherCorrectNoExceptionThrownStackTracePrinted() throws IOException {
         Path filePath = Paths.get("src/test/resources/correct_files/few_lines_incorrect.csv");
-        fileHandlingService.store(filePath);
+        fileHandlingService.parseAndPersist(filePath, sampleUser);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class FileHandlingServiceFileParseTests {
         Path filePath = Paths.get("src/test/resources/incorrect_files/" +
                 "incorrect_missing_initial_info.csv");
         assertThrows(CsvContentException.class, () ->
-                fileHandlingService.store(filePath));
+                fileHandlingService.parseAndPersist(filePath, sampleUser));
     }
 
     @Test
@@ -93,7 +93,7 @@ public class FileHandlingServiceFileParseTests {
         Path filePath = Paths.get("src/test/resources/incorrect_files/" +
                 "incorrect_missing_initial_info.csv");
         assertThrows(CsvContentException.class, () ->
-                fileHandlingService.store(filePath));
+                fileHandlingService.parseAndPersist(filePath, sampleUser));
     }
 
 
