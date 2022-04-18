@@ -20,12 +20,13 @@ import java.util.Map;
 @RestController
 public class AstroAppApplication {
 
-    @GetMapping("/user")
-    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-        Map<String, Object> userAttributes = new HashMap<>(Collections.singletonMap("name", principal.getAttribute("name")));
-        userAttributes.put("email", principal.getAttribute("email"));
-        return userAttributes;
-    }
+//    @GetMapping("/user")
+//    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
+//        Map<String, Object> userAttributes =
+//                new HashMap<>(Collections.singletonMap("name", principal.getAttribute("name")));
+//        userAttributes.put("email", principal.getAttribute("email"));
+//        return userAttributes;
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(AstroAppApplication.class, args);
