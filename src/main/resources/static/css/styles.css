@@ -3,3 +3,6 @@
     overflow-y: auto;
 }
 
+.about-heading h2, h4{
+    color: #094e65;
+}
