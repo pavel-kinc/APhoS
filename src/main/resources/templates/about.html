@@ -14,7 +14,7 @@
                         <p class="lead my-3">Tool for cataloguing astrophotometric
                             data with the purpose of archiving variable star observations.</p>
                     </div>
-                    <img th:src="@{/images/telescope-svgrepo-com.svg}" height="180">
+                    <img th:src="@{/images/telescope-svgrepo-com.svg}" height="180" alt="telescope icon">
                 </div>
             </div>
             <div class="col-md-12 bg-white">
@@ -50,9 +50,15 @@
                                 <img  th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
                             </p>
                         </div>
-                        <h4 id="searching">Searching for objects</h4>
+                        <h4 id="searching">Searching for stars</h4>
                         <div class="ms-2">
-
+                            <p>The search form allows for filtering based on
+                            <b>Coordinates</b>, <b>Object name</b>, <b>Magnitude</b>, <b>Catalog</b>
+                            along with the respective <b>ID</b>. The results are displayed as rows in a table, in case
+                                of a more results only the first 100 is shown.</p>
+                            <p>Below is an example of a search based on the ID. To proceed click on the object's id and
+                            repeat the same process for a comparison object.</p>
+                            <img  th:src="@{/images/search.png}" alt="CSV example" class="my-1" width="1183">
                         </div>
                         <h4 id="presentation">Light curve presentation</h4>
                         <div class="ms-2">
