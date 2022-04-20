@@ -11,8 +11,8 @@ function highlightActive() {
             navLink.href === document.URL.split("#")[0]) {
             navLink.classList.add('active');
         } else if (navLink.innerText === "Home" &&
-            (document.URL.includes("search")) || document.URL.includes("reference")) {
-
+            ((document.URL.includes("search?")) || document.URL.includes("reference"))) {
+            navLink.classList.add('active');
         } else {
             navLink.classList.remove('active');
         }

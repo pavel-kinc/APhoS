@@ -8,26 +8,66 @@
         <nav th:replace="layout :: navbar"></nav>
         <div class="container-fluid">
             <div class="p-4 p-md-5 mb-4 mt-2 text-white rounded bg-dark">
-<!--                th:style="'background:url(https://wallpapersmug.com/download/2560x1080/2fa40a/starry-sky-night-mountians-5k.jpg);  background-size: 2000px 400px;'"-->
-                <div class="col-md-6 px-0">
-                    <h1 class="display-4">About var4Astro</h1>
-                    <p class="lead my-3">Tool for cataloguing astrophotometric
-                        data with the purpose of archiving variable star observations.</p>
+                <div class="d-flex justify-content-between">
+                    <div class="col-md-6 px-0">
+                        <h1 class="display-4">About var4Astro</h1>
+                        <p class="lead my-3">Tool for cataloguing astrophotometric
+                            data with the purpose of archiving variable star observations.</p>
+                    </div>
+                    <img th:src="@{/images/telescope-svgrepo-com.svg}" height="180" alt="telescope icon">
                 </div>
             </div>
             <div class="col-md-12 bg-white">
                 <div class="row mt-3 ms-2">
                     <div class="col-md-8">
                         <h2 id="app">Application</h2>
-                        <p class="blog-post-meta text-secondary">Last updated 12.04.2022</p>
+                        <p class="blog-post-meta text-secondary">Last updated 18.04.2022</p>
                         <p>
                             The application parses and stores the csv data from the
                             <a href="https://www.gxccd.com/cat?id=146&lang=409">SIPS</a> software. Its aim
-                            is to utilize all the photometrical data so each star is persisted in the database.
-                            The tool is work in progress. Current version provides no cross-identification
-                            between the catalogues. The advised catalogue to use is UCAC4.
-
+                            is to utilize the photometrical data from the observations.
+                            It persists stars along with its flux values, the data for a star can then be queried.
                         </p>
+                        <p>
+                            The tool is work in progress. Current version provides no cross-identification
+                            between the catalogues, so the advised catalogue to use is UCAC4.
+                        </p>
+                        <h2 id="usage">Usage</h2>
+                        <p>
+                            The application provides the ability to upload the data and to query the data. To upload data
+                            an authentication with a Google account is required. After the first sign-in you will be asked
+                            to choose a username and a profile will be created. A description text field can be used to
+                            publish some information for other users.
+                        </p>
+                        <h4 id="uploading">File uploading</h4>
+                        <div class="ms-2">
+                            <p>
+                                The application allows uploading photos from the SIPS software in form of csv files. Image
+                                below displays the required data to include. The mandatory fields: the columns and the time
+                                of the exposure are displayed in red. The columns with deviaton values are not mandatory.
+                                However, they are recommended to be included as they allow for deviation calculations for the light
+                                curves.
+                                <img  th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
+                            </p>
+                        </div>
+                        <h4 id="searching">Searching for stars</h4>
+                        <div class="ms-2">
+                            <p>The search form allows for filtering based on
+                            <b>Coordinates</b>, <b>Object name</b>, <b>Magnitude</b>, <b>Catalog</b>
+                            along with the respective <b>ID</b>. The results are displayed as rows in a table, in case
+                                of a more results only the first 100 is shown.</p>
+                            <p>Below is an example of a search based on the ID. To proceed click on the object's id and
+                            repeat the same process for a comparison object.</p>
+                            <img  th:src="@{/images/search.png}" alt="CSV example" class="my-1" width="1183">
+                        </div>
+                        <h4 id="presentation">Light curve presentation</h4>
+                        <div class="ms-2">
+
+                        </div>
+                        <h2 id="project">Project</h2>
+                        <p>The app's initial version was developed as part of a bachelor's
+                            thesis in cooperation with Pavel Cagaš and Miloslav Zejda.</p>
+                        <h2 id="ack">Acknowledgements</h2>
                     </div>
                     <div class="col-md-4">
                         <div class="card bg-light mt-3 me-3">
@@ -45,20 +85,9 @@
                             </div>
                         </div>
                     </div>
-                    <h2 id="usage">Usage</h2>
-                    <h4 id="uploading">File uploading</h4>
-                    <h4 id="searching">Searching for objects</h4>
-                    <h4 id="presentation">Light curve presentation</h4>
-                    <h2 id="project">Project</h2>
-                    <p>The app's initial version was developed as part of a bachelor's
-                        thesis in cooperation with Pavel Cagaš and Miloslav Zejda.</p>
-                    <h2 id="ack">Acknowledgements</h2>
             </div>
         </div>
-
-
-
-
+        </div>
         <script th:src="@{js/highlight-active.js}"></script>
 
     </body>
