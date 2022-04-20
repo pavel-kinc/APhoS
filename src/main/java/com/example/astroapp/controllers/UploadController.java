@@ -50,6 +50,8 @@ public class UploadController {
         return "upload";
     }
 
+    static final long TIMEOUT_5_MINUTES = 300000L;
+
     @PostMapping("/save")
     @ResponseBody
     public String storeUploadedFiles(@RequestParam(name = "file") MultipartFile file,
@@ -76,7 +78,7 @@ public class UploadController {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
         AtomicInteger unsuccessfulCount = new AtomicInteger();
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(TIMEOUT_5_MINUTES);
         ExecutorService sseExecutor = Executors.newSingleThreadExecutor();
         // separate thread because of SseEmitter
         sseExecutor.execute(() -> {

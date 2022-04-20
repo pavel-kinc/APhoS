@@ -13,6 +13,7 @@
                     <p class="lead my-3">Tool for cataloguing astrophotometric
                         data with the purpose of archiving variable star observations.</p>
                 </div>
+                <img th:src="@{/images/telescope-svgrepo-com.svg}">
             </div>
             <div class="col-md-12 bg-white">
                 <div class="row mt-3 ms-2">
@@ -41,9 +42,9 @@
                             The application allows uploading photos from the SIPS software in form of csv files. Image
                             below displays the required data to include. The mandatory fields: the columns and the time
                             of the exposure are displayed in red. The columns with deviaton values are not mandatory.
-                            However, they are recommended to include as they allow for deviation calculations for the light
+                            However, they are recommended to be included as they allow for deviation calculations for the light
                             curves.
-                            <img  th:src="@{/images/csvFileExample.png}" alt="CSV example">
+                            <img  th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
                         </p>
                         <h4 id="searching">Searching for objects</h4>
                         <h4 id="presentation">Light curve presentation</h4>
@@ -70,10 +71,7 @@
                     </div>
             </div>
         </div>
-
-
-
-
+        </div>
         <script th:src="@{js/highlight-active.js}"></script>
 
     </body>
