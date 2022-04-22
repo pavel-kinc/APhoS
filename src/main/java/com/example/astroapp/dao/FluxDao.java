@@ -76,4 +76,10 @@ public class FluxDao extends JdbcDaoSupport {
         String query = "SELECT id FROM flux WHERE id = ?";
         return getJdbcTemplate().queryForObject(query, Long.class, id);
     }
+
+    public Long getNumberOfFluxesEstimate() {
+        assert getJdbcTemplate() != null;
+        return getJdbcTemplate()
+                .queryForObject("SELECT reltuples FROM pg_class WHERE relname = 'flux'", Long.class);
+    }
 }

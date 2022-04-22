@@ -129,4 +129,10 @@ public class SpaceObjectDao extends JdbcDaoSupport {
                 "FROM space_object WHERE id=?";
         return getJdbcTemplate().queryForObject(query, new SpaceObjectMapper(), id);
     }
+
+    public Long getNumberOfObjectsEstimate() {
+        assert getJdbcTemplate() != null;
+        return getJdbcTemplate()
+                .queryForObject("SELECT reltuples FROM pg_class WHERE relname = 'space_object'", Long.class);
+    }
 }

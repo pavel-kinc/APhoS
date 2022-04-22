@@ -50,6 +50,11 @@
                         curves.
                         <img th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
                     </p>
+                    <p>
+                        After the files are uploaded the app starts their processing. Progress bar will show its
+                        state. The page can be closed during the processing phase, the results of the whole process
+                        will then be available from the user profile.
+                    </p>
                 </div>
                 <h4 id="searching">Searching for stars</h4>
                 <div class="ms-2">
@@ -61,40 +66,96 @@
                         repeat the same process for a comparison object.</p>
                     <img th:src="@{/images/search.png}" alt="search page example" class="mt-1 mb-2" width="1183">
                 </div>
-                <h4 id="presentation">Light curve presentation</h4>
+                <h4 id="presentation">Fluxes presentation</h4>
                 <div class="ms-2">
+                    <p>Found fluxes are shown as follows:</p>
+                    <ul>
+                        <li><span style="color: #1a69b7">Apertures select panel</span> - different aperture to use for
+                            data from a specific night
+                            can bo chosen here. The magnitude is then calculated using specified apertures.</li>
+                        <li><span style="color: #d58c06">List of apertures</span> - ap auto columns display apertures
+                            determined as best by the
+                        photometric software, to see the other available apertures click on show in the
+                        apertures column. These values can then be selected in the apertures select panel.</li>
+                        <li>
+                            <span style="color: #d0d000">Saturated fluxes checkbox</span> - some data might be missing
+                            a flux value because
+                            of saturation. The saturated data is hidden by default, use the checkbox to display it.
+                        </li>
+                        <li>
+                            <span style="color: #d20101">Uploaded by column</span> - click on the username in a row of data to see the user profile of the
+                            uploader.
+                        </li>
+                        <li>
+                            <span style="color: #251f1f">Button panel</span> - consists of:
+                            <ul>
+                                <li>
+                                    <b>Light curve button</b> displays light curve graph of selected object with
+                                    magnitude calculated from selected apertures. The graph allows for zooming in and
+                                    moving to focus on a data from single night. Deviation bars from magnitude calculation
+                                    can be displayed.
+                                </li>
+                                <li>
+                                    <b>Users button</b> brings up a component for filtering out data from specific users.
+                                    To use it drag and drop the listed usernames.
+                                </li>
+                                <li>
+                                    <b>Download button</b> The displayed data can be downloaded. Namely, the time of
+                                    the flux exposure, its calculated magnitude and deviation. Available formats are
+                                    simple text file or CSV file with or without initial metadata.
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
                     <img th:src="@{/images/object_screen.png}" alt="object page example"
                          class="my-1" width="1183">
                 </div>
                 <h2 id="project">Project</h2>
-                <p>The app's initial version was developed as part of a bachelor's
-                    thesis in cooperation with Pavel Cagaš and Miloslav Zejda.</p>
+                <p>The app's initial version was developed in 2021/22 as part of a bachelor's
+                    thesis in cooperation with Pavel Cagaš and Miloslav Zejda. </p>
                 <h2 id="ack">Acknowledgements</h2>
+                <p>The website's look is provided by:</p>
+                <ul>
+                    <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
+                    <li><a href="https://www.svgrepo.com">Icons</a></li>
+                </ul>
             </div>
             <div class="col-md-4">
-                <div class="card bg-light mt-3 me-3">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Table of contents</h5>
-                        <div class="mx-3 my-3 fs-4">
-                            <div>1 <a href="#app">Application</a></div>
-                            <div>2 <a href="#usage">Usage</a></div>
-                            <div>
-                                <div class="ms-3">2.1 <a href="#uploading">File uploading</a></div>
-                            </div>
-                            <div>
-                                <div class="ms-3">2.2 <a href="#searching">Searching for objects</a></div>
-                            </div>
-                            <div>
-                                <div class="ms-3">2.3 <a href="#presentation">Light curves</a></div>
-                            </div>
-                            <div>3 <a href="#usage">Project</a></div>
-                            <div>
-                                <div class="ms-3">3.1 <a href="#ack">Acknowledgements</a></div>
+                <div class="row">
+                    <div class="card bg-light mt-3 me-3">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Table of contents</h5>
+                            <div class="mx-3 my-3 fs-4">
+                                <div>1 <a href="#app">Application</a></div>
+                                <div>2 <a href="#usage">Usage</a></div>
+                                <div>
+                                    <div class="ms-3">2.1 <a href="#uploading">File uploading</a></div>
+                                </div>
+                                <div>
+                                    <div class="ms-3">2.2 <a href="#searching">Searching for objects</a></div>
+                                </div>
+                                <div>
+                                    <div class="ms-3">2.3 <a href="#presentation">Light curves</a></div>
+                                </div>
+                                <div>3 <a href="#usage">Project</a></div>
+                                <div>
+                                    <div>4 <a href="#ack">Acknowledgements</a></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row mt-3">
+                    <div class="card bg-light mt-3 me-3">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">Data overview</h5>
+                            <div class="mx-3 my-3 fs-5">
+                                <b th:text="${'~' + objectNum}"></b> objects in the database<br>
+                                <b th:text="${'~' + fluxNum}"></b> fluxes in the database:
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
