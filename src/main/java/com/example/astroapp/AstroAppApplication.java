@@ -1,7 +1,9 @@
 package com.example.astroapp;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -19,14 +21,6 @@ import java.util.Map;
 @SpringBootApplication
 @RestController
 public class AstroAppApplication {
-
-//    @GetMapping("/user")
-//    public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
-//        Map<String, Object> userAttributes =
-//                new HashMap<>(Collections.singletonMap("name", principal.getAttribute("name")));
-//        userAttributes.put("email", principal.getAttribute("email"));
-//        return userAttributes;
-//    }
 
     public static void main(String[] args) {
         SpringApplication.run(AstroAppApplication.class, args);
