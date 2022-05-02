@@ -16,6 +16,9 @@ public class CustomErrorController implements ErrorController {
         String status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString();
         String message = request.getAttribute(RequestDispatcher.ERROR_MESSAGE).toString();
         model.addAttribute("status", status);
+        if (status.equals("404")) {
+            message = "Page not found";
+        }
         model.addAttribute("message", message);
         return "error";
     }

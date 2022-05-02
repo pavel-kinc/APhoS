@@ -55,7 +55,8 @@ function parseFiles(headers, pathToDir, filesLength) {
     emitter.onerror = function (e) {
         document.getElementById("error").style.display = "inline";
         console.log(e);
-        finishedSaving(filesLength, progressBarCount);
+        emitter.close();
+        finishedSaving(filesLength, filesLength - progressBarCount);
     };
     document.getElementById("uploading").style.display = "none";
     document.getElementById("processingRow").style.display = "inline";

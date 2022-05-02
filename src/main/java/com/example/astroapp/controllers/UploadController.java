@@ -50,7 +50,7 @@ public class UploadController {
         return "upload";
     }
 
-    static final long TIMEOUT_5_MINUTES = 300000L;
+    static final long TIMEOUT_INFINITY = -1L;
 
     @PostMapping("/save")
     @ResponseBody
@@ -78,7 +78,7 @@ public class UploadController {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
         AtomicInteger unsuccessfulCount = new AtomicInteger();
-        SseEmitter emitter = new SseEmitter(TIMEOUT_5_MINUTES);
+        SseEmitter emitter = new SseEmitter(TIMEOUT_INFINITY);
         ExecutorService sseExecutor = Executors.newSingleThreadExecutor();
         // separate thread because of SseEmitter
         sseExecutor.execute(() -> {
@@ -86,7 +86,7 @@ public class UploadController {
                 if (!Files.isDirectory(Paths.get(pathToDir))) {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
-                // Prevent getting path outside /tmp, comment in case of testing
+//                 Prevent getting path outside /tmp, comment in case of testing
                 if (!pathToDir.matches("/tmp/[^/]*")) {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
