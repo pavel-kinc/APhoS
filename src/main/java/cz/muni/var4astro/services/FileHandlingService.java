@@ -1,6 +1,6 @@
 package cz.muni.var4astro.services;
 
-import com.example.astroapp.dao.*;
+import cz.muni.var4astro.dao.*;
 import cz.muni.var4astro.dao.FluxDaoImpl;
 import cz.muni.var4astro.dao.PhotoPropertiesDaoImpl;
 import cz.muni.var4astro.dao.SpaceObjectDaoImpl;

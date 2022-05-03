@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableRetry
 @SpringBootApplication
 @RestController
-public class AstroAppApplication {
+public class Var4AstroApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AstroAppApplication.class, args);
+        SpringApplication.run(Var4AstroApplication.class, args);
     }
 
 }

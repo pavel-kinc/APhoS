@@ -8,11 +8,11 @@
         <version>2.6.7</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>astroApp</artifactId>
+    <groupId>cz.muni</groupId>
+    <artifactId>var4astro</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>astroApp</name>
-    <description>astroApp</description>
+    <name>var4astro</name>
+    <description>var4astro</description>
     <properties>
         <java.version>11</java.version>
     </properties>
