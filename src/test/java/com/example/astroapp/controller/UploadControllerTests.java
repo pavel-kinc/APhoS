@@ -1,8 +1,8 @@
 package com.example.astroapp.controller;
 
-import com.example.astroapp.dao.FluxDao;
-import com.example.astroapp.dao.PhotoPropertiesDao;
-import com.example.astroapp.dao.SpaceObjectDao;
+import com.example.astroapp.dao.FluxDaoImpl;
+import com.example.astroapp.dao.PhotoPropertiesDaoImpl;
+import com.example.astroapp.dao.SpaceObjectDaoImpl;
 import com.example.astroapp.dto.User;
 import com.example.astroapp.services.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
@@ -18,9 +18,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
@@ -44,13 +42,13 @@ class UploadControllerTests {
     MockMvc mockMvc;
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @Autowired
-    PhotoPropertiesDao photoPropertiesDao;
+    PhotoPropertiesDaoImpl photoPropertiesDao;
 
     @MockBean
     UserService userService;

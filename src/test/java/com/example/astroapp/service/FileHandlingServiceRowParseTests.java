@@ -1,8 +1,8 @@
 package com.example.astroapp.service;
 
 
-import com.example.astroapp.dao.FluxDao;
-import com.example.astroapp.dao.SpaceObjectDao;
+import com.example.astroapp.dao.FluxDaoImpl;
+import com.example.astroapp.dao.SpaceObjectDaoImpl;
 import com.example.astroapp.dto.PhotoProperties;
 import com.example.astroapp.dto.User;
 import com.example.astroapp.exceptions.CsvRowDataParseException;
@@ -34,10 +34,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class FileHandlingServiceRowParseTests {
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @Autowired
     FileHandlingService fileHandlingService;

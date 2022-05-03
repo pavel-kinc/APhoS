@@ -32,13 +32,13 @@ import java.util.Map;
 public class FileHandlingService {
 
     @Autowired
-    PhotoPropertiesDao photoPropsDao;
+    PhotoPropertiesDaoImpl photoPropsDao;
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @Autowired
     UserService userService;

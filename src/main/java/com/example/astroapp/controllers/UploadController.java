@@ -1,7 +1,7 @@
 package com.example.astroapp.controllers;
 
-import com.example.astroapp.dao.UploadErrorMessagesDao;
-import com.example.astroapp.dao.UploadLogsDao;
+import com.example.astroapp.dao.UploadErrorMessagesDaoImpl;
+import com.example.astroapp.dao.UploadLogsDaoImpl;
 import com.example.astroapp.dto.User;
 import com.example.astroapp.exceptions.CsvContentException;
 import com.example.astroapp.services.FileHandlingService;
@@ -40,10 +40,10 @@ public class UploadController {
     UserService userService;
 
     @Autowired
-    UploadLogsDao uploadLogsDao;
+    UploadLogsDaoImpl uploadLogsDao;
 
     @Autowired
-    UploadErrorMessagesDao uploadErrorMessagesDao;
+    UploadErrorMessagesDaoImpl uploadErrorMessagesDao;
 
     @GetMapping("")
     public String showAboutPage() {

@@ -1,7 +1,7 @@
 package com.example.astroapp.controllers;
 
-import com.example.astroapp.dao.FluxDao;
-import com.example.astroapp.dao.SpaceObjectDao;
+import com.example.astroapp.dao.FluxDaoImpl;
+import com.example.astroapp.dao.SpaceObjectDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AboutController {
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @GetMapping("/about")
     public String showAboutPage(Model model) {

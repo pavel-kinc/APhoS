@@ -27,7 +27,7 @@ import static org.junit.Assert.assertTrue;
 public class SpaceObjectDaoIntegrationTests {
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Test
     public void returnCorrectObjectById() {

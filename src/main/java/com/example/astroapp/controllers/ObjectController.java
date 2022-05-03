@@ -1,7 +1,7 @@
 package com.example.astroapp.controllers;
 
-import com.example.astroapp.dao.FluxDao;
-import com.example.astroapp.dao.SpaceObjectDao;
+import com.example.astroapp.dao.FluxDaoImpl;
+import com.example.astroapp.dao.SpaceObjectDaoImpl;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.FluxUserTime;
 import com.example.astroapp.dto.SpaceObject;
@@ -36,10 +36,10 @@ public class ObjectController {
     UserRepo userRepo;
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @GetMapping("/object")
     public String displayObjectFluxes(@RequestParam(name = "ref-id") Long referenceObjectId,

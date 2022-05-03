@@ -26,7 +26,7 @@ import static org.junit.Assert.assertEquals;
 public class FluxDaoIntegrationTests {
 
     @Autowired
-    FluxDao fluxDao;
+    FluxDaoImpl fluxDao;
 
     @Test
     public void returnTwoFluxeUserTimesForObject() {

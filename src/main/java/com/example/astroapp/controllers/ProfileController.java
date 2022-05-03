@@ -1,7 +1,7 @@
 package com.example.astroapp.controllers;
 
-import com.example.astroapp.dao.UploadErrorMessagesDao;
-import com.example.astroapp.dao.UploadLogsDao;
+import com.example.astroapp.dao.UploadErrorMessagesDaoImpl;
+import com.example.astroapp.dao.UploadLogsDaoImpl;
 import com.example.astroapp.dao.UserRepo;
 import com.example.astroapp.dto.UploadLog;
 import com.example.astroapp.dto.User;
@@ -29,10 +29,10 @@ public class ProfileController {
     UserService userService;
 
     @Autowired
-    UploadLogsDao uploadLogsDao;
+    UploadLogsDaoImpl uploadLogsDao;
 
     @Autowired
-    UploadErrorMessagesDao uploadErrorMessagesDao;
+    UploadErrorMessagesDaoImpl uploadErrorMessagesDao;
 
     @GetMapping("/")
     public String displayProfile(@RequestParam(defaultValue = "current") String id,

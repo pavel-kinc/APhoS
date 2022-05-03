@@ -1,6 +1,6 @@
 package com.example.astroapp.controller;
 
-import com.example.astroapp.dao.SpaceObjectDao;
+import com.example.astroapp.dao.SpaceObjectDaoImpl;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class ObjectControllerTests {
     MockMvc mockMvc;
 
     @Autowired
-    SpaceObjectDao spaceObjectDao;
+    SpaceObjectDaoImpl spaceObjectDao;
 
     @Test
     public void objectControllerReturnsCorrectHtml() throws Exception {
