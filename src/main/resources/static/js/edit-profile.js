@@ -1,3 +1,8 @@
+/*
+    Script generates a request for editing profile and redirects afterwards.
+ */
+
+
 document.getElementById("textArea")
     .addEventListener("input", preventSpecialCharInput, false);
 
@@ -9,7 +14,7 @@ function saveChanges() {
     let formData = new FormData();
     formData.append("description", description.value);
     formData.append("username", userName.value);
-    fetch('/profile/save', {method: "POST", headers: myHeaders, body: formData, redirect:"follow"})
+    fetch('/profile/save', {method: "POST", headers: myHeaders, body: formData, redirect: "follow"})
         .then(response => redirectAfterPost(response.url));
 }
 
@@ -24,7 +29,7 @@ function redirectAfterPost(url) {
     }
 }
 
-function preventSpecialCharInput(event){
+function preventSpecialCharInput(event) {
     event.target.value = event.target.value
-        .replace(/[;/{}|\\"$<>?~!`#^&*@()%=\-\[\]\\']/g, "");
+        .replace(/[;/@{}|\\"$#<>%?~!`()^&*=\-\[\]\\']/g, "");
 }

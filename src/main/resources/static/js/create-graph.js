@@ -1,4 +1,10 @@
-fluxes.sort((flux1, flux2) => flux1.expMiddle.localeCompare(flux2.expMiddle));
+/*
+    Script for creating and updating the light curve.
+*/
+
+
+fluxes.sort((flux1, flux2) =>
+    flux1.expMiddle.localeCompare(flux2.expMiddle));
 
 const data = [];
 const annotations = [];
@@ -6,8 +12,8 @@ for (let i = 0; i < fluxes.length; i++) {
     data[i] = {x: fluxes[i].expMiddle, y: fluxes[i].magnitude};
     annotations[i] = {
         type: 'line',
-        yMin: fluxes[i].errorBottom,
-        yMax: fluxes[i].errorTop,
+        yMin: fluxes[i].magnitude + fluxes[i].deviation,
+        yMax: fluxes[i].magnitude - fluxes[i].deviation,
         xMin: fluxes[i].expMiddle,
         xMax: fluxes[i].expMiddle,
         borderColor: 'rgb(149,188,232)',
@@ -71,7 +77,7 @@ let chart = new Chart(ctx, {
                     pinch: {
                         enabled: true
                     },
-                    mode: 'xy'
+                    mode: 'x'
                 },
                 pan: {
                     enabled: true,
@@ -81,7 +87,7 @@ let chart = new Chart(ctx, {
     },
 });
 
-function updateErrorPlotting() {
+function updateDeviationPlotting() {
     let checkbox = document.getElementById("errorCheckbox");
     if (!checkbox.checked) {
         chart.options.plugins.annotation.annotations = [];

@@ -17,7 +17,7 @@
             <form id="searchForm" th:action="${originalId} ? '/reference/search' : '/search'"
                   method="get" novalidate>
                 <input th:if="${originalId}" type="hidden" name="id" th:value="${originalId}">
-                <input th:if="${originalCatId}" type="hidden" name="catId" th:value="${originalCatId}">
+                <input th:if="${originalCatId}" type="hidden" name="cat-id" th:value="${originalCatId}">
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary dropdown-toggle"
                             data-bs-toggle="dropdown">
@@ -26,7 +26,7 @@
                     <div class="dropdown-menu">
                         <div class="input-group-prepend px-3">
                             <span class="input-group-text"> Right Ascension (HH:MM:SS)</span>
-                            <input type="text" id="raInput" name="rightAscension" class="form-control"
+                            <input type="text" id="raInput" name="right-ascension" class="form-control"
                                    style="min-width: 290px" placeholder="e.g. 21:46:13.358" th:value="${RA}"
                                    pattern="[0-9]+:[0-9]+:([0-9]*[.])?[0-9]+"
                                    aria-label="Text input with dropdown button">
@@ -62,16 +62,20 @@
                     <div class="dropdown-menu">
                         <div class="input-group px-3">
                             <span class="input-group-text"> Min </span>
-                            <input id="minInput" type="text" class="form-control" name="min_mag"
-                                   th:value="0" pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
+                            <input id="minInput" type="text" class="form-control" name="min-mag"
+                                   th:value="${minMag != null ? minMag : 0}"
+                                   pattern="([0-9]*[.])?[0-9]+" aria-label="Input minimum mag value">
                             <div class="my-2">
-                                <input id="minRange" type="range" value="0" max="15" step="0.1">
+                                <input id="minRange" type="range" th:value="${minMag != null ? minMag : 0}"
+                                       max="15" step="0.1">
                             </div>
                             <span class="input-group-text"> Max </span>
-                            <input id="maxInput" name="max_mag" type="text" class="form-control" value="15"
+                            <input id="maxInput" name="max-mag" type="text" class="form-control"
+                                   th:value="${maxMag != null ? maxMag : 15}"
                                    pattern="([0-9]*[.])?[0-9]+" aria-label="Input max mag value">
                             <div class="my-2">
-                                <input id="maxRange" type="range" value="15" max="15" step="0.1">
+                                <input id="maxRange" type="range" th:value="${maxMag != null ? maxMag : 15}"
+                                       max="15" step="0.1">
                             </div>
                         </div>
                     </div>
@@ -79,18 +83,20 @@
                 <div class="input-group mt-1">
                     <div class="col-md-2">
                         <select id="catalogSelect" class="form-select" data-style="btn-primary" name="catalog">
-                            <option th:each="catalog : ${availableCatalogues}"
-                                    th:text="${catalog}" th:value="${catalog}">
+                            <option th:each="cat : ${availableCatalogues}"
+                                    th:text="${cat}" th:value="${cat}" th:selected="${catalog == cat}">
                             </option>
                         </select>
                     </div>
-                    <input type="text" class="form-control" name="object_id" placeholder="Object ID"
+                    <input type="text" class="form-control" name="object-id" placeholder="Object ID"
                            aria-label="Text input with dropdown button" th:value="${objectId}">
                     <button type="submit" class="btn btn-dark">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
             </form>
+            <div id="alertsBox">
+            </div>
         </div>
         <div class=" mt-3">
             <h3 th:if="${resultingRows}"
@@ -117,12 +123,12 @@
                         <td class="text-center" th:text="${objectFluxCnt.catalog}"></td>
                         <td class="text-center">
                             <a th:unless="${originalId}"
-                               th:href="${'/reference?id=' + objectFluxCnt.id + '&catId=' + objectFluxCnt.catalogId}"
+                               th:href="${'/reference?id=' + objectFluxCnt.id + '&cat-id=' + objectFluxCnt.catalogId}"
                                th:text="${objectFluxCnt.catalogId}">
                             </a>
                             <a th:if="${originalId}"
-                               th:href="${'/object?refId=' + objectFluxCnt.id + '&refCatId=' + objectFluxCnt.catalogId +
-                                '&id=' + originalId + '&catalogId=' + originalCatId}"
+                               th:href="${'/object?ref-id=' + objectFluxCnt.id + '&ref-cat-id=' + objectFluxCnt.catalogId +
+                                '&id=' + originalId + '&catalog-id=' + originalCatId + '&show-saturated=false'}"
                                th:text="${objectFluxCnt.catalogId}">
                             </a>
                         </td>

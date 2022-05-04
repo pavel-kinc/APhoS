@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: head">
+</head>
+
+<body class="bg-light">
+<nav id="navbar" th:replace="layout :: navbar"></nav>
+<div class="container-fluid">
+    <div class="row justify-content-center border border-white rounded-2">
+        <div class="col-8 md-5 p-5 bg-dark">
+            <h1 style="color: #914848">Error</h1>
+            <div class="ms-2 ">
+                <h4 class="text-secondary" th:text="${'Status code: ' + status}"></h4>
+                <h4 class="text-secondary" th:text="${'Message: ' + message}"></h4>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
