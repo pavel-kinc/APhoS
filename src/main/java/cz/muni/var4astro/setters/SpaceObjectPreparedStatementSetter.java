@@ -1,5 +1,8 @@
 package cz.muni.var4astro.setters;
 
+import cz.muni.var4astro.services.FileHandlingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import java.sql.PreparedStatement;
@@ -19,6 +22,8 @@ public class SpaceObjectPreparedStatementSetter implements PreparedStatementSett
     private final String maxMag;
     private final String catalog;
     private final String objectId;
+
+    private static final Logger log = LoggerFactory.getLogger(FileHandlingService.class);
 
     public SpaceObjectPreparedStatementSetter(String RA, String dec, String radius, String name,
                                               String minMag, String maxMag, String catalog, String objectId) {
@@ -40,7 +45,7 @@ public class SpaceObjectPreparedStatementSetter implements PreparedStatementSett
             try {
                 ps.setFloat(2, hourAngleToDegrees(RA));
             } catch (ParseException e) {
-                e.printStackTrace();
+                log.error("Cannot parse right ascension value", e);
             }
             ps.setFloat(3, Float.parseFloat(radius));
             queryParamNumber = 4;

@@ -54,7 +54,6 @@ function parseFiles(headers, pathToDir, filesLength) {
     });
     emitter.onerror = function (e) {
         document.getElementById("error").style.display = "inline";
-        console.log(e);
         emitter.close();
         finishedSaving(filesLength, filesLength - progressBarCount);
     };

@@ -2,6 +2,8 @@ package cz.muni.var4astro.mappers;
 
 import cz.muni.var4astro.dto.FluxUserTime;
 import cz.muni.var4astro.helper.Night;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Array;
@@ -16,6 +18,8 @@ import java.util.List;
 
 
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
+
+    private static final Logger log = LoggerFactory.getLogger(FluxRowMapper.class);
 
     @Override
     public FluxUserTime mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -66,7 +70,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
                     fluxUserTime.getUsername());
             fluxUserTime.setNight(night);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Night date was unable to be parsed", e);
         }
         fluxUserTime.setUserId(rs.getString("google_sub"));
         return fluxUserTime;

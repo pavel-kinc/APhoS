@@ -16,8 +16,7 @@ import java.text.ParseException;
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static java.lang.Math.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -110,7 +109,7 @@ public class SpaceObjectDaoIntegrationTests {
                                 twoPointsOnSphereInRadius("21:30:59.150", "70:49:23.58",
                                         object.getCatalogRec(), object.getCatalogDec(), 0.1F));
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        fail("exception was thrown");
                     }
                 });
     }

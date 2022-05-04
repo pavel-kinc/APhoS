@@ -6,7 +6,10 @@ import cz.muni.var4astro.dao.UserRepo;
 import cz.muni.var4astro.dto.UploadLog;
 import cz.muni.var4astro.dto.User;
 import cz.muni.var4astro.exceptions.UnauthorizedAccessException;
+import cz.muni.var4astro.services.FileHandlingService;
 import cz.muni.var4astro.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +36,8 @@ public class ProfileController {
 
     @Autowired
     UploadErrorMessagesDaoImpl uploadErrorMessagesDao;
+
+    private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     @GetMapping("/")
     public String displayProfile(@RequestParam(defaultValue = "current") String id,
@@ -84,6 +89,7 @@ public class ProfileController {
         User user = userService.getCurrentUser();
         user.setUsername(username);
         userRepo.save(user);
+        log.info("New user created with username " + username);
         return "redirect:/profile/?id=" + user.getGoogleSub();
     }
 

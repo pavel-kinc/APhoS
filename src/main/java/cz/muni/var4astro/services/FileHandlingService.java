@@ -1,6 +1,8 @@
 package cz.muni.var4astro.services;
 
-import cz.muni.var4astro.dao.*;
+import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import cz.muni.var4astro.dao.FluxDaoImpl;
 import cz.muni.var4astro.dao.PhotoPropertiesDaoImpl;
 import cz.muni.var4astro.dao.SpaceObjectDaoImpl;
@@ -11,9 +13,8 @@ import cz.muni.var4astro.exceptions.CsvContentException;
 import cz.muni.var4astro.exceptions.CsvRowDataParseException;
 import cz.muni.var4astro.exceptions.IllegalCoordinateFormatException;
 import cz.muni.var4astro.utils.Conversions;
-import com.fasterxml.jackson.databind.MappingIterator;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.util.Pair;
@@ -49,6 +50,8 @@ public class FileHandlingService {
 
     @Autowired
     UserRepo userRepo;
+
+    private static final Logger log = LoggerFactory.getLogger(FileHandlingService.class);
 
     /**
      * Entry point of the service.
@@ -105,7 +108,7 @@ public class FileHandlingService {
                 }
             } catch (ParseException | CsvRowDataParseException e) {
                 // one unparsable row shouldn't be a problem
-                e.printStackTrace();
+                log.warn("Row could not be parsed", e);
             }
         }
     }

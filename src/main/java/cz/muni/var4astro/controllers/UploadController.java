@@ -6,6 +6,8 @@ import cz.muni.var4astro.dto.User;
 import cz.muni.var4astro.exceptions.CsvContentException;
 import cz.muni.var4astro.services.FileHandlingService;
 import cz.muni.var4astro.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
@@ -45,12 +47,14 @@ public class UploadController {
     @Autowired
     UploadErrorMessagesDaoImpl uploadErrorMessagesDao;
 
+    private static final Logger log = LoggerFactory.getLogger(UploadController.class);
+
+    static final long TIMEOUT_INFINITY = -1L;
+
     @GetMapping("")
     public String showAboutPage() {
         return "upload";
     }
-
-    static final long TIMEOUT_INFINITY = -1L;
 
     @PostMapping("/save")
     @ResponseBody
@@ -73,7 +77,7 @@ public class UploadController {
     @GetMapping("/parse")
     public SseEmitter parseAndPersist(@RequestParam(name = "path-to-dir") String pathToDir,
                                       @RequestParam(name = "file-count") int numOfFiles) {
-        // need to get user beforehand because security context is lost in a new thread
+        // need to get user beforehand because the security context is lost in a new thread
         User uploadingUser = userService.getCurrentUser();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
         List<Pair<String, String>> fileErrorMessagePairsList = new ArrayList<>();
@@ -97,10 +101,12 @@ public class UploadController {
                     for (Path file : regularFiles) {
                         try {
                             fileHandlingService.parseAndPersist(file, uploadingUser);
+                            log.info(file.getFileName() + " successfully parsed and stored");
                             emitter.send(SseEmitter.event()
                                     .name("FILE_STORED")
                                     .data(file.getFileName()));
                         } catch (IOException | CsvContentException e) {
+                            log.info(file.getFileName() + " could not be parsed", e);
                             unsuccessfulCount.getAndIncrement();
                             fileErrorMessagePairsList.add(Pair.of(
                                     file.getFileName().toString(), e.getMessage()));
@@ -118,6 +124,7 @@ public class UploadController {
                 logUploadData(uploadingUser, currentTime, numOfFiles,
                         unsuccessfulCount.get(), fileErrorMessagePairsList);
             } catch (Exception e) {
+                log.error("emitter completed with error", e);
                 emitter.completeWithError(e);
             }
         });

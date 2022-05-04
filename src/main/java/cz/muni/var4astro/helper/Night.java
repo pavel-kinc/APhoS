@@ -1,5 +1,9 @@
 package cz.muni.var4astro.helper;
 
+import cz.muni.var4astro.services.FileHandlingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,6 +24,8 @@ public class Night implements Comparable<Night> {
     private int idOnPage;
     private String apToBeUsed;
     private String refApToBeUsed;
+
+    private static final Logger log = LoggerFactory.getLogger(Night.class);
 
     /**
      * 12 hours represented in milliseconds
@@ -152,7 +158,7 @@ public class Night implements Comparable<Night> {
             }
             return this.username.compareTo(o.username);
         } catch (ParseException e) {
-            e.printStackTrace();
+            log.error("Night date was unable to be parsed", e);
         }
         return 0;
     }
