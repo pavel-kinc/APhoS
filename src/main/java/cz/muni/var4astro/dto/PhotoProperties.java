@@ -3,11 +3,18 @@ package cz.muni.var4astro.dto;
 import java.sql.Timestamp;
 
 /**
- * The Data Transfer Object for the photo properties.
+ * The Data Transfer Object representing the photo_properties entity.
  */
 public class PhotoProperties {
+
     private long id;
+    /**
+     * When the photo exposition started
+     */
     private Timestamp exposureBegin;
+    /**
+     * When the photo exposition ended
+     */
     private Timestamp exposureEnd;
 
     public PhotoProperties() {

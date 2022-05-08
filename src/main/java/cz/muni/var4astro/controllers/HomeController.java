@@ -1,6 +1,8 @@
 package cz.muni.var4astro.controllers;
 
+import cz.muni.var4astro.dao.FluxDao;
 import cz.muni.var4astro.dao.FluxDaoImpl;
+import cz.muni.var4astro.dao.SpaceObjectDao;
 import cz.muni.var4astro.dao.SpaceObjectDaoImpl;
 import cz.muni.var4astro.dto.ObjectFluxCount;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +13,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
+/**
+ * The Home controller handles the home page and all the searching endpoints along with it.
+ * The process of searching for the fluxes of an object is as follows:
+ *   1. "/" endpoint: Search for a main object.
+ *   2. "/search" endpoint: Choose a main object from the table of results.
+ *   3. "/reference" endpoint: Search for a reference object.
+ *   4. "/reference/search" endpoint: Choose a reference object from the table of results.
+ *   5. "/object" endpoint: display the results (handled by ObjectController)
+ */
 @Controller
 public class HomeController {
 
-    @Autowired
-    SpaceObjectDaoImpl spaceObjectDao;
 
     @Autowired
-    FluxDaoImpl fluxDao;
+    SpaceObjectDao spaceObjectDao;
 
+
+    @Autowired
+    FluxDao fluxDao;
+
+    /**
+     * Display the home page. A search form for the main object is available.
+     *
+     * @param model the model
+     * @return the home.html template
+     */
     @GetMapping("/")
     public String displayHome(Model model) {
         List<String> availableCatalogues = spaceObjectDao.getAvailableCatalogues();
@@ -27,6 +46,21 @@ public class HomeController {
         return "home";
     }
 
+    /**
+     * Display a table with space objects found matching the search form parameters.
+     * User chooses a main space object from those.
+     *
+     * @param rightAscension the right ascension
+     * @param dec            the declination
+     * @param radius         the radius
+     * @param name           the name
+     * @param minMag         the lower magnitude boundary
+     * @param maxMag         the upper magnitude boundary
+     * @param catalog        the catalog
+     * @param objectId       the catalog id
+     * @param model          the model
+     * @return the home.html template
+     */
     @GetMapping("search")
     public String displayObjectResults(@RequestParam(name="right-ascension") String rightAscension,
                                        @RequestParam String dec,
@@ -41,6 +75,14 @@ public class HomeController {
         return "home";
     }
 
+    /**
+     * Display the search form for the reference object.
+     *
+     * @param originalId    the database id of the previously chosen main object
+     * @param originalCatId the catalog id of the previously chosen main object
+     * @param model         the model
+     * @return the home.html template
+     */
     @GetMapping("reference")
     public String displayReferenceObjectFinder(@RequestParam(name = "id") Long originalId,
                                                @RequestParam(name = "cat-id") String originalCatId,
@@ -52,6 +94,23 @@ public class HomeController {
         return "home";
     }
 
+    /**
+     * Display a table with space objects found matching the search form parameters.
+     * User chooses a reference space object from those.
+     *
+     * @param originalId     the database id of the previously chosen main object
+     * @param originalCatId  the catalog id of the previously chosen main object
+     * @param rightAscension the right ascension
+     * @param dec            the declination
+     * @param radius         the radius
+     * @param name           the name
+     * @param minMag         the lower magnitude boundary
+     * @param maxMag         the upper magnitude boundary
+     * @param catalog        the catalog
+     * @param objectId       the catalog id
+     * @param model          the model
+     * @return the string
+     */
     @GetMapping("reference/search")
     public String displayReferenceObjectResults(
             @RequestParam(name = "id") Long originalId,
@@ -71,6 +130,20 @@ public class HomeController {
         return "home";
     }
 
+    /**
+     * Block of code to avoid duplication. The search form parameters are added to model
+     * after searching so the chosen values don't disappear from the search form.
+     *
+     * @param rightAscension the right ascension
+     * @param dec declination
+     * @param radius radius
+     * @param name name
+     * @param minMag the lower magnitude boundary
+     * @param maxMag the upper magnitude boundary
+     * @param catalog the catalog
+     * @param objectId the catalog id
+     * @param model the model
+     */
     private void addModelAttributes(String rightAscension, String dec, String radius, String name, String minMag,
                                             String maxMag, String catalog, String objectId, Model model) {
         List<ObjectFluxCount> objectFluxCountList = spaceObjectDao.queryObjects(

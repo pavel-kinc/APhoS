@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The Data Access Object for the flux entity.
+ * The Data Access Object implementation for the flux entity.
  */
 @Repository
 @Transactional

@@ -6,16 +6,32 @@ import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * The Data Transfer Object for the upload log.
- * The error messages are stored in list of pairs of filename and error in that file.
+ * The Data Transfer Object representing the information about an upload.
+ * With the purpose of being later viewed by the user.
  */
 public class UploadLog {
 
     private long id;
+
+    /**
+     * The time of the upload
+     */
     private String uploadTime;
+    /**
+     * Number of files in the set of uploaded files
+     */
     private int numOfFiles;
+    /**
+     * Number of files that were not successfully stored or uploaded
+     */
     private int numOfErrors;
+    /**
+     * Number of files were successfully stored and uploaded
+     */
     private int numOfSuccessful;
+    /**
+     * The error messages are stored in list of pairs: (filename, error in that file).
+     */
     private List<Pair<String, String>> fileErrorMessagePairsList;
 
     public UploadLog() {

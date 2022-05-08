@@ -6,6 +6,11 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+/**
+ * The SpaceObject mapper. Maps the rows from the space_object table
+ *  to the SpaceObject object.
+ */
 public class SpaceObjectMapper implements RowMapper<SpaceObject> {
 
     @Override

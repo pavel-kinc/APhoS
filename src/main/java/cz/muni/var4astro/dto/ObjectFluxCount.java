@@ -1,7 +1,7 @@
 package cz.muni.var4astro.dto;
 
 /**
- * The Data Transfer Object for the stars found after searching.
+ * The Data Transfer Object for a result of user searching for a space object.
  * It consists of the object catalog info and number of its fluxes in the database.
  */
 public class ObjectFluxCount {
@@ -13,6 +13,9 @@ public class ObjectFluxCount {
     private String catalogRec;
     private String catalogDec;
     private Float catalogMag;
+    /**
+     * number of fluxes the object has in the database
+     */
     private int numberOfFluxes;
 
     public ObjectFluxCount() {

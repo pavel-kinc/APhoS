@@ -43,6 +43,26 @@ public class FluxUserTime {
     public FluxUserTime() {
     }
 
+    /**
+     * Instantiates a new FluxUserTime object.
+     *
+     * @param rightAsc        the right ascension of the object
+     * @param dec             the declination of the object
+     * @param apAuto          the ap auto of the object
+     * @param apAutoDev       the ap auto deviation of the object
+     * @param apertures       the apertures of the object
+     * @param apertureDevs    the aperture deviations of the object
+     * @param refApAuto       the ref ap auto of the reference object
+     * @param refApAutoDev    the ref ap auto deviaton of the reference object
+     * @param refApertures    the ref apertures of the reference object
+     * @param refApertureDevs the ref aperture deviatons of the reference object
+     * @param magnitude       the calculated magnitude for the chosen apertures
+     * @param deviation       the calculated deviation for the chosen apertures
+     * @param username        the username of the uploader
+     * @param userId          the user id of the uploader
+     * @param night           the night object corresponding to the flux
+     * @param expMiddle       the middle timepoint of the exposition
+     */
     public FluxUserTime(String rightAsc, String dec, String apAuto, Float apAutoDev,
                         String[] apertures, Double[] apertureDevs, String refApAuto, Float refApAutoDev,
                         String[] refApertures, Double[] refApertureDevs, Float magnitude, Float deviation,

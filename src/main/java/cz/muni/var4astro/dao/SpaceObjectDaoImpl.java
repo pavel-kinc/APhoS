@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The Data Access Object for the space_object entity.
+ * The Data Access Object implementation for the space_object entity.
  */
 @Repository
 @Transactional
@@ -31,9 +31,6 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /**
-     * Method to query objects based on the parameters given in the search form
-     */
     @Override
     public List<ObjectFluxCount> queryObjects(String RA, String dec, String radius,
                                               String name, String minMag,

@@ -1,7 +1,7 @@
 package cz.muni.var4astro.dto;
 
 /**
- * The Data Transfer Object for the Star.
+ * The Data Transfer Object representing a space object.
  */
 public class SpaceObject {
     private Long id;
@@ -12,6 +12,16 @@ public class SpaceObject {
     private String catalogRec;
     private Float catalogMag;
 
+    /**
+     * Instantiates a new Space object.
+     *
+     * @param catalogId  the catalog id of the object
+     * @param name       the name of the object
+     * @param catalog    the catalog used
+     * @param catalogDec the catalog declination
+     * @param catalogRec the catalog right ascension
+     * @param catalogMag the catalog magnitude
+     */
     public SpaceObject(String catalogId, String name, String catalog,
                        String catalogDec, String catalogRec, Float catalogMag) {
         this.catalogId = catalogId;

@@ -1,13 +1,20 @@
 package cz.muni.var4astro.dto;
 
 /**
- * The Data Transfer Object for the graph data: the time and the magnitude.
+ * The Data Transfer Object for x and y values of one point on the light curve graph.
  */
 public class GraphData {
+
 
     String time;
     Float magnitude;
 
+    /**
+     * Instantiates a new Graph data.
+     *
+     * @param expMiddle the timepoint in the middle of the exposition
+     * @param magnitude the magnitude measured for the exposition
+     */
     public GraphData(String expMiddle, Float magnitude) {
         this.time = expMiddle;
         this.magnitude = magnitude;

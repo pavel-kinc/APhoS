@@ -25,7 +25,7 @@ public class Conversions {
      *
      * @param hourAngle the angle in the format "HH MM SS"
      * @return the angle in degrees
-     * @throws ParseException the parse exception
+     * @throws ParseException in case of incorrect hourAngle format
      */
     public static float hourAngleToDegrees(String hourAngle) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");

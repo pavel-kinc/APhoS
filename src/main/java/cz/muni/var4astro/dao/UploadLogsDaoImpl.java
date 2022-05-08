@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The Data Access Object for the uploading_logs entity.
+ * The Data Access Object implementation for the uploading_logs entity.
  */
 @Repository
 @Transactional

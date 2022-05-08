@@ -7,19 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 /**
  * The Security configuration of the app.
- * Redirect after login: username setting for new user
- *                       profile page for existing
+ * Redirect after login: -username setting for new user
+ *                       -profile page for existing user
  */
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomOAuth2UserService oAuth2UserService;
+    private DefaultOAuth2UserService oAuth2UserService;
 
     @Autowired
     private UserService userService;

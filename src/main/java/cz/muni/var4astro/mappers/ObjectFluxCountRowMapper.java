@@ -6,6 +6,12 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
+/**
+ * The ObjectFluxCount row mapper. Maps the rows from the query for a space_object
+ * and count of its fluxes and saves them to a ObjectFluxCount object.
+ *
+ */
 public class ObjectFluxCountRowMapper implements RowMapper<ObjectFluxCount> {
 
     @Override

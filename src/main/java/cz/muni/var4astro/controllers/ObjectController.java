@@ -1,8 +1,6 @@
 package cz.muni.var4astro.controllers;
 
-import cz.muni.var4astro.dao.FluxDaoImpl;
-import cz.muni.var4astro.dao.SpaceObjectDaoImpl;
-import cz.muni.var4astro.dao.UserRepo;
+import cz.muni.var4astro.dao.*;
 import cz.muni.var4astro.dto.FluxUserTime;
 import cz.muni.var4astro.dto.SpaceObject;
 import cz.muni.var4astro.helper.Night;
@@ -28,6 +26,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+/**
+ *  The Object controller handles the displaying of the results, the light curve  , and allows for downloading of the data.
+ *
+ */ /**
+ * The Object controller handles the displaying of the results, the light curve
+ * , and allows for downloading of the data.
+ */
 @Controller
 public class ObjectController {
 
@@ -35,11 +40,24 @@ public class ObjectController {
     UserRepo userRepo;
 
     @Autowired
-    SpaceObjectDaoImpl spaceObjectDao;
+    SpaceObjectDao spaceObjectDao;
 
     @Autowired
-    FluxDaoImpl fluxDao;
+    FluxDao fluxDao;
 
+    /**
+     * Display results for the chosen object: fluxes and magnitudes, light curve, etc.
+     *
+     * @param referenceObjectId  the reference object database id
+     * @param refObjectCatalogId the reference object catalog id
+     * @param id                 the main object database id
+     * @param catalogId          the main object catalog id
+     * @param apertures          the apertures
+     * @param refApertures       the reference apertures
+     * @param showSaturated      the show rows with chosen aperture value saturated?
+     * @param model              the model
+     * @return the object.html template
+     */
     @GetMapping("/object")
     public String displayObjectFluxes(@RequestParam(name = "ref-id") Long referenceObjectId,
                                       @RequestParam(name = "ref-cat-id") String refObjectCatalogId,
@@ -80,6 +98,19 @@ public class ObjectController {
         return "object";
     }
 
+    /**
+     * Generate the file with the data.
+     *
+     * @param objectId          the main object database id
+     * @param referenceObjectId the reference object database id
+     * @param unwantedUsers     the List of users we do not want data from
+     * @param apertures         the apertures
+     * @param refApertures      the reference apertures
+     * @param addData           the true if the user wants initial metadata at the beginning of the file
+     * @param textFileFormat    the chosen format of the file
+     * @param response          the http response
+     * @throws IOException in case of an IO Error
+     */
     @PostMapping(value = "/object/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public void generateCSV(@RequestParam(name = "object-id") Long objectId,
                             @RequestParam(name = "ref-object-id") Long referenceObjectId,
@@ -116,6 +147,16 @@ public class ObjectController {
         }
     }
 
+
+    /**
+     * Write initial data and schema to the file.
+     *
+     * @param seqWriter seqWriter
+     * @param addData true if the initial data is wanted
+     * @param spaceObject the space object for which the data is
+     * @param refObject the space object for which the data is
+     * @throws IOException in case of an IO error
+     */
     private void writeInitialData(SequenceWriter seqWriter, Boolean addData,
                                   SpaceObject spaceObject, SpaceObject refObject) throws IOException {
         if (addData) {
@@ -133,6 +174,20 @@ public class ObjectController {
         seqWriter.write(new Object[]{"Exposure middle", "Magnitude", "Deviation"});
     }
 
+    /**
+     * The data found for a certain object can be from many nights of
+     * observations. The user can then select a specific aperture value to be
+     * used for each night. Aperture values for each night are stored in the
+     * Night objects. This method takes the list of the Night objects sets the aperture to be used
+     * for that night to what the user selected on the webpage. It then finds the corresponding night
+     * for each flux and sets is apertures, so it matches the aperture the user wants for
+     * that night. It also calculates the deviations and magnitudes after doing so.
+     *
+     * @param fluxes the list of displayed fluxes
+     * @param apertures the list of apertures to be used chronologically ordered
+     * @param refApertures the list of reference apertures to be used chronologically ordered
+     * @return the List of nights displayed data is from
+     */
     private List<Night> setMagnitudes(List<FluxUserTime> fluxes, String[] apertures, String[] refApertures) {
         List<Night> nights = fluxes
                 .stream()

@@ -12,6 +12,9 @@ import java.text.ParseException;
 import static cz.muni.var4astro.utils.Conversions.angleToFloatForm;
 import static cz.muni.var4astro.utils.Conversions.hourAngleToDegrees;
 
+/**
+ * The prepared statement setter that sets values from the search form input to the sql query.
+ */
 public class SpaceObjectPreparedStatementSetter implements PreparedStatementSetter {
 
     private final String RA;
@@ -25,6 +28,18 @@ public class SpaceObjectPreparedStatementSetter implements PreparedStatementSett
 
     private static final Logger log = LoggerFactory.getLogger(FileHandlingService.class);
 
+    /**
+     * Instantiates a new Space object prepared statement setter.
+     *
+     * @param RA       the right ascension
+     * @param dec      the declination
+     * @param radius   the radius of the search
+     * @param name     the name of the space object
+     * @param minMag   the min magnitude
+     * @param maxMag   the max magnitude
+     * @param catalog  the catalog
+     * @param objectId the catalog id
+     */
     public SpaceObjectPreparedStatementSetter(String RA, String dec, String radius, String name,
                                               String minMag, String maxMag, String catalog, String objectId) {
         this.dec = dec;

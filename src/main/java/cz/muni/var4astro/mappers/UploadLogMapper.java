@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 
+/**
+ * The type UploadLog mapper. Maps the rows from the uploading_logs table
+ * to the UploadLog object.
+ */
 public class UploadLogMapper implements RowMapper<UploadLog> {
 
     @Override

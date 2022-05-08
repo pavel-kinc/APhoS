@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * The Custom error controller displays a customized error page.
+ */
 @Controller
 public class CustomErrorController implements ErrorController {
 
+    /**
+     * Display an error page on the /error endpoint.
+     *
+     * @param request the request that ended with error
+     * @param model   the model
+     * @return the error.html template
+     */
     @RequestMapping("/error")
     public String handleError(HttpServletRequest request, Model model) {
         String status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString();

@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.util.Objects;
 
 /**
- * The Data Access Object for the photo_properties entity.
+ * The Data Access Object implementation for the photo_properties entity.
  */
 @Repository
 @Transactional

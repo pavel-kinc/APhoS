@@ -5,15 +5,22 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * The User hibernate entity.
+ * The hibernate entity representing a user.
  */
 @Entity
 @Table(name = "users", schema = "public")
 public class User {
 
+    /**
+     * the Google internal id of the user used also as an id here
+     */
     @Id
     private String googleSub;
     private String username;
+
+    /**
+     * the description of the user's profile
+     */
     private String description;
 
     public User(String googleSub) {

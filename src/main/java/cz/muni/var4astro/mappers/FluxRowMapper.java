@@ -17,6 +17,11 @@ import java.util.Date;
 import java.util.List;
 
 
+/**
+ * The Flux row mapper. Handles the mapping of the rows from the query for fluxes of the given objects.
+ * Maps the flux values and the reference object flux values, the time of the exposure, the
+ * uploading user, and the Night object for the night to an object of FluxUserTime type.
+ */
 public class FluxRowMapper implements RowMapper<FluxUserTime> {
 
     private static final Logger log = LoggerFactory.getLogger(FluxRowMapper.class);

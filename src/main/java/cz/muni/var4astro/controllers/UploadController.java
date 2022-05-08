@@ -1,6 +1,8 @@
 package cz.muni.var4astro.controllers;
 
+import cz.muni.var4astro.dao.UploadErrorMessagesDao;
 import cz.muni.var4astro.dao.UploadErrorMessagesDaoImpl;
+import cz.muni.var4astro.dao.UploadLogsDao;
 import cz.muni.var4astro.dao.UploadLogsDaoImpl;
 import cz.muni.var4astro.dto.User;
 import cz.muni.var4astro.exceptions.CsvContentException;
@@ -31,6 +33,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+/**
+ * The Upload controller handles the upload of the files.
+ */
 @Controller
 @RequestMapping("/upload")
 public class UploadController {
@@ -42,20 +47,40 @@ public class UploadController {
     UserService userService;
 
     @Autowired
-    UploadLogsDaoImpl uploadLogsDao;
+    UploadLogsDao uploadLogsDao;
 
     @Autowired
-    UploadErrorMessagesDaoImpl uploadErrorMessagesDao;
+    UploadErrorMessagesDao uploadErrorMessagesDao;
 
     private static final Logger log = LoggerFactory.getLogger(UploadController.class);
 
+    /**
+     * The Timeout for the SSEmitter.
+     */
     static final long TIMEOUT_INFINITY = -1L;
 
+    /**
+     * Show the upload form.
+     *
+     * @return the upload.html template
+     */
     @GetMapping("")
-    public String showAboutPage() {
+    public String showUploadPage() {
         return "upload";
     }
 
+    /**
+     * This endpoint receives a file form the client-side and
+     * saves it in the temporary directory. A new subfolder is created
+     * within the /tmp directory with the first file uploaded. Subsequent files
+     * from the same set of uploaded files are then stored in this folder.
+     *
+     * @param file    the multipart file
+     * @param dirName the name of the directory to save the file in
+     *                "create_new" in case of first file from the set of files
+     * @return the path to the saved file
+     * @throws IOException in case of an IO error
+     */
     @PostMapping("/save")
     @ResponseBody
     public String storeUploadedFiles(@RequestParam(name = "file") MultipartFile file,
@@ -74,6 +99,16 @@ public class UploadController {
         return path;
     }
 
+    /**
+     * Parse and persist the files uploaded to the /tmp directory.
+     * The method uses an SsseEmitter to send the information about progress
+     * to the cliend-side which uses it to update the progress bar. It does
+     * so after each file is handled.
+     *
+     * @param pathToDir  the path to directory with the files
+     * @param numOfFiles the number of files
+     * @return the sse emitter object which will send updates to the client-side
+     */
     @GetMapping("/parse")
     public SseEmitter parseAndPersist(@RequestParam(name = "path-to-dir") String pathToDir,
                                       @RequestParam(name = "file-count") int numOfFiles) {
@@ -106,7 +141,7 @@ public class UploadController {
                                     .name("FILE_STORED")
                                     .data(file.getFileName()));
                         } catch (IOException | CsvContentException e) {
-                            log.info(file.getFileName() + " could not be parsed", e);
+                            log.error(file.getFileName() + " could not be parsed", e);
                             unsuccessfulCount.getAndIncrement();
                             fileErrorMessagePairsList.add(Pair.of(
                                     file.getFileName().toString(), e.getMessage()));
@@ -132,6 +167,16 @@ public class UploadController {
         return emitter;
     }
 
+
+    /**
+     * Save information about upload results to the database for user to later see.
+     *
+     * @param uploadingUser uploading sser
+     * @param uploadTime the time of the upload
+     * @param numOfFiles number of files
+     * @param numOfErrors number of errors
+     * @param fileErrorMessagePairsList List of pairs: (filename, error message for that file)
+     */
     private void logUploadData(User uploadingUser, Timestamp uploadTime, int numOfFiles,
                                int numOfErrors, List<Pair<String, String>> fileErrorMessagePairsList) {
         long logId = uploadLogsDao.saveUploadLog(uploadingUser, uploadTime, numOfFiles, numOfErrors);

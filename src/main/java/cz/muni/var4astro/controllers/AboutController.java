@@ -1,21 +1,32 @@
 package cz.muni.var4astro.controllers;
 
+import cz.muni.var4astro.dao.FluxDao;
 import cz.muni.var4astro.dao.FluxDaoImpl;
+import cz.muni.var4astro.dao.SpaceObjectDao;
 import cz.muni.var4astro.dao.SpaceObjectDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * The controller handles view of the "about" page of the website.
+ */
 @Controller
 public class AboutController {
 
     @Autowired
-    SpaceObjectDaoImpl spaceObjectDao;
+    SpaceObjectDao spaceObjectDao;
 
     @Autowired
-    FluxDaoImpl fluxDao;
+    FluxDao fluxDao;
 
+    /**
+     * Handles requests to the /about endpoint and displays the about page.
+     *
+     * @param model the model
+     * @return the about.html template
+     */
     @GetMapping("/about")
     public String showAboutPage(Model model) {
         String fluxNumberFormatted = String.format("%,d", fluxDao.getNumberOfFluxesEstimate());
