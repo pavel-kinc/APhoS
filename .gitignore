@@ -4,7 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /src/main/resources/META-INF/
-/out/
+out/
+/src/main/resources/application_secret.properties
+application_secret.properties
+
 
 
 
@@ -38,4 +41,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/src/main/resources/application.properties
