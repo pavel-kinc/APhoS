@@ -10,9 +10,9 @@
     </parent>
     <groupId>cz.muni</groupId>
     <artifactId>aphos</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>aphos</name>
-    <description>aphos</description>
+    <description>Amateur Photometric Survey</description>
     <properties>
         <java.version>11</java.version>
     </properties>
@@ -120,10 +120,16 @@
 
 
     <build>
+        <!-- name of the producer executable jar file -->
+        <finalName>aphos</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.installing -->
+                    <executable>true</executable>
+                </configuration>
             </plugin>
         </plugins>
     </build>
