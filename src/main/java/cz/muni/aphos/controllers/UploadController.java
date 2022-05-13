@@ -6,6 +6,7 @@ import cz.muni.aphos.dto.User;
 import cz.muni.aphos.exceptions.CsvContentException;
 import cz.muni.aphos.services.FileHandlingService;
 import cz.muni.aphos.services.UserService;
+import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,24 +132,34 @@ public class UploadController {
                     List<Path> regularFiles = filePaths
                             .filter(Files::isRegularFile)
                             .collect(Collectors.toList());
+                    boolean uploadPageOpened = true;
                     for (Path file : regularFiles) {
                         try {
                             fileHandlingService.parseAndPersist(file, uploadingUser);
                             log.info(file.getFileName() + " successfully parsed and stored");
-                            emitter.send(SseEmitter.event()
-                                    .name("FILE_STORED")
-                                    .data(file.getFileName()));
-                        } catch (IOException | CsvContentException e) {
+                            if (uploadPageOpened) {
+                                emitter.send(SseEmitter.event()
+                                        .name("FILE_STORED")
+                                        .data(file.getFileName()));
+                            }
+                        } catch (ClientAbortException e) {
+                            // The Exception arises when the user closes the page, so we just stop
+                            // sending the updates, but keep the parsing going
+                            uploadPageOpened = false;
+                        }
+                        catch (IOException | CsvContentException e) {
                             log.error(file.getFileName() + " could not be parsed", e);
                             unsuccessfulCount.getAndIncrement();
                             fileErrorMessagePairsList.add(Pair.of(
                                     file.getFileName().toString(), e.getMessage()));
                         }
                     }
-                    emitter.send(SseEmitter.event()
-                            .name("COMPLETED")
-                            .data(unsuccessfulCount));
-                    emitter.complete();
+                    if (uploadPageOpened) {
+                        emitter.send(SseEmitter.event()
+                                .name("COMPLETED")
+                                .data(unsuccessfulCount));
+                        emitter.complete();
+                    }
                 } catch (IOException e) {
                     logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles,
                             new ArrayList<>());
@@ -157,6 +168,8 @@ public class UploadController {
                 logUploadData(uploadingUser, currentTime, numOfFiles,
                         unsuccessfulCount.get(), fileErrorMessagePairsList);
             } catch (Exception e) {
+                logUploadData(uploadingUser, currentTime, numOfFiles, numOfFiles,
+                        new ArrayList<>());
                 log.error("emitter completed with error", e);
                 emitter.completeWithError(e);
             }

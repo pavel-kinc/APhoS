@@ -53,6 +53,7 @@ function parseFiles(headers, pathToDir, filesLength) {
         finishedSaving(filesLength, numOfUnsuccessfull);
     });
     emitter.onerror = function (e) {
+        console.log(e);
         document.getElementById("error").style.display = "inline";
         emitter.close();
         finishedSaving(filesLength, filesLength - progressBarCount);
