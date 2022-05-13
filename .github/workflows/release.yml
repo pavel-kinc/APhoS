@@ -2,9 +2,9 @@
 name: "release"
 on:
   push:
-    # Sequence of patterns matched against refs/tags
+    # Run for tagged commits, the tag name should be X.Y.Z to be used as version in pom.xml
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - '[1-9]*'
 
 jobs:
   publish:
@@ -26,6 +26,11 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: "get version from git tag"
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: "Set version in pom.xml to ${{ steps.get_version.outputs.VERSION }}"
+        run: "mvn versions:set -DnewVersion=${{ steps.get_version.outputs.VERSION }} ; mvn versions:commit"
       - name: "Compile and package"
         run: mvn -B -DskipTests clean install
       - name: "Create Release"
