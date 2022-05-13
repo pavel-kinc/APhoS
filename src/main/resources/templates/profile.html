@@ -3,9 +3,9 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml">
 
     <head th:replace="layout :: head"></head>
-
-    <body class="bg-light">
+    <body class="bg-light d-flex flex-column min-vh-100">
         <nav th:replace="layout :: navbar"></nav>
+        <main class="flex-fill">
         <div class="container mt-5">
             <div class="row">
                 <div class="col-lg-4">
@@ -74,6 +74,7 @@
             </div>
         </div>
         <script th:src="@{/js/highlight-active.js}"></script>
+        </main>
+        <footer th:replace="layout :: footer"></footer>
     </body>
-
 </html>

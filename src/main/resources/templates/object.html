@@ -4,222 +4,226 @@
 
 <head th:replace="layout :: head"></head>
 
-<body class="bg-light">
+<body class="bg-light d-flex flex-column min-vh-100 bg-light">
 <nav th:replace="layout :: navbar"></nav>
-<div class="container-fluid">
-    <div class="row my-4">
-        <div class="col-md-10">
-            <div class="row mb-3 justify-content-end align-items-end">
-                <div class="col-md-8">
-                    <h1 th:text="${'Object ' + catalogId}"></h1>
-                    <h3 th:text="${'Comparison ' + refCatalogId}" class="text-secondary"> </h3>
-                </div>
-                <div class="col-md-4">
-                    <button class="btn btn-lg btn-secondary ms-5" data-bs-toggle="modal"
-                            data-bs-target="#graphModal" onclick="updateChart()">
-                        Light Curve
-                    </button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
-                                data-bs-toggle="dropdown">
-                            Users
+<main class="flex-fill">
+    <div class="container-fluid">
+        <div class="row my-4">
+            <div class="col-md-10">
+                <div class="row mb-3 justify-content-end align-items-end">
+                    <div class="col-md-8">
+                        <h1 th:text="${'Object ' + catalogId}"></h1>
+                        <h3 th:text="${'Comparison ' + refCatalogId}" class="text-secondary"> </h3>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-lg btn-secondary ms-5" data-bs-toggle="modal"
+                                data-bs-target="#graphModal" onclick="updateChart()">
+                            Light Curve
                         </button>
-                        <div id="userDropDownMenu" class="dropdown-menu">
-                            <div class="row">
-                                <div class="col-md-6 align-self-center">
-                                    <h5 class="text-center">Include</h5>
-                                    <div class="input-group px-3 mt-2">
-                                        <select class="form-select" th:size="${#lists.size(users)+2}"
-                                                id="wantedUsersSelect"
-                                                aria-label="User select" style="width: 500px">
-                                            <option th:each="user : ${users}" th:value="${user}"
-                                                    th:id="${user}" th:text="${user}" draggable="true">
-                                            </option>
-                                        </select>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-secondary btn-lg dropdown-toggle"
+                                    data-bs-toggle="dropdown">
+                                Users
+                            </button>
+                            <div id="userDropDownMenu" class="dropdown-menu">
+                                <div class="row">
+                                    <div class="col-md-6 align-self-center">
+                                        <h5 class="text-center">Include</h5>
+                                        <div class="input-group px-3 mt-2">
+                                            <select class="form-select" th:size="${#lists.size(users)+2}"
+                                                    id="wantedUsersSelect"
+                                                    aria-label="User select" style="width: 500px">
+                                                <option th:each="user : ${users}" th:value="${user}"
+                                                        th:id="${user}" th:text="${user}" draggable="true">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 align-self-center">
+                                        <h5 class="text-center">Exclude</h5>
+                                        <div class="input-group px-3 mt-2">
+                                            <select class="form-select" th:size="${#lists.size(users)+2}"
+                                                    id="unwantedUsersSelect"
+                                                    aria-label="User select" style="width: 500px">
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 align-self-center">
-                                    <h5 class="text-center">Exclude</h5>
-                                    <div class="input-group px-3 mt-2">
-                                        <select class="form-select" th:size="${#lists.size(users)+2}"
-                                                id="unwantedUsersSelect"
-                                                aria-label="User select" style="width: 500px">
-                                        </select>
+                                <div class="row mt-3 mb-2">
+                                    <div class="col-md-9 ms-3 align-self-center">
+                                        <h6>Drag users to select them</h6>
+                                    </div>
+                                    <div class="col-md-2 align-self-center">
+                                        <button class="btn btn-primary" onclick="filterUsers()">Apply</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-3 mb-2">
-                                <div class="col-md-9 ms-3 align-self-center">
-                                    <h6>Drag users to select them</h6>
-                                </div>
-                                <div class="col-md-2 align-self-center">
-                                    <button class="btn btn-primary" onclick="filterUsers()">Apply</button>
+                        </div>
+                        <button class="btn btn-lg btn-primary" type="button"
+                                data-bs-toggle="modal" data-bs-target="#confirmModal">Download as file</button>
+                        <div class="modal fade" id="confirmModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Choose type of file to download</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsvFull"
+                                                   value="full" checked>
+                                            <label class="form-check-label" for="radioCsvFull">
+                                                CSV with additional info
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsv"
+                                                   value="csv">
+                                            <label class="form-check-label" for="radioCsv">
+                                                Plain CSV
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="exampleRadios" id="radioText"
+                                                   value="text">
+                                            <label class="form-check-label" for="radioText">
+                                                Text file
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                                onclick="generateCSV()">Download</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="btn btn-lg btn-primary" type="button"
-                            data-bs-toggle="modal" data-bs-target="#confirmModal">Download as file</button>
-                    <div class="modal fade" id="confirmModal">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Choose type of file to download</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsvFull"
-                                               value="full" checked>
-                                        <label class="form-check-label" for="radioCsvFull">
-                                            CSV with additional info
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioCsv"
-                                               value="csv">
-                                        <label class="form-check-label" for="radioCsv">
-                                            Plain CSV
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="exampleRadios" id="radioText"
-                                               value="text">
-                                        <label class="form-check-label" for="radioText">
-                                            Text file
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
-                                            onclick="generateCSV()">Download</button>
-                                </div>
+                </div>
+            </div>
+            <div class="modal fade" id="graphModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+            style="max-height: 100%">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <canvas id="lightCurveCanvas">
+                                <script th:inline="javascript">
+                                    let fluxes = [[${fluxes}]];
+                                    let name = [[${catalogId}]];
+                                </script>
+                            </canvas>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input " type="checkbox" value=""
+                                       id="errorCheckbox" onclick="updateDeviationPlotting()" checked>
+                                <label class="form-check-label" for="errorCheckbox">
+                                    Plot deviation bars
+                                </label>
                             </div>
+                            <button class="btn btn-primary" onclick="resetZoom()">Reset zoom</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="graphModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-        style="max-height: 100%">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <canvas id="lightCurveCanvas">
-                            <script th:inline="javascript">
-                                let fluxes = [[${fluxes}]];
-                                let name = [[${catalogId}]];
-                            </script>
-                        </canvas>
+            <div class="col-md-10">
+                <table class="table table-bordered table-striped table-hover
+                table-sort table-arrows" id="fluxTable">
+                    <thead class="table-dark">
+                    <tr>
+                        <th class="text-center">Right Asc</th>
+                        <th class="text-center">Declination</th>
+                        <th class="text-center">Exposure middle (UTC)</th>
+                        <th class="text-center">Ap auto</th>
+                        <th class="text-center">Apertures</th>
+                        <th class="text-center">Cmp ap auto</th>
+                        <th class="text-center">Cmp apertures</th>
+                        <th class="text-center">Magnitude</th>
+                        <th class="text-center">Uploaded by</th>
+                    </tr>
+                    </thead>
+                    <tr th:each="flux : ${fluxesForTable}">
+                        <td class="text-center" th:text="${flux.rightAsc}"></td>
+                        <td class="text-center" th:text="${flux.dec}"></td>
+                        <td class="text-center" th:text="${flux.expMiddle}"></td>
+                        <td class="text-center" th:text="${flux.apAuto}"></td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-secondary" id="aperturesDropdown"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Show
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
+                                    <ol class="list-group list-group-numbered">
+                                        <th:block th:each="aperture: ${flux.apertures}">
+                                            <li class="list-group-item" th:text="${aperture}"></li>
+                                        </th:block>
+                                    </ol>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center" th:text="${flux.refApAuto}"></td>
+                        <td class="text-center">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-secondary" id="refAperturesDropdown"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    Show
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
+                                    <ol class="list-group list-group-numbered">
+                                        <th:block th:each="refAperture: ${flux.refApertures}">
+                                            <li class="list-group-item" th:text="${refAperture}"></li>
+                                        </th:block>
+                                    </ol>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center" th:text="${flux.magnitude}"></td>
+                        <td class="text-center">
+                            <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                <div class="d-flex justify-content-between">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input " type="checkbox" value=""
+                               id="saturatedCheckbox" onclick="saturatedSwitch()">
+                        <label class="form-check-label" for="errorCheckbox">
+                            Display saturated fluxes
+                        </label>
                     </div>
-                    <div class="modal-footer justify-content-between">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input " type="checkbox" value=""
-                                   id="errorCheckbox" onclick="updateDeviationPlotting()" checked>
-                            <label class="form-check-label" for="errorCheckbox">
-                                Plot deviation bars
-                            </label>
-                        </div>
-                        <button class="btn btn-primary" onclick="resetZoom()">Reset zoom</button>
-                    </div>
+                <div class="d-flex justify-content-end">
+                    <nav id="paginationNav" aria-label="..."></nav>
                 </div>
+                </div>
+                <div id="statDiv" class="d-flex justify-content-end align-self-center"></div>
             </div>
-        </div>
-        <div class="col-md-10">
-            <table class="table table-bordered table-striped table-hover
-            table-sort table-arrows" id="fluxTable">
-                <thead class="table-dark">
-                <tr>
-                    <th class="text-center">Right Asc</th>
-                    <th class="text-center">Declination</th>
-                    <th class="text-center">Exposure middle (UTC)</th>
-                    <th class="text-center">Ap auto</th>
-                    <th class="text-center">Apertures</th>
-                    <th class="text-center">Cmp ap auto</th>
-                    <th class="text-center">Cmp apertures</th>
-                    <th class="text-center">Magnitude</th>
-                    <th class="text-center">Uploaded by</th>
-                </tr>
-                </thead>
-                <tr th:each="flux : ${fluxesForTable}">
-                    <td class="text-center" th:text="${flux.rightAsc}"></td>
-                    <td class="text-center" th:text="${flux.dec}"></td>
-                    <td class="text-center" th:text="${flux.expMiddle}"></td>
-                    <td class="text-center" th:text="${flux.apAuto}"></td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle text-secondary" id="aperturesDropdown"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Show
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
-                                <ol class="list-group list-group-numbered">
-                                    <th:block th:each="aperture: ${flux.apertures}">
-                                        <li class="list-group-item" th:text="${aperture}"></li>
-                                    </th:block>
-                                </ol>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center" th:text="${flux.refApAuto}"></td>
-                    <td class="text-center">
-                        <div class="dropdown">
-                            <a class="dropdown-toggle text-secondary" id="refAperturesDropdown"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Show
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="aperturesDropdown">
-                                <ol class="list-group list-group-numbered">
-                                    <th:block th:each="refAperture: ${flux.refApertures}">
-                                        <li class="list-group-item" th:text="${refAperture}"></li>
-                                    </th:block>
-                                </ol>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="text-center" th:text="${flux.magnitude}"></td>
-                    <td class="text-center">
-                        <a th:text="${flux.username}" th:href="${'/profile/?id=' + flux.userId}">
-                        </a>
-                    </td>
-                </tr>
-            </table>
-            <div class="d-flex justify-content-between">
-                <div class="form-check form-switch">
-                    <input class="form-check-input " type="checkbox" value=""
-                           id="saturatedCheckbox" onclick="saturatedSwitch()">
-                    <label class="form-check-label" for="errorCheckbox">
-                        Display saturated fluxes
+            <div class="col-md-2" id="apertureSelects">
+                <th:block th:each="night : ${nights}">
+                    <label th:for="${night.firstDateOfTheNight + night.username}"
+                           th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
+                            + night.secondDateOfTheNight + ' by ' + night.username}">
                     </label>
-                </div>
-            <div class="d-flex justify-content-end">
-                <nav id="paginationNav" aria-label="..."></nav>
+                    <select th:id="${night.idOnPage}" class="form-select"
+                            onchange="selectAperture()">
+                        <option selected value="auto">Aperture auto</option>
+                        <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
+                        th:value="${i}" th:text="${'Aperture ' + i}"> </option>
+                    </select>
+                    <select th:id="${'ref' + night.idOnPage}" class="form-select mb-3"
+                            onchange="selectAperture()">
+                        <option selected value="auto">Comparison aperture auto</option>
+                        <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
+                                th:value="${i}" th:text="${'Comparison aperture ' + i}"> </option>
+                    </select>
+                </th:block>
             </div>
-            </div>
-            <div id="statDiv" class="d-flex justify-content-end align-self-center"></div>
-        </div>
-        <div class="col-md-2" id="apertureSelects">
-            <th:block th:each="night : ${nights}">
-                <label th:for="${night.firstDateOfTheNight + night.username}"
-                       th:text="${'Night: ' + night.firstDateOfTheNight + ' - '
-                        + night.secondDateOfTheNight + ' by ' + night.username}">
-                </label>
-                <select th:id="${night.idOnPage}" class="form-select"
-                        onchange="selectAperture()">
-                    <option selected value="auto">Aperture auto</option>
-                    <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
-                    th:value="${i}" th:text="${'Aperture ' + i}"> </option>
-                </select>
-                <select th:id="${'ref' + night.idOnPage}" class="form-select mb-3"
-                        onchange="selectAperture()">
-                    <option selected value="auto">Comparison aperture auto</option>
-                    <option th:each="i : ${#numbers.sequence( 1, 10, 1)}"
-                            th:value="${i}" th:text="${'Comparison aperture ' + i}"> </option>
-                </select>
-            </th:block>
         </div>
     </div>
-</div>
+</main>
+<footer th:replace="layout :: footer"></footer>
+
 
 <script type="text/javascript" th:src="@{/webjars/js-cookie/js.cookie.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/chartjs/dist/chart.js}"></script>

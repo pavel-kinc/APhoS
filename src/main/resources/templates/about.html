@@ -4,162 +4,164 @@
 
 <head th:replace="layout :: head"></head>
 
-<body class="bg-light">
+<body class="bg-light </main>">
 <nav th:replace="layout :: navbar"></nav>
-<div class="container-fluid about-heading">
-    <div class="p-4 p-md-5 mb-4 mt-2 text-white rounded bg-dark">
-        <div class="d-flex justify-content-between">
-            <div class="col-md-6 px-0">
-                <h1 class="display-4">About APhoS</h1>
-                <h2 class="text-secondary"><span class="text-white">A</span>mateur
-                    <span class="text-white">Pho</span>tometric <span class="text-white">S</span>urvey
-                </h2>
-                <p class="lead my-3">Tool for cataloguing astrophotometric
-                    data with the purpose of archiving variable star observations.</p>
+<main class="flex-fill">
+    <div class="container-fluid about-heading">
+        <div class="p-4 p-md-5 mb-4 mt-2 text-white rounded bg-dark">
+            <div class="d-flex justify-content-between">
+                <div class="col-md-6 px-0">
+                    <h1 class="display-4">About APhoS</h1>
+                    <h2 class="text-secondary"><span class="text-white">A</span>mateur
+                        <span class="text-white">Pho</span>tometric <span class="text-white">S</span>urvey
+                    </h2>
+                    <p class="lead my-3">Tool for cataloguing astrophotometric
+                        data with the purpose of archiving variable star observations.</p>
+                </div>
+                <img th:src="@{/images/telescope-svgrepo-com.svg}" height="180" alt="telescope icon">
             </div>
-            <img th:src="@{/images/telescope-svgrepo-com.svg}" height="180" alt="telescope icon">
         </div>
-    </div>
-    <div class="col-md-12 bg-white">
-        <div class="row mt-3 ms-2">
-            <div class="col-md-8">
-                <h2 id="app">Application</h2>
-                <p class="blog-post-meta text-secondary">Last updated 18.04.2022</p>
-                <p>
-                    The application parses and stores the csv data from the
-                    <a href="https://www.gxccd.com/cat?id=146&lang=409">SIPS</a> software. Its aim
-                    is to utilize the photometrical data from the observations.
-                    It persists stars along with its flux values, the data for a star can then be queried.
-                </p>
-                <p>
-                    The tool is work in progress. Current version provides no cross-identification
-                    between the catalogues, so the advised catalogue to use is UCAC4.
-                </p>
-                <h2 id="usage">Usage</h2>
-                <p>
-                    The application provides the ability to upload the data and to query the data. To upload data
-                    an authentication with a Google account is required. After the first sign-in you will be asked
-                    to choose a username and a profile will be created. A description text field can be used to
-                    publish some information for other users.
-                </p>
-                <h4 id="uploading">File uploading</h4>
-                <div class="ms-2">
+        <div class="col-md-12 bg-white">
+            <div class="row mt-3 ms-2">
+                <div class="col-md-8">
+                    <h2 id="app">Application</h2>
+                    <p class="blog-post-meta text-secondary">Last updated 18.04.2022</p>
                     <p>
-                        The application allows uploading photos from the SIPS software in form of csv files. Image
-                        below displays the required data to include. The mandatory fields: the columns and the time
-                        of the exposure are displayed in red. The columns with deviaton values are not mandatory.
-                        However, they are recommended to be included as they allow for deviation calculations for the
-                        light
-                        curves.
-                        <img th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
+                        The application parses and stores the csv data from the
+                        <a href="https://www.gxccd.com/cat?id=146&lang=409">SIPS</a> software. Its aim
+                        is to utilize the photometrical data from the observations.
+                        It persists stars along with its flux values, the data for a star can then be queried.
                     </p>
                     <p>
-                        After the files are uploaded the app starts their processing. Progress bar will show its
-                        state. The page can be closed during the processing phase, the results of the whole process
-                        will then be available from the user profile.
+                        The tool is work in progress. Current version provides no cross-identification
+                        between the catalogues, so the advised catalogue to use is UCAC4.
                     </p>
-                </div>
-                <h4 id="searching">Searching for stars</h4>
-                <div class="ms-2">
-                    <p>The search form allows for filtering based on
-                        <b>Coordinates</b>, <b>Object name</b>, <b>Magnitude</b>, <b>Catalog</b>
-                        along with the respective <b>ID</b>. The results are displayed as rows in a table, in case
-                        of a more results only the first 100 is shown.</p>
-                    <p>Below is an example of a search based on the ID. To proceed click on the object's id and
-                        repeat the same process for a comparison object.</p>
-                    <img th:src="@{/images/search.png}" alt="search page example" class="mt-1 mb-2" width="1183">
-                </div>
-                <h4 id="presentation">Fluxes presentation</h4>
-                <div class="ms-2">
-                    <p>Found fluxes are shown as follows:</p>
+                    <h2 id="usage">Usage</h2>
+                    <p>
+                        The application provides the ability to upload the data and to query the data. To upload data
+                        an authentication with a Google account is required. After the first sign-in you will be asked
+                        to choose a username and a profile will be created. A description text field can be used to
+                        publish some information for other users.
+                    </p>
+                    <h4 id="uploading">File uploading</h4>
+                    <div class="ms-2">
+                        <p>
+                            The application allows uploading photos from the SIPS software in form of csv files. Image
+                            below displays the required data to include. The mandatory fields: the columns and the time
+                            of the exposure are displayed in red. The columns with deviaton values are not mandatory.
+                            However, they are recommended to be included as they allow for deviation calculations for the
+                            light
+                            curves.
+                            <img th:src="@{/images/csvFileExample.png}" alt="CSV example" class="my-3">
+                        </p>
+                        <p>
+                            After the files are uploaded the app starts their processing. Progress bar will show its
+                            state. The page can be closed during the processing phase, the results of the whole process
+                            will then be available from the user profile.
+                        </p>
+                    </div>
+                    <h4 id="searching">Searching for stars</h4>
+                    <div class="ms-2">
+                        <p>The search form allows for filtering based on
+                            <b>Coordinates</b>, <b>Object name</b>, <b>Magnitude</b>, <b>Catalog</b>
+                            along with the respective <b>ID</b>. The results are displayed as rows in a table, in case
+                            of a more results only the first 100 is shown.</p>
+                        <p>Below is an example of a search based on the ID. To proceed click on the object's id and
+                            repeat the same process for a comparison object.</p>
+                        <img th:src="@{/images/search.png}" alt="search page example" class="mt-1 mb-2" width="1183">
+                    </div>
+                    <h4 id="presentation">Fluxes presentation</h4>
+                    <div class="ms-2">
+                        <p>Found fluxes are shown as follows:</p>
+                        <ul>
+                            <li><span style="color: #1a69b7">Apertures select panel</span> - different aperture to use for
+                                data from a specific night
+                                can bo chosen here. The magnitude is then calculated using specified apertures.
+                            </li>
+                            <li><span style="color: #d58c06">List of apertures</span> - ap auto columns display apertures
+                                determined as best by the
+                                photometric software, to see the other available apertures click on show in the
+                                apertures column. These values can then be selected in the apertures select panel.
+                            </li>
+                            <li>
+                                <span style="color: #d0d000">Saturated fluxes checkbox</span> - some data might be missing
+                                a flux value because
+                                of saturation. The saturated data is hidden by default, use the checkbox to display it.
+                            </li>
+                            <li>
+                                <span style="color: #d20101">Uploaded by column</span> - click on the username in a row of
+                                data to see the user profile of the
+                                uploader.
+                            </li>
+                            <li>
+                                <span style="color: #251f1f">Button panel</span> - consists of:
+                                <ul>
+                                    <li>
+                                        <b>Light curve button</b> displays light curve graph of selected object with
+                                        magnitude calculated from selected apertures. The graph allows for zooming in and
+                                        moving to focus on a data from single night. Deviation bars from magnitude
+                                        calculation
+                                        can be displayed.
+                                    </li>
+                                    <li>
+                                        <b>Users button</b> brings up a component for filtering out data from specific
+                                        users.
+                                        To use it drag and drop the listed usernames.
+                                    </li>
+                                    <li>
+                                        <b>Download button</b> The displayed data can be downloaded. Namely, the time of
+                                        the flux exposure, its calculated magnitude and deviation. Available formats are
+                                        simple text file or CSV file with or without initial metadata.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <img th:src="@{/images/object_screen.png}" alt="object page example"
+                             class="my-1" width="1183">
+                    </div>
+                    <h2 id="project">Project</h2>
+                    <p>The app's initial version was developed in 2021/22 as part of a bachelor's
+                        thesis in cooperation with Pavel Cagaš and Miloslav Zejda. </p>
+                    <h2 id="ack">Acknowledgements</h2>
+                    <p>The website's look is provided by:</p>
                     <ul>
-                        <li><span style="color: #1a69b7">Apertures select panel</span> - different aperture to use for
-                            data from a specific night
-                            can bo chosen here. The magnitude is then calculated using specified apertures.
-                        </li>
-                        <li><span style="color: #d58c06">List of apertures</span> - ap auto columns display apertures
-                            determined as best by the
-                            photometric software, to see the other available apertures click on show in the
-                            apertures column. These values can then be selected in the apertures select panel.
-                        </li>
-                        <li>
-                            <span style="color: #d0d000">Saturated fluxes checkbox</span> - some data might be missing
-                            a flux value because
-                            of saturation. The saturated data is hidden by default, use the checkbox to display it.
-                        </li>
-                        <li>
-                            <span style="color: #d20101">Uploaded by column</span> - click on the username in a row of
-                            data to see the user profile of the
-                            uploader.
-                        </li>
-                        <li>
-                            <span style="color: #251f1f">Button panel</span> - consists of:
-                            <ul>
-                                <li>
-                                    <b>Light curve button</b> displays light curve graph of selected object with
-                                    magnitude calculated from selected apertures. The graph allows for zooming in and
-                                    moving to focus on a data from single night. Deviation bars from magnitude
-                                    calculation
-                                    can be displayed.
-                                </li>
-                                <li>
-                                    <b>Users button</b> brings up a component for filtering out data from specific
-                                    users.
-                                    To use it drag and drop the listed usernames.
-                                </li>
-                                <li>
-                                    <b>Download button</b> The displayed data can be downloaded. Namely, the time of
-                                    the flux exposure, its calculated magnitude and deviation. Available formats are
-                                    simple text file or CSV file with or without initial metadata.
-                                </li>
-                            </ul>
-                        </li>
+                        <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
+                        <li><a href="https://www.svgrepo.com">Icons</a></li>
                     </ul>
-                    <img th:src="@{/images/object_screen.png}" alt="object page example"
-                         class="my-1" width="1183">
                 </div>
-                <h2 id="project">Project</h2>
-                <p>The app's initial version was developed in 2021/22 as part of a bachelor's
-                    thesis in cooperation with Pavel Cagaš and Miloslav Zejda. </p>
-                <h2 id="ack">Acknowledgements</h2>
-                <p>The website's look is provided by:</p>
-                <ul>
-                    <li><a href="https://getbootstrap.com/">Bootstrap</a></li>
-                    <li><a href="https://www.svgrepo.com">Icons</a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <div class="row">
-                    <div class="card bg-light mt-3 me-3">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Table of contents</h5>
-                            <div class="mx-3 my-3 fs-4">
-                                <div>1 <a href="#app">Application</a></div>
-                                <div>2 <a href="#usage">Usage</a></div>
-                                <div>
-                                    <div class="ms-3">2.1 <a href="#uploading">File uploading</a></div>
-                                </div>
-                                <div>
-                                    <div class="ms-3">2.2 <a href="#searching">Searching for stars</a></div>
-                                </div>
-                                <div>
-                                    <div class="ms-3">2.3 <a href="#presentation">Fluxes presentation</a></div>
-                                </div>
-                                <div>3 <a href="#usage">Project</a></div>
-                                <div>
-                                    <div>4 <a href="#ack">Acknowledgements</a></div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="card bg-light mt-3 me-3">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Table of contents</h5>
+                                <div class="mx-3 my-3 fs-4">
+                                    <div>1 <a href="#app">Application</a></div>
+                                    <div>2 <a href="#usage">Usage</a></div>
+                                    <div>
+                                        <div class="ms-3">2.1 <a href="#uploading">File uploading</a></div>
+                                    </div>
+                                    <div>
+                                        <div class="ms-3">2.2 <a href="#searching">Searching for stars</a></div>
+                                    </div>
+                                    <div>
+                                        <div class="ms-3">2.3 <a href="#presentation">Fluxes presentation</a></div>
+                                    </div>
+                                    <div>3 <a href="#usage">Project</a></div>
+                                    <div>
+                                        <div>4 <a href="#ack">Acknowledgements</a></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="card bg-light mt-3 me-3">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold">Data overview</h5>
-                            <div class="mx-3 my-3 fs-5">
-                                <b th:text="${'~' + objectNum}"></b> objects in the database<br>
-                                <b th:text="${'~' + fluxNum}"></b> fluxes in the database
+                    <div class="row mt-3">
+                        <div class="card bg-light mt-3 me-3">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">Data overview</h5>
+                                <div class="mx-3 my-3 fs-5">
+                                    <b th:text="${'~' + objectNum}"></b> objects in the database<br>
+                                    <b th:text="${'~' + fluxNum}"></b> fluxes in the database
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -167,7 +169,9 @@
             </div>
         </div>
     </div>
-</div>
+</main>
+<footer th:replace="layout :: footer"></footer>
+
 <script th:src="@{js/highlight-active.js}"></script>
 
 </body>
