@@ -10,7 +10,7 @@
     </parent>
     <groupId>cz.muni</groupId>
     <artifactId>aphos</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>aphos</name>
     <description>Amateur Photometric Survey</description>
     <properties>
