@@ -13,6 +13,20 @@ let users = document.getElementById("userDropDownMenu").getElementsByTagName("op
 
 for (let user of users) {
     user.addEventListener("dragstart", drag);
+    user.addEventListener("dblclick", doubleclick);
+}
+
+
+function doubleclick(event) {
+    let clickedUser = event.target;
+    let wantedArray = Array.from(wantedSelect.children);
+    if (wantedArray.includes(clickedUser)) {
+        wantedSelect.removeChild(clickedUser);
+        unwantedSelect.appendChild(clickedUser);
+    } else {
+        unwantedSelect.removeChild(clickedUser);
+        wantedSelect.appendChild(clickedUser);
+    }
 }
 
 
