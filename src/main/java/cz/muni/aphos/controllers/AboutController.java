@@ -1,5 +1,6 @@
 package cz.muni.aphos.controllers;
 
+import cz.muni.aphos.AphosApplication;
 import cz.muni.aphos.dao.FluxDao;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class AboutController {
         String objectNumberFormatted = String.format("%,d", spaceObjectDao.getNumberOfObjectsEstimate());
         model.addAttribute("fluxNum", fluxNumberFormatted);
         model.addAttribute("objectNum", objectNumberFormatted);
+        model.addAttribute("version", AphosApplication.class.getPackage().getImplementationVersion());
         return "about";
     }
 }
