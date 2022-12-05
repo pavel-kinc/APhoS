@@ -1,0 +1,212 @@
+openapi: 3.0.3
+info:
+  description: |
+    This is Amateur Photometric Survey (APhoS) 
+    Application Programming Interface.
+  version: "1.0.0"
+  title: Aphos
+  contact:
+    email: pavelkinc@gmail.com
+servers:
+  - url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.0
+    description: SwaggerHub API Auto Mocking
+  - url: 'https://aphos.cerit-sc.cz/'
+    description: Main Server APhoS
+  - url: 'https://localhost/8009'
+    description: Developer Server
+tags:
+  - name: SpaceObject
+    description: Everything about space objects by cataloque info
+    externalDocs:
+      description: Find out more
+      url: 'http://swagger.io'
+  - name: PhotoProperties
+    description: Photo properties of a measurement
+  - name: Flux
+    description: Data about a flux
+    
+paths:
+  /spaceObject/findByParams:
+    get:
+      tags:
+        - SpaceObject
+      summary: Finds space objects by multiple data
+      description: No additional data is mandatory, but maximum object count is 100
+      operationId: findSpaceObjectsByParams
+      parameters:
+        - name: objectId
+          description: "Find object based on it's ID in given catalog"
+          schema:
+            type: string
+          in: query
+          required: false
+        - name: catalog
+          description: "Find objects based on catalog"
+          schema:
+            type: string
+            enum:
+              -  "UCAC4"
+              -  "USNO-B1.0"
+            default: "UCAC4"
+          in: query
+          required: false
+        - name: name
+          description: "Find object by it's name"
+          schema:
+            type: string
+          in: query
+          required: false
+        - name: coordinates
+          description: "Filter by coordinates"
+          schema: 
+            type: object
+            properties: { rightAsc: {type: string}, declination: {type: string}, radius: {type: number, format: double} }
+          in: query
+          required: false
+        - name: minMag
+          description: "Find objects based on min magnitude"
+          schema:
+            type: number
+            format: float
+            minimum: 0
+            default: 0
+          in: query
+          required: false
+        - name: maxMag
+          description: "Find objects based on max magnitude"
+          schema:
+            type: number
+            format: float
+            maximum: 15
+            default: 15
+          in: query
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpaceObject'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpaceObject'
+        '400':
+          description: Invalid values
+  /spaceObject/{spaceObjectId}:
+    get:
+      tags:
+        - SpaceObject
+        - Flux
+      summary: Find space object by ID
+      description: Returns a space object with fluxes
+      operationId: getSpaceObjectById
+      parameters:
+        - name: spaceObjectId
+          in: path
+          description: ID of space object to return
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceObjectWithFluxes'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SpaceObjectWithFluxes'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Space object not found
+  /user/findByUsername:
+    get:
+      tags:
+        - User
+      summary: Find user by username
+      description: Returns a user
+      operationId: getUserByUsername
+      parameters:
+        - name: username
+          in: query
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+externalDocs:
+  description: Find out more about Swagger
+  url: 'http://swagger.io'
+components:
+  schemas:
+    SpaceObject:
+      type: object
+      properties:
+        id: {type: string}
+        catalog: {type: string}
+        name: {type: string}
+        rightAsc: {type: string}
+        declination: {type: string}
+        magnitude: {type: number, format: float}
+        fluxesCount: {type: integer}
+    Flux:
+      type: object
+      properties:
+        rightAsc: {type: string}
+        declination: {type: string}
+        magnitude: {type: number, format: float}
+        expMiddle: {type: string}
+        deviation: {type: number, format: float}
+        addedBy: {type: string}
+        apAuto: {type: number, format: double, nullable: true}
+        apertures: {type: array, items: {type: number, format: double}}
+        apAutoCmp: {type: number, format: double, nullable: true}
+        aperturesCmp: {type: array, items: {type: number, format: double}}
+        photo: {$ref: '#/components/schemas/PhotoProperties'}
+        # maybe add night or its properties
+    SpaceObjectWithFluxes:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SpaceObject'
+      properties:
+        fluxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Flux'
+    User:
+      type: object
+      properties:
+        username: {type: string}
+        description: {type: string}
+    PhotoProperties:
+      type: object
+      properties:
+        exposureBegin: {type: string, format: timestamp, example: '2021-09-09 14:15:30.9905'}
+        exposureEnd: {type: string, format: timestamp, example: '2021-09-09 14:27:59.554'}
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
