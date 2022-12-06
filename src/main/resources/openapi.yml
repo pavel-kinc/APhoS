@@ -8,11 +8,12 @@ info:
   contact:
     email: pavelkinc@gmail.com
 servers:
-  - url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.0
-    description: SwaggerHub API Auto Mocking
-  - url: 'https://aphos.cerit-sc.cz/'
+  # Added by API Auto Mocking Plugin
+  - description: SwaggerHub API Auto Mocking
+    url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.0
+  - url: 'https://aphos.cerit-sc.cz/api/'
     description: Main Server APhoS
-  - url: 'https://localhost/8009'
+  - url: 'https://localhost/8009/api/'
     description: Developer Server
 tags:
   - name: SpaceObject
