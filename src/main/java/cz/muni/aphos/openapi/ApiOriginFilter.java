@@ -1,4 +1,4 @@
-package io.swagger.api;
+package cz.muni.aphos.openapi;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-06T11:18:47.588Z[GMT]")
-public class ApiOriginFilter implements javax.servlet.Filter {
+public class ApiOriginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain) throws IOException, ServletException {

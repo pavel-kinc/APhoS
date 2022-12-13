@@ -3,9 +3,10 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package io.swagger.api;
+package cz.muni.aphos.openapi;
 
-import io.swagger.model.User;
+
+import cz.muni.aphos.dto.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -43,7 +44,7 @@ public interface UserApi {
         @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
         
         @ApiResponse(responseCode = "404", description = "User not found") })
-    @RequestMapping(value = "/user/findByUsername",
+    @RequestMapping(value = "/api/user/findByUsername",
         produces = { "application/json", "application/xml" }, 
         method = RequestMethod.GET)
     ResponseEntity<User> getUserByUsername(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "username", required = true) String username);

@@ -1,7 +1,8 @@
-package io.swagger.api;
+package cz.muni.aphos.openapi;
 
-import io.swagger.model.User;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.muni.aphos.dto.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;

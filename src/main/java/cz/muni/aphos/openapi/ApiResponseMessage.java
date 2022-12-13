@@ -1,4 +1,4 @@
-package io.swagger.api;
+package cz.muni.aphos.openapi;
 
 import javax.xml.bind.annotation.XmlTransient;
 

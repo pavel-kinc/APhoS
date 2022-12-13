@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/search" ,"/", "/about", "/reference/**", "/reference/js/**").permitAll()
                     .antMatchers("/object/**", "/object/download", "/object/aperture").permitAll()
                     .antMatchers("/js/**", "/css/**", "/js/**","/images/**", "/webjars/**").permitAll()
-                    .antMatchers("/api-docs").permitAll()
+                    .antMatchers("/api-docs", "/api/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()
