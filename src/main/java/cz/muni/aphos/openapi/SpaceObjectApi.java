@@ -5,7 +5,7 @@
  */
 package cz.muni.aphos.openapi;
 
-import io.swagger.model.Coordinates;
+import cz.muni.aphos.openapi.models.Coordinates;
 import io.swagger.model.SpaceObject;
 import io.swagger.model.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Operation;
