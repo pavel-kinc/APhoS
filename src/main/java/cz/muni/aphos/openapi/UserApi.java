@@ -6,6 +6,7 @@
 package cz.muni.aphos.openapi;
 
 
+//import cz.muni.aphos.openapi.models.User;
 import cz.muni.aphos.dto.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,7 +40,7 @@ public interface UserApi {
 
     @Operation(summary = "Find user by username", description = "Returns a user", tags={ "User" })
     @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
+        @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
         
         @ApiResponse(responseCode = "400", description = "Invalid username supplied"),
         

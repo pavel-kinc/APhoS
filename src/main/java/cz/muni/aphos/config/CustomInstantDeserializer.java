@@ -1,4 +1,4 @@
-package io.swagger.configuration;
+package cz.muni.aphos.config;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;

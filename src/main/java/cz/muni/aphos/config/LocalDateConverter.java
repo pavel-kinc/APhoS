@@ -1,4 +1,4 @@
-package io.swagger.configuration;
+package cz.muni.aphos.config;
 
 import org.springframework.core.convert.converter.Converter;
 import org.threeten.bp.LocalDate;

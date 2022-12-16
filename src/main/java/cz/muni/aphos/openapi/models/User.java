@@ -1,4 +1,4 @@
-package io.swagger.model;
+package cz.muni.aphos.openapi.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +21,10 @@ public class User   {
 
   @JsonProperty("description")
   private String description = null;
+
+  public User(){
+
+  }
 
   public User username(String username) {
     this.username = username;

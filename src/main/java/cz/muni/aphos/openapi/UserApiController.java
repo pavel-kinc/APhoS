@@ -3,6 +3,8 @@ package cz.muni.aphos.openapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.dto.User;
+import cz.muni.aphos.dao.UserRepo;
+//import cz.muni.aphos.openapi.models.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -14,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+
 
 import javax.validation.constraints.*;
 import javax.validation.Valid;
@@ -43,6 +48,9 @@ public class UserApiController implements UserApi {
 
     private final HttpServletRequest request;
 
+    @Autowired
+    UserRepo userRepo;
+
     @org.springframework.beans.factory.annotation.Autowired
     public UserApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
@@ -50,17 +58,26 @@ public class UserApiController implements UserApi {
     }
 
     public ResponseEntity<User> getUserByUsername(@NotNull @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "username", required = true) String username) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<User>(objectMapper.readValue("{\n  \"description\" : \"description\",\n  \"username\" : \"username\"\n}", User.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+        try{
+            String accept = request.getHeader("Accept");
+            User user = userRepo.findByUsername(username);
+            if(user == null){
+                return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
             }
+            if (accept != null && accept.contains("application/json")) {
+                try {
+                    String body = objectMapper.writeValueAsString(user);
+                    return new ResponseEntity<User>(objectMapper.readValue(body, User.class), HttpStatus.OK);
+                } catch (IOException e) {
+                    log.error("Couldn't serialize response for content type application/json", e);
+                    return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<User>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity<User>(HttpStatus.NOT_IMPLEMENTED);
     }
+
 
 }

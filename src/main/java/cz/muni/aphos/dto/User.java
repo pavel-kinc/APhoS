@@ -1,5 +1,9 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -7,6 +11,7 @@ import javax.persistence.Table;
 /**
  * The hibernate entity representing a user.
  */
+@Validated
 @Entity
 @Table(name = "users", schema = "public")
 public class User {
@@ -14,13 +19,16 @@ public class User {
     /**
      * the Google internal id of the user used also as an id here
      */
+    @JsonIgnore
     @Id
     private String googleSub;
+    @JsonProperty("username")
     private String username;
 
     /**
      * the description of the user's profile
      */
+    @JsonProperty("description")
     private String description;
 
     public User(String googleSub) {

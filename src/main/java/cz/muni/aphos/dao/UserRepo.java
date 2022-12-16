@@ -20,6 +20,10 @@ public interface UserRepo extends CrudRepository<User, String> {
             "SELECT * FROM users where google_sub = ?1")
     User findByUserID(String userID);
 
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM users where username = ?1")
+    User findByUsername(String username);
+
     /**
      * Check if the user with given username exists.
      *
