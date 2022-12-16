@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
   description: |
-    This is Amateur Photometric Survey (APhoS) 
+    This is Amateur Photometric Survey (APhoS)
     Application Programming Interface.
-  version: "1.0.0"
+  version: "1.0.2"
   title: Aphos
   contact:
     email: pavelkinc@gmail.com
@@ -11,9 +11,9 @@ servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
     url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.0
-  - url: 'https://aphos.cerit-sc.cz/api/'
+  - url: 'https://aphos.cerit-sc.cz/'
     description: Main Server APhoS
-  - url: 'https://localhost/8009/api/'
+  - url: 'https://localhost:8009/'
     description: Developer Server
 tags:
   - name: SpaceObject
@@ -27,7 +27,7 @@ tags:
     description: Data about a flux
     
 paths:
-  /spaceObject/findByParams:
+  /api/spaceObject/findByParams:
     get:
       tags:
         - SpaceObject
@@ -84,7 +84,7 @@ paths:
           required: false
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -98,7 +98,7 @@ paths:
                   $ref: '#/components/schemas/SpaceObject'
         '400':
           description: Invalid values
-  /spaceObject/{spaceObjectId}:
+  /api/spaceObject/{spaceObjectId}:
     get:
       tags:
         - SpaceObject
@@ -114,7 +114,7 @@ paths:
           schema: {type: string}
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -126,7 +126,7 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Space object not found
-  /user/findByUsername:
+  /api/user/findByUsername:
     get:
       tags:
         - User
@@ -140,7 +140,7 @@ paths:
           schema: {type: string}
       responses:
         '200':
-          description: successful operation
+          description: Successful operation
           content:
             application/json:
               schema:
