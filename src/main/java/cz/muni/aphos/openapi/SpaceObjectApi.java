@@ -6,8 +6,8 @@
 package cz.muni.aphos.openapi;
 
 import cz.muni.aphos.openapi.models.Coordinates;
-import io.swagger.model.SpaceObject;
-import io.swagger.model.SpaceObjectWithFluxes;
+import cz.muni.aphos.dto.SpaceObject;
+//import io.swagger.model.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -43,24 +43,11 @@ public interface SpaceObjectApi {
         @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SpaceObject.class)))),
         
         @ApiResponse(responseCode = "400", description = "Invalid values") })
-    @RequestMapping(value = "/spaceObject/findByParams",
+    @RequestMapping(value = "api/spaceObject/findByParams",
         produces = { "application/json", "application/xml" }, 
         method = RequestMethod.GET)
     ResponseEntity<List<SpaceObject>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog" ,schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId, @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }
 , defaultValue="UCAC4")) @Valid @RequestParam(value = "catalog", required = false, defaultValue="UCAC4") String catalog, @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" ,schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name, @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" ,schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) Coordinates coordinates, @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,  @DecimalMax("15") @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag);
-
-
-    @Operation(summary = "Find space object by ID", description = "Returns a space object with fluxes", tags={ "SpaceObject", "Flux" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SpaceObjectWithFluxes.class))),
-        
-        @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-        
-        @ApiResponse(responseCode = "404", description = "Space object not found") })
-    @RequestMapping(value = "/spaceObject/{spaceObjectId}",
-        produces = { "application/json", "application/xml" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(@Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId);
 
 }
 

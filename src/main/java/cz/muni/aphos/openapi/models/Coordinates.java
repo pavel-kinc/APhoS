@@ -17,10 +17,10 @@ import javax.validation.constraints.*;
 
 public class Coordinates   {
   @JsonProperty("rightAsc")
-  private String rightAsc = null;
+  private String rightAsc = "";
 
   @JsonProperty("declination")
-  private String declination = null;
+  private String declination = "";
 
   @JsonProperty("radius")
   private Double radius = null;
