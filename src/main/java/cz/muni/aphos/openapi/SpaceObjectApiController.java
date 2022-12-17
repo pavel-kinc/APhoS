@@ -59,17 +59,19 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId, @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,
             schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }, defaultValue="UCAC4")) @Valid @RequestParam(value = "catalog", required = false, defaultValue="UCAC4") String catalog, @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" ,
             schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name, @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" ,
-            schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) Coordinates coordinates, @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,
+            schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,
             schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15") @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,
             schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
+            System.out.println(coordinates);
             Coordinates myCoordinates;
             String accept = request.getHeader("Accept");
             if(coordinates == null){
                 myCoordinates = new Coordinates();
             } else{
-                myCoordinates = coordinates;
+                myCoordinates = objectMapper.readValue(coordinates, Coordinates.class);
             }
+            System.out.println(myCoordinates);
             List res = spaceObjectDao.queryObjects(myCoordinates.getRightAsc(), myCoordinates.getDeclination(),
                     myCoordinates.getRadius() != null ? myCoordinates.getRadius().toString() : "",
                     name != null ? name : "", minMag.toString(), maxMag.toString(), catalog,
@@ -86,6 +88,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
             return new ResponseEntity<List<SpaceObject>>(res, HttpStatus.OK);
         } catch (Exception e){
+            System.out.println(e);
             return new ResponseEntity<List<SpaceObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
