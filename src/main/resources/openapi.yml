@@ -10,10 +10,10 @@ info:
 servers:
   # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.0
+    url: https://virtserver.swaggerhub.com/pavel-kinc/AphosApi/1.0.2
   - url: 'https://aphos.cerit-sc.cz/'
     description: Main Server APhoS
-  - url: 'https://localhost:8009/'
+  - url: 'http://localhost:8009/'
     description: Developer Server
 tags:
   - name: SpaceObject
@@ -61,7 +61,12 @@ paths:
           description: "Filter by coordinates"
           schema: 
             type: object
-            properties: { rightAsc: {type: string}, declination: {type: string}, radius: {type: number, format: double} }
+            minProperties: 3
+            properties: 
+              rightAsc: {type: string} 
+              declination: {type: string} 
+              radius: {type: number, format: double, default: 0.05}
+            example: {"rightAsc":"21:41:55.291","declination":"71:18:41.12","radius":0.05}
           in: query
           required: false
         - name: minMag
@@ -73,6 +78,7 @@ paths:
             default: 0
           in: query
           required: false
+          style: deepObject
         - name: maxMag
           description: "Find objects based on max magnitude"
           schema:
