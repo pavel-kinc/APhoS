@@ -1,21 +1,42 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 /**
  * The Data Transfer Object for a result of user searching for a space object.
  * It consists of the object catalog info and number of its fluxes in the database.
  */
+
+@JsonPropertyOrder({"id", "catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
 public class ObjectFluxCount {
 
+    @JsonIgnore()
     private long id;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("catalog")
     private String catalog;
+
+    @JsonProperty("id")
     private String catalogId;
+
+    @JsonProperty("rightAsc")
     private String catalogRec;
+
+    @JsonProperty("declination")
     private String catalogDec;
+
+    @JsonProperty("magnitude")
     private Float catalogMag;
     /**
      * number of fluxes the object has in the database
      */
+
+    @JsonProperty("fluxesCount")
     private int numberOfFluxes;
 
     public ObjectFluxCount() {
