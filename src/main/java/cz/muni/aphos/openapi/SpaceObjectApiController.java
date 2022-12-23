@@ -3,6 +3,7 @@ package cz.muni.aphos.openapi;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.Coordinates;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,15 +56,14 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         this.request = request;
     }
 
-    public ResponseEntity<List<SpaceObject>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog" ,
-            schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId, @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,
-            schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }, defaultValue="UCAC4")) @Valid @RequestParam(value = "catalog", required = false, defaultValue="UCAC4") String catalog, @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" ,
-            schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name, @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" ,
-            schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,
-            schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15") @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,
-            schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
+    public ResponseEntity<List<SpaceObject>>
+    findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog" , schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId,
+                             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
+                             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" , schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name,
+                             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" , schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates,
+                             @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" , schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,
+                             @DecimalMax("15") @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" , schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
-            System.out.println(coordinates);
             Coordinates myCoordinates;
             String accept = request.getHeader("Accept");
             if(coordinates == null){
@@ -71,11 +71,10 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             } else{
                 myCoordinates = objectMapper.readValue(coordinates, Coordinates.class);
             }
-            System.out.println(myCoordinates);
             List res = spaceObjectDao.queryObjects(myCoordinates.getRightAsc(), myCoordinates.getDeclination(),
                     myCoordinates.getRadius() != null ? myCoordinates.getRadius().toString() : "",
-                    name != null ? name : "", minMag.toString(), maxMag.toString(), catalog,
-                    objectId != null ? objectId : "");
+                    name != null ? name : "", minMag.toString(), maxMag.toString(),
+                    catalog != null ? catalog.toString() : "All catalogues", objectId != null ? objectId : "");
             if (accept != null && accept.contains("application/json")) {
                 String body = objectMapper.writeValueAsString(res);
                 try {
