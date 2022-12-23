@@ -14,21 +14,11 @@ public enum Catalog {
   private String value;
 
   Catalog(String value) {
-    if(value.equals("USNO-B1.0")){
-      value = "USNO_B1_0";
-    }
     this.value = value;
   }
 
   @Override
   public String toString() {
-    return convert(value);
-  }
-
-  private String convert(String catalog){
-    if(catalog.equals("USNO_B1_0")){
-      catalog = "USNO-B1.0";
-    }
-    return catalog;
+    return String.valueOf(value);
   }
 }
