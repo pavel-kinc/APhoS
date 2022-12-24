@@ -1,6 +1,7 @@
 package cz.muni.aphos.openapi;
 
 import cz.muni.aphos.dao.SpaceObjectDao;
+import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.openapi.models.Catalog;
@@ -90,6 +91,20 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             System.out.println(e);
             return new ResponseEntity<List<SpaceObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public ResponseEntity<FluxUserTime> getSpaceObjectById(@Parameter(in = ParameterIn.PATH, description = "Catalog of space object to return", required=true, schema=@Schema()) @PathVariable("catalog") Catalog catalog, @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                return new ResponseEntity<FluxUserTime>(objectMapper.readValue("{\n  \"fluxes\" : [ {\n    \"expMiddle\" : \"expMiddle\",\n    \"apAuto\" : 1.4658129805029452,\n    \"rightAsc\" : \"rightAsc\",\n    \"declination\" : \"declination\",\n    \"addedBy\" : \"addedBy\",\n    \"photo\" : {\n      \"exposureBegin\" : \"2021-09-09 14:15:30.9905\",\n      \"exposureEnd\" : \"2021-09-09 14:27:59.554\"\n    },\n    \"magnitude\" : 0.8008282,\n    \"deviation\" : 6.0274563,\n    \"apertures\" : [ 5.962133916683182, 5.962133916683182 ],\n    \"apAutoCmp\" : 5.637376656633329,\n    \"aperturesCmp\" : [ 2.3021358869347655, 2.3021358869347655 ]\n  }, {\n    \"expMiddle\" : \"expMiddle\",\n    \"apAuto\" : 1.4658129805029452,\n    \"rightAsc\" : \"rightAsc\",\n    \"declination\" : \"declination\",\n    \"addedBy\" : \"addedBy\",\n    \"photo\" : {\n      \"exposureBegin\" : \"2021-09-09 14:15:30.9905\",\n      \"exposureEnd\" : \"2021-09-09 14:27:59.554\"\n    },\n    \"magnitude\" : 0.8008282,\n    \"deviation\" : 6.0274563,\n    \"apertures\" : [ 5.962133916683182, 5.962133916683182 ],\n    \"apAutoCmp\" : 5.637376656633329,\n    \"aperturesCmp\" : [ 2.3021358869347655, 2.3021358869347655 ]\n  } ]\n}", FluxUserTime.class), HttpStatus.NOT_IMPLEMENTED);
+            } catch (IOException e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<FluxUserTime>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<FluxUserTime>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 

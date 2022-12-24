@@ -5,6 +5,7 @@
  */
 package cz.muni.aphos.openapi;
 
+import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.dto.SpaceObject;
@@ -53,6 +54,19 @@ public interface SpaceObjectApi {
                                                                @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" ,schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
                                                                @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,  @DecimalMax("15")
                                                                @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag);
+
+    @Operation(summary = "Find space object by ID and catalog", description = "Returns a space object with fluxes", tags={ "SpaceObject", "Flux" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FluxUserTime.class))),
+
+            @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied"),
+
+            @ApiResponse(responseCode = "404", description = "Space object not found") })
+    @RequestMapping(value = "/api/spaceObject/{catalog}/{spaceObjectId}",
+            produces = { "application/json", "application/xml" },
+            method = RequestMethod.GET)
+    ResponseEntity<FluxUserTime> getSpaceObjectById(@Parameter(in = ParameterIn.PATH, description = "Catalog of space object to return", required=true, schema=@Schema()) @PathVariable("catalog") Catalog catalog, @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId);
+
 
 }
 
