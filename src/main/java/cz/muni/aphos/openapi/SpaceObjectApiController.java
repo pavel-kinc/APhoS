@@ -2,10 +2,12 @@ package cz.muni.aphos.openapi;
 
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.FluxUserTime;
+import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.Coordinates;
+import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -93,18 +95,24 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }
     }
 
-    public ResponseEntity<FluxUserTime> getSpaceObjectById(@Parameter(in = ParameterIn.PATH, description = "Catalog of space object to return", required=true, schema=@Schema()) @PathVariable("catalog") Catalog catalog, @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId) {
+    public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
+            @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog) {
         String accept = request.getHeader("Accept");
+        SpaceObject spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
+        System.out.println(spaceObject.getCatalogMag());
+        SpaceObjectWithFluxes res = new SpaceObjectWithFluxes();
         if (accept != null && accept.contains("application/json")) {
             try {
-                return new ResponseEntity<FluxUserTime>(objectMapper.readValue("{\n  \"fluxes\" : [ {\n    \"expMiddle\" : \"expMiddle\",\n    \"apAuto\" : 1.4658129805029452,\n    \"rightAsc\" : \"rightAsc\",\n    \"declination\" : \"declination\",\n    \"addedBy\" : \"addedBy\",\n    \"photo\" : {\n      \"exposureBegin\" : \"2021-09-09 14:15:30.9905\",\n      \"exposureEnd\" : \"2021-09-09 14:27:59.554\"\n    },\n    \"magnitude\" : 0.8008282,\n    \"deviation\" : 6.0274563,\n    \"apertures\" : [ 5.962133916683182, 5.962133916683182 ],\n    \"apAutoCmp\" : 5.637376656633329,\n    \"aperturesCmp\" : [ 2.3021358869347655, 2.3021358869347655 ]\n  }, {\n    \"expMiddle\" : \"expMiddle\",\n    \"apAuto\" : 1.4658129805029452,\n    \"rightAsc\" : \"rightAsc\",\n    \"declination\" : \"declination\",\n    \"addedBy\" : \"addedBy\",\n    \"photo\" : {\n      \"exposureBegin\" : \"2021-09-09 14:15:30.9905\",\n      \"exposureEnd\" : \"2021-09-09 14:27:59.554\"\n    },\n    \"magnitude\" : 0.8008282,\n    \"deviation\" : 6.0274563,\n    \"apertures\" : [ 5.962133916683182, 5.962133916683182 ],\n    \"apAutoCmp\" : 5.637376656633329,\n    \"aperturesCmp\" : [ 2.3021358869347655, 2.3021358869347655 ]\n  } ]\n}", FluxUserTime.class), HttpStatus.NOT_IMPLEMENTED);
+                String body = objectMapper.writeValueAsString(res);
+                return new ResponseEntity<SpaceObjectWithFluxes>(objectMapper.readValue(body, SpaceObjectWithFluxes.class), HttpStatus.OK);
             } catch (IOException e) {
                 log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<FluxUserTime>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<SpaceObjectWithFluxes>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<FluxUserTime>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<SpaceObjectWithFluxes>(res,HttpStatus.OK);
     }
 
 

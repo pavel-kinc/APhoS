@@ -10,6 +10,8 @@ import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.dto.SpaceObject;
 //import io.swagger.model.SpaceObjectWithFluxes;
+import cz.muni.aphos.openapi.models.Flux;
+import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -62,10 +64,12 @@ public interface SpaceObjectApi {
             @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied"),
 
             @ApiResponse(responseCode = "404", description = "Space object not found") })
-    @RequestMapping(value = "/api/spaceObject/{catalog}/{spaceObjectId}",
+    @RequestMapping(value = "/api/spaceObject/{spaceObjectId}",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
-    ResponseEntity<FluxUserTime> getSpaceObjectById(@Parameter(in = ParameterIn.PATH, description = "Catalog of space object to return", required=true, schema=@Schema()) @PathVariable("catalog") Catalog catalog, @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId);
+    ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
+            @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog);
 
 
 }

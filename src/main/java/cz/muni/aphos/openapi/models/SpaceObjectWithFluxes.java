@@ -1,10 +1,9 @@
-package io.swagger.model;
+package cz.muni.aphos.openapi.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.model.Flux;
-import io.swagger.model.SpaceObject;
+import cz.muni.aphos.dto.ObjectFluxCount;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
-
-
-public class SpaceObjectWithFluxes extends SpaceObject  {
+public class SpaceObjectWithFluxes extends ObjectFluxCount {
   @JsonProperty("fluxes")
   @Valid
   private List<Flux> fluxes = null;
