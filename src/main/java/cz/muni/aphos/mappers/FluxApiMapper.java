@@ -32,7 +32,8 @@ public class FluxApiMapper implements RowMapper<Flux> {
         Flux flux = new Flux();
         flux.setRightAsc(rs.getString("rec"));
         flux.setDeclination(rs.getString("dec"));
-        flux.setMagnitude(rs.getFloat("mag"));
+        flux.setAddedBy(rs.getString("username"));
+        flux.setAddedBy(rs.getString("username"));
         return flux;
     }
 }

@@ -23,9 +23,6 @@ public class Flux   {
   @JsonProperty("declination")
   private String declination = null;
 
-  @JsonProperty("expMiddle")
-  private String expMiddle = null;
-
   @JsonProperty("addedBy")
   private String addedBy = null;
 
@@ -35,13 +32,6 @@ public class Flux   {
   @JsonProperty("apertures")
   @Valid
   private List<Double> apertures = null;
-
-  @JsonProperty("apAutoCmp")
-  private Double apAutoCmp = null;
-
-  @JsonProperty("aperturesCmp")
-  @Valid
-  private List<Double> aperturesCmp = null;
 
   @JsonProperty("photo")
   private PhotoProperties photo = null;
@@ -82,26 +72,6 @@ public class Flux   {
 
   public void setDeclination(String declination) {
     this.declination = declination;
-  }
-
-
-  public Flux expMiddle(String expMiddle) {
-    this.expMiddle = expMiddle;
-    return this;
-  }
-
-  /**
-   * Get expMiddle
-   * @return expMiddle
-   **/
-  @Schema(description = "")
-  
-    public String getExpMiddle() {
-    return expMiddle;
-  }
-
-  public void setExpMiddle(String expMiddle) {
-    this.expMiddle = expMiddle;
   }
 
   public Flux addedBy(String addedBy) {
@@ -169,52 +139,6 @@ public class Flux   {
     this.apertures = apertures;
   }
 
-  public Flux apAutoCmp(Double apAutoCmp) {
-    this.apAutoCmp = apAutoCmp;
-    return this;
-  }
-
-  /**
-   * Get apAutoCmp
-   * @return apAutoCmp
-   **/
-  @Schema(description = "")
-  
-    public Double getApAutoCmp() {
-    return apAutoCmp;
-  }
-
-  public void setApAutoCmp(Double apAutoCmp) {
-    this.apAutoCmp = apAutoCmp;
-  }
-
-  public Flux aperturesCmp(List<Double> aperturesCmp) {
-    this.aperturesCmp = aperturesCmp;
-    return this;
-  }
-
-  public Flux addAperturesCmpItem(Double aperturesCmpItem) {
-    if (this.aperturesCmp == null) {
-      this.aperturesCmp = new ArrayList<Double>();
-    }
-    this.aperturesCmp.add(aperturesCmpItem);
-    return this;
-  }
-
-  /**
-   * Get aperturesCmp
-   * @return aperturesCmp
-   **/
-  @Schema(description = "")
-  
-    public List<Double> getAperturesCmp() {
-    return aperturesCmp;
-  }
-
-  public void setAperturesCmp(List<Double> aperturesCmp) {
-    this.aperturesCmp = aperturesCmp;
-  }
-
   public Flux photo(PhotoProperties photo) {
     this.photo = photo;
     return this;
@@ -247,18 +171,15 @@ public class Flux   {
     Flux flux = (Flux) o;
     return Objects.equals(this.rightAsc, flux.rightAsc) &&
         Objects.equals(this.declination, flux.declination) &&
-        Objects.equals(this.expMiddle, flux.expMiddle) &&
         Objects.equals(this.addedBy, flux.addedBy) &&
         Objects.equals(this.apAuto, flux.apAuto) &&
         Objects.equals(this.apertures, flux.apertures) &&
-        Objects.equals(this.apAutoCmp, flux.apAutoCmp) &&
-        Objects.equals(this.aperturesCmp, flux.aperturesCmp) &&
         Objects.equals(this.photo, flux.photo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(rightAsc, declination, expMiddle, addedBy, apAuto, apertures, apAutoCmp, aperturesCmp, photo);
+    return Objects.hash(rightAsc, declination, addedBy, apAuto, apertures, photo);
   }
 
   @Override
@@ -268,12 +189,9 @@ public class Flux   {
     
     sb.append("    rightAsc: ").append(toIndentedString(rightAsc)).append("\n");
     sb.append("    declination: ").append(toIndentedString(declination)).append("\n");
-    sb.append("    expMiddle: ").append(toIndentedString(expMiddle)).append("\n");
     sb.append("    addedBy: ").append(toIndentedString(addedBy)).append("\n");
     sb.append("    apAuto: ").append(toIndentedString(apAuto)).append("\n");
     sb.append("    apertures: ").append(toIndentedString(apertures)).append("\n");
-    sb.append("    apAutoCmp: ").append(toIndentedString(apAutoCmp)).append("\n");
-    sb.append("    aperturesCmp: ").append(toIndentedString(aperturesCmp)).append("\n");
     sb.append("    photo: ").append(toIndentedString(photo)).append("\n");
     sb.append("}");
     return sb.toString();
