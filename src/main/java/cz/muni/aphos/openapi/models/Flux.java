@@ -23,14 +23,8 @@ public class Flux   {
   @JsonProperty("declination")
   private String declination = null;
 
-  @JsonProperty("magnitude")
-  private Float magnitude = null;
-
   @JsonProperty("expMiddle")
   private String expMiddle = null;
-
-  @JsonProperty("deviation")
-  private Float deviation = null;
 
   @JsonProperty("addedBy")
   private String addedBy = null;
@@ -90,24 +84,6 @@ public class Flux   {
     this.declination = declination;
   }
 
-  public Flux magnitude(Float magnitude) {
-    this.magnitude = magnitude;
-    return this;
-  }
-
-  /**
-   * Get magnitude
-   * @return magnitude
-   **/
-  @Schema(description = "")
-  
-    public Float getMagnitude() {
-    return magnitude;
-  }
-
-  public void setMagnitude(Float magnitude) {
-    this.magnitude = magnitude;
-  }
 
   public Flux expMiddle(String expMiddle) {
     this.expMiddle = expMiddle;
@@ -126,25 +102,6 @@ public class Flux   {
 
   public void setExpMiddle(String expMiddle) {
     this.expMiddle = expMiddle;
-  }
-
-  public Flux deviation(Float deviation) {
-    this.deviation = deviation;
-    return this;
-  }
-
-  /**
-   * Get deviation
-   * @return deviation
-   **/
-  @Schema(description = "")
-  
-    public Float getDeviation() {
-    return deviation;
-  }
-
-  public void setDeviation(Float deviation) {
-    this.deviation = deviation;
   }
 
   public Flux addedBy(String addedBy) {
@@ -290,9 +247,7 @@ public class Flux   {
     Flux flux = (Flux) o;
     return Objects.equals(this.rightAsc, flux.rightAsc) &&
         Objects.equals(this.declination, flux.declination) &&
-        Objects.equals(this.magnitude, flux.magnitude) &&
         Objects.equals(this.expMiddle, flux.expMiddle) &&
-        Objects.equals(this.deviation, flux.deviation) &&
         Objects.equals(this.addedBy, flux.addedBy) &&
         Objects.equals(this.apAuto, flux.apAuto) &&
         Objects.equals(this.apertures, flux.apertures) &&
@@ -303,7 +258,7 @@ public class Flux   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(rightAsc, declination, magnitude, expMiddle, deviation, addedBy, apAuto, apertures, apAutoCmp, aperturesCmp, photo);
+    return Objects.hash(rightAsc, declination, expMiddle, addedBy, apAuto, apertures, apAutoCmp, aperturesCmp, photo);
   }
 
   @Override
@@ -313,9 +268,7 @@ public class Flux   {
     
     sb.append("    rightAsc: ").append(toIndentedString(rightAsc)).append("\n");
     sb.append("    declination: ").append(toIndentedString(declination)).append("\n");
-    sb.append("    magnitude: ").append(toIndentedString(magnitude)).append("\n");
     sb.append("    expMiddle: ").append(toIndentedString(expMiddle)).append("\n");
-    sb.append("    deviation: ").append(toIndentedString(deviation)).append("\n");
     sb.append("    addedBy: ").append(toIndentedString(addedBy)).append("\n");
     sb.append("    apAuto: ").append(toIndentedString(apAuto)).append("\n");
     sb.append("    apertures: ").append(toIndentedString(apertures)).append("\n");

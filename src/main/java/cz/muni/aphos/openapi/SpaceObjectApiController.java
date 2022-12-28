@@ -99,8 +99,8 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog) {
         String accept = request.getHeader("Accept");
-        SpaceObject spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
-        System.out.println(spaceObject.getCatalogMag());
+        ObjectFluxCount spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
+        System.out.println(spaceObject.getNumberOfFluxes());
         SpaceObjectWithFluxes res = new SpaceObjectWithFluxes();
         if (accept != null && accept.contains("application/json")) {
             try {

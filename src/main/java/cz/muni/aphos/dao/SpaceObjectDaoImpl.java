@@ -3,7 +3,7 @@ package cz.muni.aphos.dao;
 import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import cz.muni.aphos.mappers.ObjectFluxCountRowMapper;
-import cz.muni.aphos.mappers.SpaceObjectApiMapper;
+import cz.muni.aphos.mappers.ObjectFluxApiMapper;
 import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import cz.muni.aphos.mappers.SpaceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +132,7 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
     }
 
     @Override
-    public SpaceObject getSpaceObjectByObjectIdCat(String id, String catalog) {
+    public ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog) {
         String query = "SELECT space_object.id AS obj_id, " +
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag" +
@@ -141,7 +141,7 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         if(!catalog.isEmpty()){
             query = query + " AND catalog=?";
         }*/
-        return jdbcTemplate.queryForObject(query, new SpaceObjectApiMapper(), id);
+        return jdbcTemplate.queryForObject(query, new ObjectFluxApiMapper(), id);
     }
 
     @Override

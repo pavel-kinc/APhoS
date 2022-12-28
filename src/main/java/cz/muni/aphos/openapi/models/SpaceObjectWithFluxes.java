@@ -3,6 +3,7 @@ package cz.muni.aphos.openapi.models;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
@@ -19,16 +20,16 @@ import javax.validation.constraints.*;
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
   @JsonProperty("fluxes")
   @Valid
-  private List<Flux> fluxes = null;
+  private List<FluxUserTime> fluxes = null;
 
-  public SpaceObjectWithFluxes fluxes(List<Flux> fluxes) {
+  public SpaceObjectWithFluxes fluxes(List<FluxUserTime> fluxes) {
     this.fluxes = fluxes;
     return this;
   }
 
-  public SpaceObjectWithFluxes addFluxesItem(Flux fluxesItem) {
+  public SpaceObjectWithFluxes addFluxesItem(FluxUserTime fluxesItem) {
     if (this.fluxes == null) {
-      this.fluxes = new ArrayList<Flux>();
+      this.fluxes = new ArrayList<FluxUserTime>();
     }
     this.fluxes.add(fluxesItem);
     return this;
@@ -40,11 +41,11 @@ public class SpaceObjectWithFluxes extends ObjectFluxCount {
    **/
   @Schema(description = "")
       @Valid
-    public List<Flux> getFluxes() {
+    public List<FluxUserTime> getFluxes() {
     return fluxes;
   }
 
-  public void setFluxes(List<Flux> fluxes) {
+  public void setFluxes(List<FluxUserTime> fluxes) {
     this.fluxes = fluxes;
   }
 
