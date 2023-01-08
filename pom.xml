@@ -14,7 +14,7 @@
     <name>aphos</name>
     <description>Amateur Photometric Survey</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <!--Do not upgrade this one-->
@@ -121,11 +121,10 @@
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>2.12.3</version>
         </dependency>
-        <!--SpringFox dependencies -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.14</version>
         </dependency>
 
 
@@ -156,10 +155,24 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${project.parent.version}</version>
                 <configuration>
                     <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.installing -->
                     <executable>true</executable>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
