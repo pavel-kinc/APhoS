@@ -4,6 +4,7 @@ package cz.muni.aphos.config;
 import cz.muni.aphos.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -33,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/search" ,"/", "/about", "/reference/**", "/reference/js/**").permitAll()
                     .antMatchers("/object/**", "/object/download", "/object/aperture").permitAll()
                     .antMatchers("/js/**", "/css/**", "/js/**","/images/**", "/webjars/**").permitAll()
-                    .antMatchers("/api-docs", "/api/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                    .antMatchers("/api-docs", "/api-docs.yaml", "/api/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()
@@ -53,6 +54,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         response.sendRedirect("/profile/?id="+oauthUser.getAttribute("sub"));
                     }
                 });
+    }
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/swagger-ui/**", "/api-docs/**");
     }
 }
 
