@@ -1,11 +1,11 @@
 package cz.muni.aphos.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
- * The hibernate entity representing a user.
+ * The Hibernate entity representing a user.
  */
 @Entity
 @Table(name = "users", schema = "public")
