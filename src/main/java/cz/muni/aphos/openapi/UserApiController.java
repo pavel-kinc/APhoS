@@ -50,7 +50,8 @@ public class UserApiController implements UserApi {
     public UserApiController(HttpServletRequest request) {
     }
 
-    public User getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, description = "" ,required=true,schema=@Schema()) @Valid @RequestParam(value = "username", required = true) String username) {
+    public User getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
+                                  @Valid @RequestParam(value = "username") String username) {
         try{
             User user = userRepo.findByUsername(username);
             if(user == null){
