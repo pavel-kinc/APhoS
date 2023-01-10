@@ -14,7 +14,7 @@
     <name>aphos</name>
     <description>Amateur Photometric Survey</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
     <dependencies>
         <!--Do not upgrade this one-->
