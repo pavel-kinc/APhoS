@@ -8,4 +8,5 @@
       "matchUpdateTypes": ["major"],
       "dependencyDashboardApproval": true
     }
+  ]
 }
