@@ -6,16 +6,15 @@ import cz.muni.aphos.dto.PhotoProperties;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
 /**
  * Flux
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
-
-
+//@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class Flux   {
   @JsonProperty("rightAsc")
   private String rightAsc = null;
