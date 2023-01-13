@@ -40,8 +40,8 @@ public interface UserApi {
     @RequestMapping(value = "/findByUsername",
         produces = { "application/json", "application/xml" }, 
         method = RequestMethod.GET)
-    ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, description = "Get user by his username" ,required=true)
-                           @Valid @RequestParam(value = "username") String username);
+    ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
+                                           @Valid @RequestParam(value = "username") String username);
 
 }
 

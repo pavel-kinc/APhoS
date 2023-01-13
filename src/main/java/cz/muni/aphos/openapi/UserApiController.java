@@ -45,11 +45,11 @@ public class UserApiController implements UserApi {
     public UserApiController(HttpServletRequest request) {
     }
 
-    /*
+    // global handling cannot handle IllegalArgumentException it seems
     @ExceptionHandler
-    public ResponseEntity<ErrorMessage> handleException(ResponseStatusException e) {
-        return new ResponseEntity<>(new ErrorMessage(e.getReason()), e.getStatusCode());
-    }*/
+    public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
 
     public ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
                                   @Valid @RequestParam(value = "username") String username) {

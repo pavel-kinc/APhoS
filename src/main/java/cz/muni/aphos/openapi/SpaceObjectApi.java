@@ -1,6 +1,7 @@
 package cz.muni.aphos.openapi;
 
 import cz.muni.aphos.dto.FluxUserTime;
+import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.dto.SpaceObject;
@@ -39,19 +40,21 @@ import java.util.Map;
 public interface SpaceObjectApi {
 
     @Operation(summary = "Finds space objects by multiple data", description = "No additional data is mandatory, but maximum object count is 100", tags={ "SpaceObject" })
-    @ApiResponses(value = { 
-        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SpaceObject.class)))),
-        
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation",
+                        content = @Content(mediaType = "application/json",
+                        array = @ArraySchema(schema = @Schema(implementation = SpaceObject.class)))),
+
         @ApiResponse(responseCode = "400", description = "Invalid values") })
     @RequestMapping(value = "api/spaceObject/findByParams",
-        produces = { "application/json", "application/xml" }, 
+        produces = { "application/json", "application/xml" },
         method = RequestMethod.GET)
-    ResponseEntity<List<SpaceObject>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog" ,schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" ,schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" ,schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,  @DecimalMax("15")
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag);
+    ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
+                                                                   @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
+                                                                   @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
+                                                                   @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Valid @RequestParam(value = "coordinates", required = false) Coordinates coordinates, @DecimalMin("0")
+                                                                   @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
+                                                                   @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag);
 
     @Operation(summary = "Find space object by ID and catalog", description = "Returns a space object with fluxes", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
@@ -64,8 +67,8 @@ public interface SpaceObjectApi {
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
-            @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog);
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog);
 
 
 }

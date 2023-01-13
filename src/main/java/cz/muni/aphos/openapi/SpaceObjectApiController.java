@@ -23,18 +23,14 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.io.IOException;
@@ -47,73 +43,52 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
 
-    private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
 
     @Autowired
     private SpaceObjectDao spaceObjectDao;
 
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     public SpaceObjectApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
         this.request = request;
     }
 
-    public ResponseEntity<List<SpaceObject>>
-    findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog" , schema=@Schema()) @Valid @RequestParam(value = "objectId", required = false) String objectId,
-                             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
-                             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name" , schema=@Schema()) @Valid @RequestParam(value = "name", required = false) String name,
-                             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates" , schema=@Schema()) @Valid @RequestParam(value = "coordinates", required = false) String coordinates,
-                             @DecimalMin("0")@Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" , schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,
-                             @DecimalMax("15") @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" , schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
+    @ExceptionHandler
+    public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Valid @RequestParam(value = "coordinates", required = false) Coordinates coordinates, @DecimalMin("0")
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,  @DecimalMax("15")
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
-            Coordinates myCoordinates;
-            String accept = request.getHeader("Accept");
             if(coordinates == null){
-                myCoordinates = new Coordinates();
-            } else{
-                myCoordinates = objectMapper.readValue(coordinates, Coordinates.class);
+                coordinates = new Coordinates();
             }
-            List res = spaceObjectDao.queryObjects(myCoordinates.getRightAsc(), myCoordinates.getDeclination(),
-                    myCoordinates.getRadius() != null ? myCoordinates.getRadius().toString() : "",
+            List<ObjectFluxCount> res = spaceObjectDao.queryObjects(coordinates.getRightAsc(), coordinates.getDeclination(),
+                    coordinates.getRadius() != null ? coordinates.getRadius().toString() : "",
                     name != null ? name : "", minMag.toString(), maxMag.toString(),
                     catalog != null ? catalog.toString() : "All catalogues", objectId != null ? objectId : "");
-            if (accept != null && accept.contains("application/json")) {
-                String body = objectMapper.writeValueAsString(res);
-                try {
-                    return new ResponseEntity<List<SpaceObject>>(objectMapper.readValue(body, List.class), HttpStatus.OK);
-                } catch (IOException e) {
-                    log.error("Couldn't serialize response for content type application/json", e);
-                    return new ResponseEntity<List<SpaceObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            }
 
-            return new ResponseEntity<List<SpaceObject>>(res, HttpStatus.OK);
+            return new ResponseEntity<List<ObjectFluxCount>>(res, HttpStatus.OK);
+
         } catch (Exception e){
-            System.out.println(e);
-            return new ResponseEntity<List<SpaceObject>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("SpaceObject endpoint problem", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
-            @Parameter(in = ParameterIn.PATH, description = "ID of space object to return", required=true, schema=@Schema()) @PathVariable("spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema()) @Valid @RequestParam(value = "catalog", required = false) Catalog catalog) {
-        String accept = request.getHeader("Accept");
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid @RequestParam(value = "catalog", defaultValue = "UCAC4") Catalog catalog) {
         ObjectFluxCount spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
         System.out.println(spaceObject.getNumberOfFluxes());
         SpaceObjectWithFluxes res = new SpaceObjectWithFluxes();
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                String body = objectMapper.writeValueAsString(res);
-                return new ResponseEntity<SpaceObjectWithFluxes>(objectMapper.readValue(body, SpaceObjectWithFluxes.class), HttpStatus.OK);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<SpaceObjectWithFluxes>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<SpaceObjectWithFluxes>(res,HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
 
