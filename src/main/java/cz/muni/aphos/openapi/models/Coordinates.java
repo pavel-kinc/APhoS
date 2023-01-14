@@ -4,8 +4,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 
@@ -14,18 +14,18 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 public class Coordinates   {
-  @NotBlank
+
+  @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   private String rightAsc = "";
 
-  @NotBlank
+  @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   private String declination = "";
 
   @Min(0)
-  private Double radius = null;
+  private Double radius = 0.0;
 
-  public Coordinates rightAsc(String rightAsc) {
-    this.rightAsc = rightAsc;
-    return this;
+  public Coordinates() {
+
   }
 
   /**

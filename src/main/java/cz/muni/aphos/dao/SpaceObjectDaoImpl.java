@@ -6,6 +6,7 @@ import cz.muni.aphos.mappers.ObjectFluxCountRowMapper;
 import cz.muni.aphos.mappers.ObjectFluxApiMapper;
 import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import cz.muni.aphos.mappers.SpaceObjectMapper;
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
