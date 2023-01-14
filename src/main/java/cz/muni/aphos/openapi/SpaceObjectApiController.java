@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
@@ -59,15 +60,16 @@ public class SpaceObjectApiController implements SpaceObjectApi {
     }
 
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(@Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Valid @RequestParam(value = "coordinates", required = false) Coordinates coordinates, @DecimalMin("0")
-                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag,  @DecimalMax("15")
+                                                                          @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
+                                                                          @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
+                                                                          @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates", example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}") @Nullable Coordinates coordinates, @DecimalMin("0")
+                                                               @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
                                                                @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
             if(coordinates == null){
                 coordinates = new Coordinates();
             }
+            System.out.println(coordinates);
             List<ObjectFluxCount> res = spaceObjectDao.queryObjects(coordinates.getRightAsc(), coordinates.getDeclination(),
                     coordinates.getRadius() != null ? coordinates.getRadius().toString() : "",
                     name != null ? name : "", minMag.toString(), maxMag.toString(),

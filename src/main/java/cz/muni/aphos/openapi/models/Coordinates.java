@@ -4,20 +4,19 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 
 /**
  * Coordinates
  */
-@Validated
 public class Coordinates   {
-  @JsonProperty("rightAsc")
   private String rightAsc = "";
 
-  @JsonProperty("declination")
   private String declination = "";
 
-  @JsonProperty("radius")
   private Double radius = null;
 
   public Coordinates rightAsc(String rightAsc) {
