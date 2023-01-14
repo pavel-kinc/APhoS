@@ -70,7 +70,7 @@ public interface SpaceObjectApi {
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog);
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid @RequestParam(value = "catalog",defaultValue = "UCAC4", required = false) String catalog);
 
 
 }

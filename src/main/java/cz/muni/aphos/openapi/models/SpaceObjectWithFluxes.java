@@ -19,22 +19,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
-  @JsonProperty("fluxes")
   @Valid
   private List<FluxUserTime> fluxes = null;
 
-  public SpaceObjectWithFluxes fluxes(List<FluxUserTime> fluxes) {
-    this.fluxes = fluxes;
-    return this;
-  }
-
-  public SpaceObjectWithFluxes addFluxesItem(FluxUserTime fluxesItem) {
-    if (this.fluxes == null) {
-      this.fluxes = new ArrayList<FluxUserTime>();
-    }
-    this.fluxes.add(fluxesItem);
-    return this;
-  }
 
   /**
    * Get fluxes

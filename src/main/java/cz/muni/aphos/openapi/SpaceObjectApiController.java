@@ -72,7 +72,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
                     name != null ? name : "", minMag.toString(), maxMag.toString(),
                     catalog != null ? catalog.toString() : "All catalogues", objectId != null ? objectId : "");
 
-            return new ResponseEntity<List<ObjectFluxCount>>(res, HttpStatus.OK);
+            return new ResponseEntity<>(res, HttpStatus.OK);
 
         } catch (Exception e){
             log.error("SpaceObject endpoint problem", e);
@@ -82,10 +82,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid @RequestParam(value = "catalog", defaultValue = "UCAC4") Catalog catalog) {
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }))
+            @Valid @RequestParam(value = "catalog", defaultValue = "UCAC4") String catalog) {
         ObjectFluxCount spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
-        System.out.println(spaceObject.getNumberOfFluxes());
-        SpaceObjectWithFluxes res = new SpaceObjectWithFluxes();
+
+        SpaceObjectWithFluxes res = (SpaceObjectWithFluxes) spaceObject;
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
