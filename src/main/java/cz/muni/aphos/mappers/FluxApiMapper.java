@@ -35,7 +35,7 @@ public class FluxApiMapper implements RowMapper<Flux> {
         flux.setRightAsc(rs.getString("rec"));
         flux.setDeclination(rs.getString("dec"));
         flux.setAddedBy(rs.getString("username"));
-        flux.setApAuto(rs.getDouble("apAuto"));
+        flux.setApAuto(rs.getDouble("ap_auto"));
         Double[] aperturesArray = (Double[]) rs.getArray("apertures").getArray();
         flux.setApertures(List.of(aperturesArray));
         PhotoProperties photo = new PhotoProperties();

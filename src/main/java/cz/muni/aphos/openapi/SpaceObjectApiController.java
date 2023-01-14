@@ -1,5 +1,6 @@
 package cz.muni.aphos.openapi;
 
+import cz.muni.aphos.dao.FluxDao;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
@@ -50,6 +51,9 @@ public class SpaceObjectApiController implements SpaceObjectApi {
     private SpaceObjectDao spaceObjectDao;
 
     @Autowired
+    private FluxDao fluxDao;
+
+    @Autowired
     public SpaceObjectApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.request = request;
     }
@@ -84,11 +88,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }))
             @Valid @RequestParam(value = "catalog", defaultValue = "UCAC4") String catalog) {
-        ObjectFluxCount spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
+        SpaceObjectWithFluxes spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
 
-        SpaceObjectWithFluxes res = (SpaceObjectWithFluxes) spaceObject;
+        //spaceObject.setFluxes(fluxDao.getFluxesByObj(spaceObject.getId()));
 
-        return new ResponseEntity<>(res, HttpStatus.OK);
+        return new ResponseEntity<>(spaceObject, HttpStatus.OK);
     }
 
 

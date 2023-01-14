@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
   @Valid
-  private List<FluxUserTime> fluxes = null;
+  private List<Flux> fluxes = null;
 
 
   /**
@@ -29,11 +29,11 @@ public class SpaceObjectWithFluxes extends ObjectFluxCount {
    **/
   @Schema(description = "")
       @Valid
-    public List<FluxUserTime> getFluxes() {
+    public List<Flux> getFluxes() {
     return fluxes;
   }
 
-  public void setFluxes(List<FluxUserTime> fluxes) {
+  public void setFluxes(List<Flux> fluxes) {
     this.fluxes = fluxes;
   }
 
