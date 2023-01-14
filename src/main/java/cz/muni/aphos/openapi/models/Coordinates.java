@@ -14,10 +14,13 @@ import org.springframework.validation.annotation.Validated;
  */
 @Validated
 public class Coordinates   {
+  @NotBlank
   private String rightAsc = "";
 
+  @NotBlank
   private String declination = "";
 
+  @Min(0)
   private Double radius = null;
 
   public Coordinates rightAsc(String rightAsc) {
@@ -29,7 +32,7 @@ public class Coordinates   {
    * Get rightAsc
    * @return rightAsc
    **/
-  @Schema(description = "")
+  @Schema(description = "Right ascension")
   
     public String getRightAsc() {
     return rightAsc;
@@ -48,7 +51,7 @@ public class Coordinates   {
    * Get declination
    * @return declination
    **/
-  @Schema(description = "")
+  @Schema(description = "Declination")
   
     public String getDeclination() {
     return declination;
@@ -67,7 +70,7 @@ public class Coordinates   {
    * Get radius
    * @return radius
    **/
-  @Schema(description = "")
+  @Schema(description = "Radius")
   
     public Double getRadius() {
     return radius;
