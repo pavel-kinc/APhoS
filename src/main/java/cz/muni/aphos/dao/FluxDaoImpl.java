@@ -1,7 +1,9 @@
 package cz.muni.aphos.dao;
 
 import cz.muni.aphos.dto.FluxUserTime;
+import cz.muni.aphos.mappers.FluxApiMapper;
 import cz.muni.aphos.mappers.FluxRowMapper;
+import cz.muni.aphos.openapi.models.Flux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -77,6 +79,15 @@ public class FluxDaoImpl implements FluxDao {
         // method for testing purposes
         String query = "SELECT id FROM flux WHERE id = ?";
         return jdbcTemplate.queryForObject(query, Long.class, id);
+    }
+
+    @Override
+    public List<Flux> getFluxesByObj(Long id) {
+        String query = "SELECT * FROM " +
+                "flux WHERE object_id=? INNER JOIN " +
+                "users ON users.google_sub=user_id " +
+                "INNER JOIN photo_properties on photo_properties.id=photo_properties_id";
+        return jdbcTemplate.query(query, new FluxApiMapper(), id);
     }
 
     @Override

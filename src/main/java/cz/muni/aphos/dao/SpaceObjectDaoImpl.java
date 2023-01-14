@@ -139,11 +139,10 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag" +
                 " FROM space_object WHERE catalog_id=?";
-        /*
-        if(!catalog.isEmpty()){
+        if(catalog != null && !catalog.isEmpty()){
             query = query + " AND catalog=?";
-        }*/
-        return jdbcTemplate.queryForObject(query, new SpaceObjectApiMapper(), id);
+        }
+        return jdbcTemplate.queryForObject(query, new SpaceObjectApiMapper(), id, catalog);
     }
 
     @Override

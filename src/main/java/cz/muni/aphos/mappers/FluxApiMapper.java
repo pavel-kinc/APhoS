@@ -1,6 +1,7 @@
 package cz.muni.aphos.mappers;
 
 import cz.muni.aphos.dto.FluxUserTime;
+import cz.muni.aphos.dto.PhotoProperties;
 import cz.muni.aphos.helper.Night;
 import cz.muni.aphos.openapi.models.Flux;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,7 +35,13 @@ public class FluxApiMapper implements RowMapper<Flux> {
         flux.setRightAsc(rs.getString("rec"));
         flux.setDeclination(rs.getString("dec"));
         flux.setAddedBy(rs.getString("username"));
-        flux.setAddedBy(rs.getString("username"));
+        flux.setApAuto(rs.getDouble("apAuto"));
+        Double[] aperturesArray = (Double[]) rs.getArray("apertures").getArray();
+        flux.setApertures(List.of(aperturesArray));
+        PhotoProperties photo = new PhotoProperties();
+        photo.setExposureBegin(rs.getTimestamp("exposure_begin"));
+        photo.setExposureEnd(rs.getTimestamp("exposure_end"));
+        flux.setPhoto(photo);
         return flux;
     }
 }
