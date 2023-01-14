@@ -19,6 +19,6 @@ public enum Catalog {
 
   @Override
   public String toString() {
-    return String.valueOf(value);
+    return this.value;
   }
 }

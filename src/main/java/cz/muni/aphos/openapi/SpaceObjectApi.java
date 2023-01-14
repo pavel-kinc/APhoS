@@ -52,7 +52,7 @@ public interface SpaceObjectApi {
         method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) Catalog catalog,
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog") @Valid @RequestParam(value = "catalog", required = false) String catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Nullable @Valid Coordinates coordinates, @DecimalMin("0")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
