@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 /**
  * Coordinates
  */
+@Validated
 public class Coordinates   {
   private String rightAsc = "";
 
