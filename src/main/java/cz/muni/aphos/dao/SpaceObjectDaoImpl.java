@@ -142,7 +142,12 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         if(catalog != null && !catalog.isEmpty()){
             query = query + " AND catalog=?";
         }
-        return jdbcTemplate.queryForObject(query, new SpaceObjectApiMapper(), id, catalog);
+        //resultsetextractor is also a way, or control flow with exceptions
+        List<SpaceObjectWithFluxes> res = jdbcTemplate.query(query, new SpaceObjectApiMapper(), id, catalog);
+        if(res.isEmpty()){
+            return null;
+        }
+        return res.get(0);
     }
 
     @Override

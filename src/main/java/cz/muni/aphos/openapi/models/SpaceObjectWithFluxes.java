@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
@@ -16,10 +17,10 @@ import org.springframework.validation.annotation.Validated;
 /**
  * SpaceObjectWithFluxes
  */
+
 @Validated
-//@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
-  @Valid
+
   private List<Flux> fluxes = null;
 
 
@@ -28,7 +29,6 @@ public class SpaceObjectWithFluxes extends ObjectFluxCount {
    * @return fluxes
    **/
   @Schema(description = "")
-      @Valid
     public List<Flux> getFluxes() {
     return fluxes;
   }
