@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class FluxApiMapper implements RowMapper<Flux> {
 
-    private static final Logger log = LoggerFactory.getLogger(FluxRowMapper.class);
+    private static final Logger log = LoggerFactory.getLogger(FluxApiMapper.class);
 
     @Override
     public Flux mapRow(ResultSet rs, int rowNum) throws SQLException {
