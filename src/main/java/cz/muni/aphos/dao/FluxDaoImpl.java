@@ -83,10 +83,9 @@ public class FluxDaoImpl implements FluxDao {
 
     @Override
     public List<Flux> getFluxesByObj(Long id) {
-        String query = "SELECT * FROM " +
-                "flux WHERE object_id=? INNER JOIN " +
-                "users ON users.google_sub=user_id " +
-                "INNER JOIN photo_properties on photo_properties.id=photo_properties_id";
+        String query = "SELECT * FROM flux " +
+                "INNER JOIN users ON users.google_sub=user_id INNER JOIN " +
+                "photo_properties on photo_properties.id=photo_properties_id WHERE object_id=? LIMIT 2000";
         return jdbcTemplate.query(query, new FluxApiMapper(), id);
     }
 
