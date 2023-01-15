@@ -3,22 +3,26 @@ package cz.muni.aphos.openapi.models;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Gets or Sets Catalog
  */
-public enum Catalog {
-  UCAC4("UCAC4"),
-  USNO_B1_0("USNO-B1.0");
+@Schema(type="String", allowableValues = {"UCAC4", "USNO-B1.0"})
+public class Catalog {
 
+  public static final String defaultValue = "UCAC4";
   private String value;
 
-  Catalog(String value) {
+  public Catalog(String value) {
     this.value = value;
   }
 
-  @Override
-  public String toString() {
-    return this.value;
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
   }
 }

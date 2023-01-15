@@ -7,6 +7,7 @@ import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.openapi.models.Catalog;
+import cz.muni.aphos.openapi.models.ComparisonObject;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,6 +48,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     private final HttpServletRequest request;
 
+
     @Autowired
     private SpaceObjectDao spaceObjectDao;
 
@@ -65,7 +67,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog", schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" })) @Valid @RequestParam(value = "catalog", required = false) String catalog,
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on catalog" ,schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" })) @Valid @RequestParam(value = "catalog", required = false) String catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates", example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}") @Nullable @Valid Coordinates coordinates, @DecimalMin("0")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
@@ -86,10 +88,10 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return", schema=@Schema(allowableValues={ "UCAC4", "USNO-B1.0" }))
-            @Valid @RequestParam(value = "catalog", defaultValue = "UCAC4") String catalog) {
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
+            @Valid Catalog catalog) {
         try{
-            SpaceObjectWithFluxes spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog!=null ? catalog.toString() : "");
+            SpaceObjectWithFluxes spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue);
             if(spaceObject == null){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SpaceObject not found");
             }
@@ -99,9 +101,21 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
-            System.out.println(e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject internal server error");
         }
+    }
+
+    public ResponseEntity<ComparisonObject> getComparisonByIdentificators(
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String originalId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String referenceId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat){
+        ObjectFluxCount original = spaceObjectDao.getSpaceObjectByObjectIdCat(originalId, originalCat != null ? originalCat.getValue() : Catalog.defaultValue);
+        ObjectFluxCount reference = spaceObjectDao.getSpaceObjectByObjectIdCat(referenceId, referenceCat != null ? referenceCat.getValue() : Catalog.defaultValue);
+        List<FluxUserTime> data = fluxDao.getFluxesByObjId(original.getId(), reference.getId());
+        System.out.println(data);
+
+        return new ResponseEntity<>(new ComparisonObject(original, reference, data), HttpStatus.OK);
     }
 
 
