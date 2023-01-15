@@ -8,35 +8,35 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * The Data Transfer Object for storing the information about a flux value, the night
  * and the time of the exposition, along with the user uploading it.
  */
-@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
+//@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
 public class FluxUserTime {
-    @JsonIgnore
+    //@JsonIgnore
     String rightAsc;
-    @JsonIgnore
+    //@JsonIgnore
     String dec;
-    @JsonIgnore
+    //@JsonIgnore
     String apAuto;
-    @JsonIgnore
+    //@JsonIgnore
     Float apAutoDev;
-    @JsonIgnore
+    //@JsonIgnore
     String[] apertures;
-    @JsonIgnore
+    //@JsonIgnore
     Double[] apertureDevs;
-    @JsonIgnore
+    //@JsonIgnore
     String refApAuto;
-    @JsonIgnore
+    //@JsonIgnore
     Float refApAutoDev;
-    @JsonIgnore
+    //@JsonIgnore
     String[] refApertures;
-    @JsonIgnore
+    //@JsonIgnore
     Double[] refApertureDevs;
     Float magnitude;
     Float deviation;
-    @JsonIgnore
+    //@JsonIgnore
     String username;
-    @JsonIgnore
+    //@JsonIgnore
     String userId;
-    @JsonIgnore
+    //@JsonIgnore
     Night night;
     String expMiddle;
 
