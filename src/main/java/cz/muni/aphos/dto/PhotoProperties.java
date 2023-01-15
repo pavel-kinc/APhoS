@@ -1,5 +1,7 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 
 /**
@@ -7,6 +9,7 @@ import java.sql.Timestamp;
  */
 public class PhotoProperties {
 
+    @JsonIgnore
     private long id;
     /**
      * When the photo exposition started

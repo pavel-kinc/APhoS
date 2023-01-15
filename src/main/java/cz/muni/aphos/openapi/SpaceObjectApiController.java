@@ -94,6 +94,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SpaceObject not found");
             }
             spaceObject.setFluxes(fluxDao.getFluxesByObj(spaceObject.getId()));
+            spaceObject.setNumberOfFluxes(spaceObject.getFluxes().size());
             return new ResponseEntity<>(spaceObject, HttpStatus.OK);
         } catch(ResponseStatusException e){
             throw e;
