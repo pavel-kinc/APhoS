@@ -2,7 +2,9 @@ package cz.muni.aphos.openapi.models;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.dto.PhotoProperties;
+import cz.muni.aphos.helper.ViewField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,22 +19,28 @@ import org.springframework.validation.annotation.Validated;
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class Flux   {
   @JsonProperty("rightAsc")
+  @JsonView(ViewField.Public.class)
   private String rightAsc = null;
 
   @JsonProperty("declination")
+  @JsonView(ViewField.Public.class)
   private String declination = null;
 
   @JsonProperty("addedBy")
+  @JsonView(ViewField.Public.class)
   private String addedBy = null;
 
   @JsonProperty("apAuto")
+  @JsonView(ViewField.Public.class)
   private Double apAuto = null;
 
   @JsonProperty("apertures")
+  @JsonView(ViewField.Public.class)
   @Valid
   private List<Double> apertures = null;
 
   @JsonProperty("photo")
+  @JsonView(ViewField.Public.class)
   private PhotoProperties photo = null;
 
   public Flux rightAsc(String rightAsc) {

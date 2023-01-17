@@ -134,7 +134,7 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
     }
 
     @Override
-    public ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog) {
+    public SpaceObjectWithFluxes getSpaceObjectByObjectIdCat(String id, String catalog) {
         String query = "SELECT space_object.id AS obj_id, " +
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
                 "catalog_mag" +

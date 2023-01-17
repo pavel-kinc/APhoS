@@ -3,6 +3,8 @@ package cz.muni.aphos.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonView;
+import cz.muni.aphos.helper.ViewField;
 
 /**
  * The Data Transfer Object for a result of user searching for a space object.
@@ -16,27 +18,34 @@ public class ObjectFluxCount {
     private long id;
 
     @JsonProperty("name")
+    @JsonView(ViewField.Public.class)
     private String name;
 
     @JsonProperty("catalog")
+    @JsonView(ViewField.Public.class)
     private String catalog;
 
     @JsonProperty("id")
+    @JsonView(ViewField.Public.class)
     private String catalogId;
 
     @JsonProperty("rightAsc")
+    @JsonView(ViewField.Public.class)
     private String catalogRec;
 
     @JsonProperty("declination")
+    @JsonView(ViewField.Public.class)
     private String catalogDec;
 
     @JsonProperty("magnitude")
+    @JsonView(ViewField.Public.class)
     private Float catalogMag;
     /**
      * number of fluxes the object has in the database
      */
 
     @JsonProperty("fluxesCount")
+    @JsonView(ViewField.Public.class)
     private int numberOfFluxes;
 
     public ObjectFluxCount() {

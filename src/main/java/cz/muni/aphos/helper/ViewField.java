@@ -1,7 +1,7 @@
 package cz.muni.aphos.helper;
 
 public class ViewField {
-    static class Public{}
-    static class Child extends Public{}
-    static class Private extends Child{}
+    public static class Public{}
+    public static class Child extends Public{}
+    public static class Private extends Child{}
 }

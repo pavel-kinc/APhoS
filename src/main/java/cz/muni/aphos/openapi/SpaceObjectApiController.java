@@ -1,11 +1,13 @@
 package cz.muni.aphos.openapi;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.dao.FluxDao;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.ComparisonObject;
 import cz.muni.aphos.openapi.models.Coordinates;
@@ -86,18 +88,19 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }
     }
 
+    @JsonView(ViewField.Child.class)
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
             @Valid Catalog catalog) {
         try{
-            ObjectFluxCount spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue);
+            SpaceObjectWithFluxes spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue);
             if(spaceObject == null){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SpaceObject not found");
             }
-            ((SpaceObjectWithFluxes) spaceObject).setFluxes(fluxDao.getFluxesByObj(spaceObject.getId()));
-            spaceObject.setNumberOfFluxes(((SpaceObjectWithFluxes) spaceObject).getFluxes().size());
-            return new ResponseEntity<>((SpaceObjectWithFluxes)spaceObject, HttpStatus.OK);
+            spaceObject.setFluxes(fluxDao.getFluxesByObj(spaceObject.getId()));
+            spaceObject.setNumberOfFluxes(spaceObject.getFluxes().size());
+            return new ResponseEntity<>(spaceObject, HttpStatus.OK);
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){

@@ -62,7 +62,7 @@ public interface SpaceObjectDao {
      */
     SpaceObject getSpaceObjectById(Long id);
 
-    ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog);
+    SpaceObjectWithFluxes getSpaceObjectByObjectIdCat(String id, String catalog);
 
     /**
      * Gets a statistical estimate of the number of space_objects in the database
