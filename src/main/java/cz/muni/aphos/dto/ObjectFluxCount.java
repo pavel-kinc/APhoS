@@ -5,16 +5,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.helper.ViewField;
+import io.swagger.v3.oas.annotations.Hidden;
+import org.hibernate.Internal;
 
 /**
  * The Data Transfer Object for a result of user searching for a space object.
  * It consists of the object catalog info and number of its fluxes in the database.
  */
 
-@JsonPropertyOrder({"id", "catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
+@JsonPropertyOrder({"catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
 public class ObjectFluxCount {
 
-    @JsonIgnore()
+    @JsonIgnore
     private long id;
 
     @JsonProperty("name")

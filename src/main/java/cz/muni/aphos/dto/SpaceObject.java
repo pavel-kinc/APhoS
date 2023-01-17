@@ -1,9 +1,13 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * The Data Transfer Object representing a space object.
  */
 public class SpaceObject {
+
+    @JsonIgnore
     private Long id;
     private String catalogId;
     private String name;
