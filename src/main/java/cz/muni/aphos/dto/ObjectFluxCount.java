@@ -7,47 +7,42 @@ import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.helper.ViewField;
 import io.swagger.v3.oas.annotations.Hidden;
 import org.hibernate.Internal;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * The Data Transfer Object for a result of user searching for a space object.
  * It consists of the object catalog info and number of its fluxes in the database.
  */
 
-@JsonPropertyOrder({"catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
+@JsonPropertyOrder({"id", "catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
+@Validated
 public class ObjectFluxCount {
 
     @JsonIgnore
     private long id;
 
     @JsonProperty("name")
-    @JsonView(ViewField.Public.class)
     private String name;
 
     @JsonProperty("catalog")
-    @JsonView(ViewField.Public.class)
     private String catalog;
 
     @JsonProperty("id")
-    @JsonView(ViewField.Public.class)
     private String catalogId;
 
     @JsonProperty("rightAsc")
-    @JsonView(ViewField.Public.class)
     private String catalogRec;
 
     @JsonProperty("declination")
-    @JsonView(ViewField.Public.class)
     private String catalogDec;
 
     @JsonProperty("magnitude")
-    @JsonView(ViewField.Public.class)
     private Float catalogMag;
     /**
      * number of fluxes the object has in the database
      */
 
     @JsonProperty("fluxesCount")
-    @JsonView(ViewField.Public.class)
     private int numberOfFluxes;
 
     public ObjectFluxCount() {

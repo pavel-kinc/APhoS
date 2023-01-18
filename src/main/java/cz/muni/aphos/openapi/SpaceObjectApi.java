@@ -43,7 +43,7 @@ public interface SpaceObjectApi {
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation",
                         content = @Content(mediaType = "application/json",
-                        array = @ArraySchema(schema = @Schema(implementation = SpaceObject.class)))),
+                        array = @ArraySchema(schema = @Schema(implementation = ObjectFluxCount.class)))),
 
         @ApiResponse(responseCode = "400", description = "Invalid values") })
     @RequestMapping(value = "api/spaceObject/findByParams",
@@ -67,7 +67,6 @@ public interface SpaceObjectApi {
     @RequestMapping(value = "/api/spaceObject/find",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
-    @JsonView(ViewField.Child.class)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter() @Valid @RequestParam() String spaceObjectId,
             @Parameter() @Valid @RequestParam(required = false) Catalog catalog);
