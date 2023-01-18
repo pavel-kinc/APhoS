@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 /**
  * Coordinates
  */
+@Schema(defaultValue = "", example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}")
 @Validated
 public class Coordinates   {
 
