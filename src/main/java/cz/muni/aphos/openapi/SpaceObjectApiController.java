@@ -88,13 +88,14 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }
     }
 
-    @JsonView(ViewField.Child.class)
+
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
             @Valid Catalog catalog) {
         try{
-            SpaceObjectWithFluxes spaceObject = spaceObjectDao.getSpaceObjectByObjectIdCat(spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue);
+            SpaceObjectWithFluxes spaceObject = (SpaceObjectWithFluxes) spaceObjectDao.getSpaceObjectByObjectIdCat
+                    (spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue, true);
             if(spaceObject == null){
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SpaceObject not found");
             }
@@ -113,11 +114,28 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String referenceId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat){
-        ObjectFluxCount original = spaceObjectDao.getSpaceObjectByObjectIdCat(originalId, originalCat != null ? originalCat.getValue() : Catalog.defaultValue);
-        ObjectFluxCount reference = spaceObjectDao.getSpaceObjectByObjectIdCat(referenceId, referenceCat != null ? referenceCat.getValue() : Catalog.defaultValue);
-        List<FluxUserTime> data = fluxDao.getFluxesByObjId(original.getId(), reference.getId());
+        try{
+            ObjectFluxCount original = spaceObjectDao.getSpaceObjectByObjectIdCat
+                    (originalId, originalCat != null ? originalCat.getValue() : Catalog.defaultValue, false);
+            if(original == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Original object not found");
+            }
+            ObjectFluxCount reference = spaceObjectDao.getSpaceObjectByObjectIdCat
+                    (referenceId, referenceCat != null ? referenceCat.getValue() : Catalog.defaultValue, false);
+            if(reference == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reference object not found");
+            }
+            List<FluxUserTime> data = fluxDao.getFluxesByObjId(original.getId(), reference.getId());
+            original.setNumberOfFluxes(Math.toIntExact(spaceObjectDao.getSpaceObjectFluxCount(original.getId())));
 
-        return new ResponseEntity<>(new ComparisonObject(original, reference, data), HttpStatus.OK);
+            reference.setNumberOfFluxes(Math.toIntExact(spaceObjectDao.getSpaceObjectFluxCount(reference.getId())));
+
+            return new ResponseEntity<>(new ComparisonObject(original, reference, data), HttpStatus.OK);
+        }catch(ResponseStatusException e){
+            throw e;
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Comparison object endpoint error");
+        }
     }
 
 

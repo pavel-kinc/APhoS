@@ -134,20 +134,28 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
     }
 
     @Override
-    public SpaceObjectWithFluxes getSpaceObjectByObjectIdCat(String id, String catalog) {
+    public ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog, boolean withFluxes) {
         String query = "SELECT space_object.id AS obj_id, " +
-                "name, catalog, catalog_id, catalog_rec, catalog_dec, " +
-                "catalog_mag" +
-                " FROM space_object WHERE catalog_id=?";
+                "name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
+                "FROM space_object WHERE catalog_id=?";
         if(catalog != null && !catalog.isEmpty()){
             query = query + " AND catalog=?";
         }
         //resultsetextractor is also a way, or control flow with exceptions
-        List<SpaceObjectWithFluxes> res = jdbcTemplate.query(query, new SpaceObjectApiMapper(), id, catalog);
+        List<ObjectFluxCount> res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id, catalog);
         if(res.isEmpty()){
             return null;
         }
         return res.get(0);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public Long getSpaceObjectFluxCount(Long id) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM flux WHERE object_id=?", Long.class, id);
     }
 
     @Override

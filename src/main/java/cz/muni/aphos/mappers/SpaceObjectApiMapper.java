@@ -12,11 +12,22 @@ import java.sql.SQLException;
  * The SpaceObjectApi mapper. Maps the rows from the space_object table
  *  to the SpaceObject object with all necessary data.
  */
-public class SpaceObjectApiMapper implements RowMapper<SpaceObjectWithFluxes> {
+public class SpaceObjectApiMapper implements RowMapper<ObjectFluxCount> {
+
+    private final boolean withFluxes;
+
+    public SpaceObjectApiMapper(boolean withFluxes) {
+        this.withFluxes = withFluxes;
+    }
 
     @Override
-    public SpaceObjectWithFluxes mapRow(ResultSet rs, int rowNum) throws SQLException {
-        SpaceObjectWithFluxes spaceObject = new SpaceObjectWithFluxes();
+    public ObjectFluxCount mapRow(ResultSet rs, int rowNum) throws SQLException {
+        ObjectFluxCount spaceObject;
+        if(withFluxes){
+            spaceObject = new SpaceObjectWithFluxes();
+        }else{
+            spaceObject = new ObjectFluxCount();
+        }
         spaceObject.setId(rs.getLong("obj_id"));
         spaceObject.setName(rs.getString("name"));
         spaceObject.setCatalogId(rs.getString("catalog_id"));

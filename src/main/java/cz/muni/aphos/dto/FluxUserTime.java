@@ -16,25 +16,25 @@ public class FluxUserTime {
     String dec;
     //@JsonIgnore
     String apAuto;
-    //@JsonIgnore
+    @JsonIgnore
     Float apAutoDev;
     //@JsonIgnore
     String[] apertures;
-    //@JsonIgnore
+    @JsonIgnore
     Double[] apertureDevs;
     //@JsonIgnore
     String refApAuto;
-    //@JsonIgnore
+    @JsonIgnore
     Float refApAutoDev;
     //@JsonIgnore
     String[] refApertures;
-    //@JsonIgnore
+    @JsonIgnore
     Double[] refApertureDevs;
     Float magnitude;
     Float deviation;
     //@JsonIgnore
     String username;
-    //@JsonIgnore
+    @JsonIgnore
     String userId;
     //@JsonIgnore
     Night night;

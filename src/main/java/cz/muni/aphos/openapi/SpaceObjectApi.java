@@ -1,7 +1,9 @@
 package cz.muni.aphos.openapi;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
+import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.*;
 import cz.muni.aphos.dto.SpaceObject;
 //import io.swagger.model.SpaceObjectWithFluxes;
@@ -65,6 +67,7 @@ public interface SpaceObjectApi {
     @RequestMapping(value = "/api/spaceObject/find",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
+    @JsonView(ViewField.Child.class)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter() @Valid @RequestParam() String spaceObjectId,
             @Parameter() @Valid @RequestParam(required = false) Catalog catalog);
