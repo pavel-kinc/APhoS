@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.helper.ViewField;
+import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.Internal;
@@ -15,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
  * It consists of the object catalog info and number of its fluxes in the database.
  */
 
-@Schema(name="SpaceObject", title="SpaceObject with flux count")
+@Schema(name="SpaceObject", subTypes = SpaceObjectWithFluxes.class)
 @JsonPropertyOrder({"id", "catalog","name", "rightAsc", "declination", "magnitude", "fluxesCount" })
 @Validated
 public class ObjectFluxCount {

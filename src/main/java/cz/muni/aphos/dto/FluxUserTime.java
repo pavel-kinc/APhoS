@@ -3,12 +3,14 @@ package cz.muni.aphos.dto;
 import cz.muni.aphos.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * The Data Transfer Object for storing the information about a flux value, the night
  * and the time of the exposition, along with the user uploading it.
  */
 //@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
+    @Schema(name="FluxData")
 public class FluxUserTime {
     //@JsonIgnore
     String rightAsc;

@@ -19,7 +19,7 @@ import org.springframework.validation.annotation.Validated;
 /**
  * SpaceObjectWithFluxes
  */
-
+@Schema(allOf = ObjectFluxCount.class)
 @Validated
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
 
