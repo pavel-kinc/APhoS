@@ -54,7 +54,7 @@ public interface UserApi {
             @ApiResponse(responseCode = "400", description = "Error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
-    @RequestMapping(value = "/findCatalogs",
+    @RequestMapping(value = "/getCatalogs",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
     ResponseEntity<String[]> getCatalogs();
