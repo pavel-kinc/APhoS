@@ -64,7 +64,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
-        return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage(e.toString()), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(

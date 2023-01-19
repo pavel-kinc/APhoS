@@ -20,6 +20,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import org.springdoc.api.ErrorMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +46,8 @@ public interface SpaceObjectApi {
                         content = @Content(mediaType = "application/json",
                         array = @ArraySchema(schema = @Schema(implementation = ObjectFluxCount.class)))),
 
-        @ApiResponse(responseCode = "400", description = "Invalid values") })
+        @ApiResponse(responseCode = "400", description = "Invalid values",
+                content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
     @RequestMapping(value = "api/spaceObject/findByParams",
         produces = { "application/json", "application/xml" },
         method = RequestMethod.GET)
@@ -61,9 +63,11 @@ public interface SpaceObjectApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Flux.class))),
 
-            @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied"),
+            @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
 
-            @ApiResponse(responseCode = "404", description = "Space object not found") })
+            @ApiResponse(responseCode = "404", description = "Space object not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
     @RequestMapping(value = "/api/spaceObject/find",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
@@ -75,9 +79,11 @@ public interface SpaceObjectApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FluxUserTime.class))),
 
-            @ApiResponse(responseCode = "400", description = "Invalid catalogs or ID supplied"),
+            @ApiResponse(responseCode = "400", description = "Invalid catalogs or ID supplied",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
 
-            @ApiResponse(responseCode = "404", description = "Space object not found") })
+            @ApiResponse(responseCode = "404", description = "Space object not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
     @RequestMapping(value = "/api/spaceObject/comparison",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
