@@ -39,7 +39,7 @@ public class SecurityConfig {
                     .requestMatchers("/object/**", "/object/download", "/object/aperture").permitAll()
                     .requestMatchers("/js/**", "/css/**", "/js/**","/images/**", "/webjars/**").permitAll()
                     .requestMatchers("/api-docs", "/api/**", "/swagger-ui/**", "/swagger-ui.html", "/swagger-resources/**").permitAll()
-                .requestMatchers("/swagger-ui").permitAll()
+                .requestMatchers("/swagger-ui", "/api-docs.yaml").permitAll()
                     .anyRequest().authenticated()
                     .and()
                 .logout()
