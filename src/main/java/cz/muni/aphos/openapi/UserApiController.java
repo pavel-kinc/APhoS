@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.dto.User;
 import cz.muni.aphos.dao.UserRepo;
 //import cz.muni.aphos.openapi.models.User;
+import cz.muni.aphos.openapi.models.Catalog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -29,6 +30,7 @@ import org.springframework.web.server.ResponseStatusException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +66,14 @@ public class UserApiController implements UserApi {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public ResponseEntity<String[]> getCatalogs() {
+        return new ResponseEntity<>(Catalog.getCatalogs(),HttpStatus.OK);
     }
 
 

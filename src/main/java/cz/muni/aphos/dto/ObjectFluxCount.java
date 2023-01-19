@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonView;
 import cz.muni.aphos.helper.ViewField;
+import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.hibernate.Internal;
+import org.springframework.data.annotation.Reference;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -28,6 +30,7 @@ public class ObjectFluxCount {
     private String name;
 
     @JsonProperty("catalog")
+    //@Reference(Catalog.class)
     private String catalog;
 
     @JsonProperty("id")

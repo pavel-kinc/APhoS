@@ -2,7 +2,9 @@ package cz.muni.aphos.openapi;
 
 
 //import cz.muni.aphos.openapi.models.User;
+import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.User;
+import cz.muni.aphos.openapi.models.Catalog;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -42,6 +44,20 @@ public interface UserApi {
         method = RequestMethod.GET)
     ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
                                            @Valid @RequestParam(value = "username") String username);
+
+    @Operation(summary = "Find all catalogs", description = "Returns catalogs", tags={ "Catalog" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(array = @ArraySchema(schema = @Schema(implementation = Catalog.class)))),
+
+
+            @ApiResponse(responseCode = "400", description = "Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
+    })
+    @RequestMapping(value = "/findCatalogs",
+            produces = { "application/json", "application/xml" },
+            method = RequestMethod.GET)
+    ResponseEntity<String[]> getCatalogs();
 
 }
 
