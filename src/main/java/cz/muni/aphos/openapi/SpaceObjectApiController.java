@@ -75,11 +75,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
+
             List<ObjectFluxCount> res = spaceObjectDao.queryObjects(coordinates.getRightAsc(), coordinates.getDeclination(),
                     coordinates.getRadius().toString(),
                     name != null ? name : "", minMag.toString(), maxMag.toString(),
-                    catalog != null ? catalog.toString() : "All catalogues", objectId != null ? objectId : "");
-
+                    catalog != null ? catalog.getValue() : "All catalogues", objectId != null ? objectId : "");
             return new ResponseEntity<>(res, HttpStatus.OK);
 
         } catch (Exception e){
