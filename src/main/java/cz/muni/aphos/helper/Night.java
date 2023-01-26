@@ -1,5 +1,8 @@
 package cz.muni.aphos.helper;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,8 +23,14 @@ public class Night implements Comparable<Night> {
     private String firstDateOfTheNight;
     private String secondDateOfTheNight;
     private String username;
+
+    @JsonIgnore
     private int idOnPage;
+
+    @Nullable
     private String apToBeUsed;
+
+    @Nullable
     private String refApToBeUsed;
 
     private static final Logger log = LoggerFactory.getLogger(Night.class);

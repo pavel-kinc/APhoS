@@ -77,7 +77,7 @@ public interface SpaceObjectApi {
 
     @Operation(summary = "Comparison object of 2 SpaceObjects", description = "Returns a fluxes comparison object, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = FluxUserTime.class))),
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ComparisonObject.class))),
 
             @ApiResponse(responseCode = "400", description = "Invalid catalogs or ID supplied",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))),

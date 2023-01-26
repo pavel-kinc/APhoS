@@ -75,6 +75,8 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         try {
             Night night = new Night(rs.getTimestamp("exposure_begin"),
                     fluxUserTime.getUsername());
+            night.setApToBeUsed("auto");
+            night.setRefApToBeUsed("auto");
             fluxUserTime.setNight(night);
         } catch (ParseException e) {
             log.error("Night date was unable to be parsed", e);
@@ -83,7 +85,7 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         if(fluxUserTime.getApAuto().equals("saturated") || fluxUserTime.getRefApAuto().equals("saturated")){
             fluxUserTime.setMagnitude(Float.NEGATIVE_INFINITY);
         }else{
-            System.out.println(fluxUserTime.getApAuto() + " " + fluxUserTime.getRefApAuto());
+            //System.out.println(fluxUserTime.getApAuto() + " " + fluxUserTime.getRefApAuto());
             fluxUserTime.setMagnitude((float) (-2.5 * Math.log10
                     (Double.parseDouble(fluxUserTime.getApAuto()) / Double.parseDouble(fluxUserTime.getRefApAuto()))));
             if(fluxUserTime.getApAutoDev() == 0 || fluxUserTime.getRefApAutoDev() == 0){
