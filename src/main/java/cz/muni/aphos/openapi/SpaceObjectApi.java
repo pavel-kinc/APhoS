@@ -61,7 +61,7 @@ public interface SpaceObjectApi {
 
     @Operation(summary = "Find space object by ID and catalog", description = "Returns a space object with fluxes, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Flux.class))),
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SpaceObjectWithFluxes.class))),
 
             @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
