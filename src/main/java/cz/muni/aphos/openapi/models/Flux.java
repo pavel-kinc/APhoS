@@ -43,6 +43,14 @@ public class Flux   {
   @JsonView(ViewField.Public.class)
   private PhotoProperties photo = null;
 
+  @JsonProperty("apAutoDev")
+  @JsonView(ViewField.Public.class)
+  private Double apAutoDev = null;
+
+  @JsonProperty("apertureDevs")
+  @JsonView(ViewField.Public.class)
+  private List<Double> apertureDevs = null;
+
   public Flux rightAsc(String rightAsc) {
     this.rightAsc = rightAsc;
     return this;
@@ -213,5 +221,21 @@ public class Flux   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  public Double getApAutoDev() {
+    return apAutoDev;
+  }
+
+  public void setApAutoDev(Double apAutoDev) {
+    this.apAutoDev = apAutoDev;
+  }
+
+  public List<Double> getApertureDevs() {
+    return apertureDevs;
+  }
+
+  public void setApertureDevs(List<Double> apertureDevs) {
+    this.apertureDevs = apertureDevs;
   }
 }

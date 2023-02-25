@@ -42,6 +42,9 @@ public class FluxApiMapper implements RowMapper<Flux> {
         photo.setExposureBegin(rs.getTimestamp("exposure_begin"));
         photo.setExposureEnd(rs.getTimestamp("exposure_end"));
         flux.setPhoto(photo);
+        flux.setApAutoDev(rs.getDouble("ap_auto_dev"));
+        Double[] apertureDevs = (Double[]) rs.getArray("aperture_devs").getArray();
+        flux.setApertureDevs(List.of(apertureDevs));
         return flux;
     }
 }
