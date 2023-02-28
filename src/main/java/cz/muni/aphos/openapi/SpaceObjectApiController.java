@@ -71,13 +71,20 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue) @Valid Catalog catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
-            @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Nullable @Valid Coordinates coordinates, @DecimalMin("0")
+            @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("15")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
+            Coordinates coords;
+            if(coordinates != null){
+                ObjectMapper mapper = new ObjectMapper();
+                 coords= mapper.readValue(coordinates, Coordinates.class);
+            } else{
+                coords = new Coordinates();
+            }
 
-            List<ObjectFluxCount> res = spaceObjectDao.queryObjects(coordinates.getRightAsc(), coordinates.getDeclination(),
-                    coordinates.getRadius().toString(),
+            List<ObjectFluxCount> res = spaceObjectDao.queryObjects(coords.getRightAsc(), coords.getDeclination(),
+                    coords.getRadius().toString(),
                     name != null ? name : "", minMag.toString(), maxMag.toString(),
                     catalog != null ? catalog.getValue() : "All catalogues", objectId != null ? objectId : "");
             return new ResponseEntity<>(res, HttpStatus.OK);
