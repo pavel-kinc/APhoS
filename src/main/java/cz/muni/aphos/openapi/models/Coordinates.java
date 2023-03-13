@@ -1,10 +1,13 @@
 package cz.muni.aphos.openapi.models;
 
 import java.util.Objects;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
+import jakarta.validation.*;
 import jakarta.validation.constraints.*;
 import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +20,9 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Coordinates   {
 
+  private static final ValidatorFactory fac = Validation.buildDefaultValidatorFactory();
+  private static final Validator validator = fac.getValidator();
+
   @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   @NotBlank
   private String rightAsc = "";
@@ -26,7 +32,7 @@ public class Coordinates   {
   private String declination = "";
 
   @Min(0)
-  @NotBlank
+  @NotNull
   private Double radius = 0.0;
 
   public Coordinates() {
@@ -83,6 +89,11 @@ public class Coordinates   {
 
   public void setRadius(Double radius) {
     this.radius = radius;
+  }
+
+  public boolean isValid(){
+    Set<ConstraintViolation<Coordinates>> violations = validator.validate(this);
+    return violations.isEmpty();
   }
 
 

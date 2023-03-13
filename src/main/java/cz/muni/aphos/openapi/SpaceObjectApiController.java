@@ -23,9 +23,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.xml.bind.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.api.ErrorMessage;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class SpaceObjectApiController implements SpaceObjectApi {
@@ -78,7 +81,10 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             Coordinates coords;
             if(coordinates != null){
                 ObjectMapper mapper = new ObjectMapper();
-                 coords= mapper.readValue(coordinates, Coordinates.class);
+                coords= mapper.readValue(coordinates, Coordinates.class);
+                if(!coords.isValid()){
+                    throw new ValidationException("Coordinates value not correct, use: " + Coordinates.class.getAnnotation(Schema.class).example());
+                }
             } else{
                 coords = new Coordinates();
             }
@@ -91,7 +97,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
         } catch (Exception e){
             log.error("SpaceObject endpoint problem", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
     }
 
