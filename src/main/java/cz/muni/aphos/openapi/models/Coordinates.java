@@ -19,7 +19,7 @@ public class Coordinates   {
   @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   private String rightAsc = "";
 
-  @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
+  @Pattern(regexp="[+-]?\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   private String declination = "";
 
   @Min(0)
