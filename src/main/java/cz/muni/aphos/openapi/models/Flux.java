@@ -18,36 +18,36 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
 public class Flux   {
-  @JsonProperty("rightAsc")
+  @JsonProperty(value = "rightAsc", required = true)
   @JsonView(ViewField.Public.class)
   private String rightAsc = null;
 
-  @JsonProperty("declination")
+  @JsonProperty(value = "declination", required = true)
   @JsonView(ViewField.Public.class)
   private String declination = null;
 
-  @JsonProperty("addedBy")
+  @JsonProperty(value = "addedBy", required = true)
   @JsonView(ViewField.Public.class)
   private String addedBy = null;
 
-  @JsonProperty("apAuto")
+  @JsonProperty(value = "apAuto", required = true)
   @JsonView(ViewField.Public.class)
   private Double apAuto = null;
 
-  @JsonProperty("apertures")
+  @JsonProperty(value = "apertures",required = true)
   @JsonView(ViewField.Public.class)
   @Valid
   private List<Double> apertures = null;
 
-  @JsonProperty("photo")
+  @JsonProperty(value = "photo",required = true)
   @JsonView(ViewField.Public.class)
   private PhotoProperties photo = null;
 
-  @JsonProperty("apAutoDev")
+  @JsonProperty(value = "apAutoDev", required = true)
   @JsonView(ViewField.Public.class)
   private Double apAutoDev = null;
 
-  @JsonProperty("apertureDevs")
+  @JsonProperty(value = "apertureDevs", required = true)
   @JsonView(ViewField.Public.class)
   private List<Double> apertureDevs = null;
 
