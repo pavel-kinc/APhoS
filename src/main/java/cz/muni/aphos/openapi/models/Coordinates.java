@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 
@@ -17,12 +18,15 @@ import org.springframework.validation.annotation.Validated;
 public class Coordinates   {
 
   @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
+  @NotBlank
   private String rightAsc = "";
 
   @Pattern(regexp="[+-]?\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
+  @NotBlank
   private String declination = "";
 
   @Min(0)
+  @NotBlank
   private Double radius = 0.0;
 
   public Coordinates() {
