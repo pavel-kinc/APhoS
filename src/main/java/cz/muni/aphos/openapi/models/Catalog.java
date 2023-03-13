@@ -9,11 +9,13 @@ import java.util.Arrays;
 /**
  * Gets or Sets Catalog
  */
-@Schema(name="Catalog", type="String",allowableValues = {"UCAC4", "USNO-B1.0"}, enumAsRef = true)
+@Schema(name="Catalog", type="String",allowableValues = {"All catalogues", "UCAC4", "USNO-B1.0"}, enumAsRef = true)
 @Validated
 public class Catalog {
 
   public static final String defaultValue = "UCAC4";
+
+  public static final String allValue = "All catalogues";
   private String value;
 
   public Catalog(String value) {
