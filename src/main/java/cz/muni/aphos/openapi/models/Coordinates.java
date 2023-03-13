@@ -20,6 +20,10 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class Coordinates   {
 
+
+  //Coordinates.class.getAnnotation(Schema.class).example()
+  public static final String example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}";
+
   private static final ValidatorFactory fac = Validation.buildDefaultValidatorFactory();
   private static final Validator validator = fac.getValidator();
 
