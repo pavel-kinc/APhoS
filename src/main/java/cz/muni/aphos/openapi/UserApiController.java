@@ -68,13 +68,6 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    /**
-     * @return
-     */
-    @Override
-    public ResponseEntity<String[]> getCatalogs() {
-        return new ResponseEntity<>(Catalog.getCatalogs(),HttpStatus.OK);
-    }
 
 
 }
