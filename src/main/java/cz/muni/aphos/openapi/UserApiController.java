@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.websocket.server.PathParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.api.ErrorMessage;
@@ -53,8 +54,8 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
-                                  @Valid @RequestParam(value = "username") String username) {
+    public ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username")
+                                                  @PathVariable(name = "name") @NotBlank String username) {
         User user;
         try{
             user = userRepo.findByUsername(username);

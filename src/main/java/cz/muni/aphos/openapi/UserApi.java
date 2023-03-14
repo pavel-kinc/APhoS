@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.websocket.server.PathParam;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -43,11 +44,10 @@ public interface UserApi {
                 content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
 
     })
-    @RequestMapping(value = "/findByUsername",
+    @RequestMapping(value = "/{name}",
         produces = { "application/json", "application/xml" }, 
         method = RequestMethod.GET)
-    ResponseEntity<User> getUserByUsername(@NotBlank @Parameter(in = ParameterIn.QUERY, required=true)
-                                           @Valid @RequestParam(value = "username") String username);
+    ResponseEntity<User> getUserByUsername(@Parameter @PathVariable(name = "name") @NotBlank String username);
 
 }
 

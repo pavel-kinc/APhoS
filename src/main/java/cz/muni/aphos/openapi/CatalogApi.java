@@ -18,8 +18,10 @@ public interface CatalogApi {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Catalog.class)))),
 
-
             @ApiResponse(responseCode = "400", description = "Error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+
+            @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
     @RequestMapping(value = "/getCatalogs",
