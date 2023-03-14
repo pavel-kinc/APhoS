@@ -26,29 +26,29 @@ public class ObjectFluxCount {
     @JsonIgnore
     private long id;
 
-    @JsonProperty("name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
-    @JsonProperty("catalog")
+    @JsonProperty(value = "catalog", required = true)
     //@Reference(Catalog.class)
     private String catalog;
 
-    @JsonProperty("id")
+    @JsonProperty(value = "id", required = true)
     private String catalogId;
 
-    @JsonProperty("rightAsc")
+    @JsonProperty(value = "rightAsc", required = true)
     private String catalogRec;
 
-    @JsonProperty("declination")
+    @JsonProperty(value = "declination", required = true)
     private String catalogDec;
 
-    @JsonProperty("magnitude")
+    @JsonProperty(value = "magnitude", required = true)
     private Float catalogMag;
     /**
      * number of fluxes the object has in the database
      */
 
-    @JsonProperty("fluxesCount")
+    @JsonProperty(value = "fluxesCount", required = true)
     private int numberOfFluxes;
 
     public ObjectFluxCount() {
