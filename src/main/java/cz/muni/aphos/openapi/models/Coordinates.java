@@ -29,14 +29,17 @@ public class Coordinates   {
 
   @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   @NotBlank
+  @JsonProperty(required = true)
   private String rightAsc = "";
 
   @Pattern(regexp="[+-]?\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   @NotBlank
+  @JsonProperty(required = true)
   private String declination = "";
 
   @Min(0)
   @NotNull
+  @JsonProperty(required = true)
   private Double radius = 0.0;
 
   public Coordinates() {
