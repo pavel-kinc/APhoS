@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
 
+  @JsonProperty(required = true)
   private List<Flux> fluxes = null;
 
 

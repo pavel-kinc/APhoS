@@ -16,6 +16,7 @@ public class Catalog {
   public static final String defaultValue = "UCAC4";
 
   public static final String allValue = "All catalogues";
+
   private String value;
 
   public Catalog(String value) {
