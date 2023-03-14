@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
@@ -45,10 +46,12 @@ public class Flux   {
 
   @JsonProperty(value = "apAutoDev", required = true)
   @JsonView(ViewField.Public.class)
+  @Nullable
   private Double apAutoDev = null;
 
   @JsonProperty(value = "apertureDevs", required = true)
   @JsonView(ViewField.Public.class)
+  @Nullable
   private List<Double> apertureDevs = null;
 
   public Flux rightAsc(String rightAsc) {
