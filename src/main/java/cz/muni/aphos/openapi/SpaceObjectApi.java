@@ -44,12 +44,15 @@ public interface SpaceObjectApi {
     @Operation(summary = "Finds space objects by multiple data", description = "No additional data is mandatory, but maximum object count is 100", tags={ "SpaceObject" })
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "successful operation",
-                        content = @Content(mediaType = "application/json",
-                        array = @ArraySchema(schema = @Schema(implementation = ObjectFluxCount.class)))),
+                        content = @Content(array = @ArraySchema(schema = @Schema(implementation = ObjectFluxCount.class)))),
 
         @ApiResponse(responseCode = "400", description = "Invalid values",
-                content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
-    @RequestMapping(value = "api/spaceObject/findByParams",
+                content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+
+        @ApiResponse(responseCode = "500", description = "Internal server error",
+                content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
+    })
+    @RequestMapping(value = "/findByParams",
         produces = { "application/json", "application/xml" },
         method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
@@ -62,14 +65,18 @@ public interface SpaceObjectApi {
 
     @Operation(summary = "Find space object by ID and catalog", description = "Returns a space object with fluxes, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = SpaceObjectWithFluxes.class))),
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = SpaceObjectWithFluxes.class))),
 
             @ApiResponse(responseCode = "400", description = "Invalid catalog or ID supplied",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
 
             @ApiResponse(responseCode = "404", description = "Space object not found",
-                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
-    @RequestMapping(value = "/api/spaceObject/find",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
+    })
+    @RequestMapping(value = "/find",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
@@ -78,14 +85,17 @@ public interface SpaceObjectApi {
 
     @Operation(summary = "Comparison object of 2 SpaceObjects", description = "Returns a fluxes comparison object, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ComparisonObject.class))),
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = ComparisonObject.class))),
 
             @ApiResponse(responseCode = "400", description = "Invalid catalogs or ID supplied",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
 
             @ApiResponse(responseCode = "404", description = "Space object not found",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
-    @RequestMapping(value = "/api/spaceObject/comparison",
+
+    @RequestMapping(value = "/comparison",
             produces = { "application/json", "application/xml" },
             method = RequestMethod.GET)
     ResponseEntity<ComparisonObject> getComparisonByIdentificators(

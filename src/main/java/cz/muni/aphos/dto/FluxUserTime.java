@@ -1,9 +1,11 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.muni.aphos.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 
 /**
  * The Data Transfer Object for storing the information about a flux value, the night
@@ -12,34 +14,50 @@ import io.swagger.v3.oas.annotations.media.Schema;
 //@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
     @Schema(name="FluxData")
 public class FluxUserTime {
+    @JsonProperty(required = true)
     //@JsonIgnore
     String rightAsc;
+    @JsonProperty(required = true)
     //@JsonIgnore
     String dec;
+    @JsonProperty(required = true)
     //@JsonIgnore
     String apAuto;
+    @JsonProperty(required = true)
     //@JsonIgnore
     Float apAutoDev;
+    @JsonProperty(required = true)
     //@JsonIgnore
     String[] apertures;
+    @JsonProperty(required = true)
     //@JsonIgnore
     Double[] apertureDevs;
+    @JsonProperty(value = "cmpApAuto",required = true)
     //@JsonIgnore
     String refApAuto;
+    @JsonProperty(value = "cmpApAutoDev",required = true)
     //@JsonIgnore
     Float refApAutoDev;
+    @JsonProperty(value = "cmpApertures",required = true)
     //@JsonIgnore
     String[] refApertures;
+    @JsonProperty(value = "cmpApertureDevs",required = true)
     //@JsonIgnore
     Double[] refApertureDevs;
+    @JsonProperty(required = true)
     Float magnitude;
+    @JsonProperty(required = true)
+    @Nullable
     Float deviation;
+    @JsonProperty(required = true)
     //@JsonIgnore
     String username;
     @JsonIgnore
     String userId;
+    @JsonProperty(required = true)
     //@JsonIgnore
     Night night;
+    @JsonProperty(required = true)
     String expMiddle;
 
     public FluxUserTime() {

@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
+@RequestMapping("api/spaceObject")
 public class SpaceObjectApiController implements SpaceObjectApi {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
