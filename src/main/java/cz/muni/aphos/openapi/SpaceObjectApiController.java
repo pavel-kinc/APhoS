@@ -47,7 +47,6 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("api/spaceObject")
 public class SpaceObjectApiController implements SpaceObjectApi {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
@@ -64,6 +63,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         return new ResponseEntity<>(new ErrorMessage(e.getLocalizedMessage() + " Illegal argument exception"), HttpStatus.BAD_REQUEST);
     }
 
+    @Override
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
@@ -96,6 +96,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
     }
 
 
+    @Override
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
@@ -117,6 +118,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }
     }
 
+    @Override
     public ResponseEntity<ComparisonObject> getComparisonByIdentificators(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String originalId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,

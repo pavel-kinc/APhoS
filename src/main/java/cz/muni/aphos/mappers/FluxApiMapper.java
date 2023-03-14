@@ -1,22 +1,13 @@
 package cz.muni.aphos.mappers;
 
-import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.PhotoProperties;
-import cz.muni.aphos.helper.Night;
-import cz.muni.aphos.openapi.models.Flux;
+import cz.muni.aphos.dto.Flux;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 

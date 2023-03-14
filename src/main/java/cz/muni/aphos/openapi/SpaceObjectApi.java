@@ -38,12 +38,29 @@ import org.springframework.web.bind.annotation.CookieValue;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface for SpaceObject with annotations for API controllers and swagger-ui.
+ * Basic pathing is in @RequestMapping.
+ */
 @Validated
+@RequestMapping("api/spaceObject")
 public interface SpaceObjectApi {
 
+    /**
+     * Find space objects by multiple parameters in query.
+     * More info in annotations.
+     *
+     * @param objectId object id
+     * @param catalog catalog
+     * @param name name
+     * @param coordinates coordinates json string (rightAsc, declination, radius) mapped to Coordinates object
+     * @param minMag minimum magnitude
+     * @param maxMag maximum magnitude
+     * @return List of space objects
+     */
     @Operation(summary = "Finds space objects by multiple data", description = "No additional data is mandatory, but maximum object count is 100", tags={ "SpaceObject" })
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "successful operation",
+        @ApiResponse(responseCode = "200", description = "Successful operation",
                         content = @Content(array = @ArraySchema(schema = @Schema(implementation = ObjectFluxCount.class)))),
 
         @ApiResponse(responseCode = "400", description = "Invalid values",
@@ -63,6 +80,14 @@ public interface SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("20")
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag);
 
+    /**
+     * Find space object by object id and catalog.
+     * More info in annotations.
+     *
+     * @param spaceObjectId space object id
+     * @param catalog catalog
+     * @return Space object or other response dependent on existence of the object in database
+     */
     @Operation(summary = "Find space object by ID and catalog", description = "Returns a space object with fluxes, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = SpaceObjectWithFluxes.class))),
@@ -83,6 +108,16 @@ public interface SpaceObjectApi {
             @Parameter() @Valid @RequestParam() String spaceObjectId,
             @Parameter() @Valid @RequestParam(required = false) Catalog catalog);
 
+    /**
+     * Get ComparisonObject data by id and catalog of 2 space objects.
+     * More info in annotations.
+     *
+     * @param originalId original (variable) id of space object
+     * @param originalCat original (variable) catalog
+     * @param referenceId reference (comparison) id of space object
+     * @param referenceCat reference (comparison) catalog
+     * @return Comparison object with data about stars and photos
+     */
     @Operation(summary = "Comparison object of 2 SpaceObjects", description = "Returns a fluxes comparison object, maximum fluxes count is 2000", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = ComparisonObject.class))),

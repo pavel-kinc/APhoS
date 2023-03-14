@@ -26,9 +26,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Interface for User with annotations for API controllers and swagger-ui.
+ * Basic pathing is in @RequestMapping.
+ */
 @Validated
+@RequestMapping("/api/user")
 public interface UserApi {
 
+    /**
+     * Get user by username in APhoS database - API.
+     * More info in annotations.
+     *
+     * @param username not blank path parameter username
+     * @return User in ResponseEntity (json - {username, description}) or other API responses
+     */
     @Operation(summary = "Find user by username", description = "Returns a user", tags={ "User" })
     @ApiResponses(value = { 
         @ApiResponse(responseCode = "200", description = "Successful operation",

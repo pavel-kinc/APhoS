@@ -3,7 +3,7 @@ package cz.muni.aphos.dao;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.mappers.FluxApiMapper;
 import cz.muni.aphos.mappers.FluxRowMapper;
-import cz.muni.aphos.openapi.models.Flux;
+import cz.muni.aphos.dto.Flux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;

@@ -1,7 +1,7 @@
 package cz.muni.aphos.dao;
 
 import cz.muni.aphos.dto.FluxUserTime;
-import cz.muni.aphos.openapi.models.Flux;
+import cz.muni.aphos.dto.Flux;
 
 import java.util.List;
 
@@ -47,6 +47,12 @@ public interface FluxDao {
      */
     long fluxExists(Long id);
 
+    /**
+     * Get list of fluxes of space object based on id
+     *
+     * @param id database id
+     * @return list of fluxes of given space object
+     */
     List<Flux> getFluxesByObj(Long id);
 
     /**

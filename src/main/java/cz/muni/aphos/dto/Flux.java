@@ -1,9 +1,8 @@
-package cz.muni.aphos.openapi.models;
+package cz.muni.aphos.dto;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import cz.muni.aphos.dto.PhotoProperties;
 import cz.muni.aphos.helper.ViewField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.ArrayList;
@@ -13,7 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Flux
+ * The Data Transfer Object for storing the information about flux containing
+ * right ascension, declination, apertures, deviations, username and photo
  */
 @Validated
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")

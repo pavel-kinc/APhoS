@@ -62,8 +62,22 @@ public interface SpaceObjectDao {
      */
     SpaceObject getSpaceObjectById(Long id);
 
+    /**
+     * Gets space object (ObjectFluxCount or SpaceObjectWithFluxes based on withFluxes) by id, catalog
+     *
+     * @param id object id of space object
+     * @param catalog catalog
+     * @param withFluxes with 1 more field fluxes or not
+     * @return space object
+     */
     ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog, boolean withFluxes);
 
+    /**
+     * Gets count of fluxes for a space object.
+     *
+     * @param id database id of space object
+     * @return count of fluxes
+     */
     Long getSpaceObjectFluxCount(Long id);
 
     /**

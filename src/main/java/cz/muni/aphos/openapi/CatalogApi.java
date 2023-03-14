@@ -12,7 +12,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * Interface for Catalog with annotations for API controllers and swagger-ui.
+ * Basic pathing is in @RequestMapping.
+ */
 public interface CatalogApi {
+
+    /**
+     * Gets all allowable catalogs.
+     *
+     * @return List of catalogs
+     */
     @Operation(summary = "Find all catalogs", description = "Returns catalogs", tags={ "Catalog" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",

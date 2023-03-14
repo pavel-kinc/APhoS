@@ -17,9 +17,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Global exception handler for API to make correct return values and objects.
+ */
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handle ResponseStatusException.
+     *
+     * @param e exception
+     * @return ErrorMessage in response entity
+     */
     @ExceptionHandler(value = {ResponseStatusException.class})
     protected ResponseEntity<ErrorMessage> handleException(ResponseStatusException e){
         return new ResponseEntity<>(new ErrorMessage(e.getReason()), e.getStatusCode());

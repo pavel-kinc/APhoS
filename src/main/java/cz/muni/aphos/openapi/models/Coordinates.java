@@ -14,7 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 
 /**
- * Coordinates
+ * Coordinates object for right ascension (hour, minute, second), declination (degrees), radius (degrees) with
+ * regexp restrictions and validator.
  */
 @Schema(defaultValue = "", example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}")
 @Validated

@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user")
 public class UserApiController implements UserApi {
 
     private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
@@ -50,6 +49,7 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<>(new ErrorMessage(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @Override
     public ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username")
                                                   @PathVariable(name = "name") @NotBlank String username) {
         User user;

@@ -7,14 +7,20 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Arrays;
 
 /**
- * Gets or Sets Catalog
+ * Object used as enum(mainly for swagger-ui) with some allowable values in one field
  */
 @Schema(name="Catalog", type="String",allowableValues = {"All catalogues", "UCAC4", "USNO-B1.0"}, enumAsRef = true)
 @Validated
 public class Catalog {
 
+  /**
+   * Default value for catalog
+   */
   public static final String defaultValue = "UCAC4";
 
+  /**
+   * Special value for searching in all catalogs
+   */
   public static final String allValue = "All catalogues";
 
   private String value;

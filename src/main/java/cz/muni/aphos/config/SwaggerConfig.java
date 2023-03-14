@@ -15,6 +15,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 
 import java.util.Arrays;
 
+/**
+ * Configuration for swagger-ui interface for API with annotations and descriptions.
+ */
 @OpenAPIDefinition(
         info = @Info(title = "APhoS",
                 version = "1.0.5",
