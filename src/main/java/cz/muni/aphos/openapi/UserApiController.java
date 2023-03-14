@@ -44,10 +44,6 @@ public class UserApiController implements UserApi {
     @Autowired
     UserRepo userRepo;
 
-    @Autowired
-    public UserApiController(HttpServletRequest request) {
-    }
-
     // global handling cannot handle IllegalArgumentException it seems
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {

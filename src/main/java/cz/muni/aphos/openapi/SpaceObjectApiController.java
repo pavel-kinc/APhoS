@@ -52,19 +52,12 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
 
-    private final HttpServletRequest request;
-
-
     @Autowired
     private SpaceObjectDao spaceObjectDao;
 
     @Autowired
     private FluxDao fluxDao;
 
-    @Autowired
-    public SpaceObjectApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.request = request;
-    }
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
