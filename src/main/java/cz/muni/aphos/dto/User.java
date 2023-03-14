@@ -2,6 +2,7 @@ package cz.muni.aphos.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.persistence.Entity;
@@ -22,13 +23,14 @@ public class User {
     @JsonIgnore
     @Id
     private String googleSub;
-    @JsonProperty("username")
+    @JsonProperty(value = "username", required = true)
     private String username;
 
     /**
      * the description of the user's profile
      */
-    @JsonProperty("description")
+    @JsonProperty(value = "description", required = true)
+    @Nullable
     private String description;
 
     public User(String googleSub) {

@@ -37,7 +37,11 @@ public interface UserApi {
                 content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
 
         @ApiResponse(responseCode = "404", description = "User not found",
+                content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+
+        @ApiResponse(responseCode = "500", description = "Internal server error",
                 content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
+
     })
     @RequestMapping(value = "/findByUsername",
         produces = { "application/json", "application/xml" }, 

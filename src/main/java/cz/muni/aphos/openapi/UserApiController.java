@@ -60,7 +60,7 @@ public class UserApiController implements UserApi {
             user = userRepo.findByUsername(username);
         } catch (Exception e){
             log.error("User endpoint problem", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
         if(user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
