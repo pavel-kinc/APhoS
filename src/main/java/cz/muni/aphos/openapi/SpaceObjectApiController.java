@@ -68,7 +68,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
-        return new ResponseEntity<>(new ErrorMessage(e.toString()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorMessage(e.getLocalizedMessage() + " Illegal argument exception"), HttpStatus.BAD_REQUEST);
     }
 
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
@@ -76,8 +76,8 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates\n\n" + "Format: " + Coordinates.example) @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema( defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("20")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema( defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema(type="number", format="float", defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("20")
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema(type="number", format="float", defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
         try{
             Coordinates coords;
             if(coordinates != null){
@@ -98,7 +98,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
         } catch (Exception e){
             log.error("SpaceObject endpoint problem", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject endpoint problem");
         }
     }
 
@@ -119,6 +119,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         } catch(ResponseStatusException e){
             throw e;
         } catch(Exception e){
+            log.error("SpaceObject endpoint problem", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject internal server error");
         }
     }
@@ -148,6 +149,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }catch(ResponseStatusException e){
             throw e;
         }catch(Exception e){
+            log.error("Comparison object endpoint error", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Comparison object endpoint error");
         }
     }
