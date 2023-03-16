@@ -138,11 +138,16 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         String query = "SELECT space_object.id AS obj_id, " +
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
                 "FROM space_object WHERE catalog_id=?";
+        List<ObjectFluxCount> res;
         if(catalog != null && !catalog.isEmpty()){
             query = query + " AND catalog=?";
+
+            //resultsetextractor is also a way, or control flow with exceptions
+            res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id, catalog);
+        }else{
+            res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id);
         }
-        //resultsetextractor is also a way, or control flow with exceptions
-        List<ObjectFluxCount> res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id, catalog);
+
         if(res.isEmpty()){
             return null;
         }
