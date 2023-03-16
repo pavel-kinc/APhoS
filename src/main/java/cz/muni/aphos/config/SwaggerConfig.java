@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 @OpenAPIDefinition(
         info = @Info(title = "APhoS",
-                version = "1.0.5",
+                version = "2.0.0",
                 description = """
                                 This is Amateur Photometric Survey (APhoS) Application Programming Interface.
                                 """,

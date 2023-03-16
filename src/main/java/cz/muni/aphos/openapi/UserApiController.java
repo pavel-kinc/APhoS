@@ -6,6 +6,7 @@ import cz.muni.aphos.dto.User;
 import cz.muni.aphos.dao.UserRepo;
 //import cz.muni.aphos.openapi.models.User;
 import cz.muni.aphos.openapi.models.Catalog;
+import cz.muni.aphos.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -23,6 +24,9 @@ import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +46,9 @@ public class UserApiController implements UserApi {
 
     @Autowired
     UserRepo userRepo;
+
+    @Autowired
+    UserService userService;
 
     // global handling cannot handle IllegalArgumentException it seems
     @ExceptionHandler
@@ -65,6 +72,21 @@ public class UserApiController implements UserApi {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<User> getLoggedUser() {
+        try{
+            Authentication auth = SecurityContextHolder.
+                    getContext().getAuthentication();
+            User user=null;
+            if(auth != null && !auth.getPrincipal().toString().equals("anonymousUser")){
+                user =userService.getCurrentUser();
 
+            }
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Logged user endpoint problem");
+        }
+
+    }
 
 }

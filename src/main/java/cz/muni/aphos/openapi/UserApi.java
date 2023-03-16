@@ -61,5 +61,19 @@ public interface UserApi {
         method = RequestMethod.GET)
     ResponseEntity<User> getUserByUsername(@Parameter @PathVariable(name = "name") @NotBlank String username);
 
+    @Operation(summary = "Get current logged-in user for session", description = "Returns a user or null", tags={ "User" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = User.class))),
+
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
+
+    })
+    @RequestMapping(value = "/current",
+            produces = { "application/json", "application/xml" },
+            method = RequestMethod.GET)
+    ResponseEntity<User> getLoggedUser();
+
 }
 

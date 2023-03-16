@@ -7,11 +7,13 @@ import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cz.muni.aphos.dto.User;
 import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.ComparisonObject;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
+import cz.muni.aphos.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -34,13 +36,21 @@ import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import cz.muni.aphos.services.FileHandlingService;
 
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +60,13 @@ import java.util.Set;
 public class SpaceObjectApiController implements SpaceObjectApi {
 
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
+
+    @Autowired
+    FileHandlingService fileHandlingService;
+
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     private SpaceObjectDao spaceObjectDao;
@@ -149,5 +166,44 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         }
     }
 
+    @Override
+    public ResponseEntity<String> uploadCSV (@RequestParam(required = true) MultipartFile file) throws IOException {
+        Path path = null;
+        if(file.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File not loaded");
+        }
+        try {
+            Authentication auth = SecurityContextHolder.
+                    getContext().getAuthentication();
+            User user;
+            if(auth != null && !auth.getPrincipal().toString().equals("anonymousUser")){
+                user =userService.getCurrentUser();
+            }else{
+                user = new User("7899871233215");
+                user.setUsername("Anonymous");
+            }
+            Path dirs = Paths.get("target/temp/parse/");
+            Files.createDirectories(dirs);
+            int append = 1;
+            String filename = "file" + append + ".csv";
+            String directory = dirs.toString();
+            path = Paths.get(directory, filename);
+            while(Files.exists(path)){
+                append++;
+                path = Paths.get(directory, "file" + append + ".csv");
+            }
+            //Files.createTempFile(String.valueOf(dirs),filename);
+            file.transferTo(path);
+            fileHandlingService.parseAndPersist(path, user);
+            Files.deleteIfExists(path);
+            return new ResponseEntity<>("File uploaded and data saved.", HttpStatus.OK);
+        } catch (Exception e) {
+            if(path != null){
+                Files.deleteIfExists(path);
+            }
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file server problem");
+        }
+
+    }
 
 }

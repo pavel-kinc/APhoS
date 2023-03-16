@@ -22,19 +22,14 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import net.minidev.json.JSONObject;
 import org.springdoc.api.ErrorMessage;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.bind.annotation.CookieValue;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -138,5 +133,21 @@ public interface SpaceObjectApi {
             @Parameter() @Valid @RequestParam(required = false) Catalog originalCat,
             @Parameter() @Valid @RequestParam() String referenceId,
             @Parameter() @Valid @RequestParam(required = false) Catalog referenceCat);
+
+    @Operation(summary = "Upload file", description = "uploads file", tags={ "SpaceObject", "Flux" })
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = String.class))),
+
+            @ApiResponse(responseCode = "400", description = "Invalid file",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))),
+
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
+    //@RequestMapping(value = "/upload_file",
+    //        method = RequestMethod.POST)
+    @PostMapping(path = "/upload_file",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<String> uploadCSV (@RequestParam(required = true) MultipartFile file) throws IOException;
 }
 
