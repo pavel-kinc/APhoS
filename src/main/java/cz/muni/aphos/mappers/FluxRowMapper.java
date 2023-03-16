@@ -86,8 +86,9 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
             fluxUserTime.setMagnitude(Float.NEGATIVE_INFINITY);
         }else{
             //System.out.println(fluxUserTime.getApAuto() + " " + fluxUserTime.getRefApAuto());
-            fluxUserTime.setMagnitude((float) (-2.5 * Math.log10
-                    (Double.parseDouble(fluxUserTime.getApAuto()) / Double.parseDouble(fluxUserTime.getRefApAuto()))));
+            fluxUserTime.setMagnitude((float) (-2.5 *
+                    Math.log10(Double.parseDouble(fluxUserTime.getApAuto()) /
+                            Double.parseDouble(fluxUserTime.getRefApAuto()))));
             if(fluxUserTime.getApAutoDev() == 0 || fluxUserTime.getRefApAutoDev() == 0){
                 fluxUserTime.setDeviation(0F);
             } else{
