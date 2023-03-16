@@ -44,10 +44,10 @@ public class ObjectFluxCount {
 
     @JsonProperty(value = "magnitude", required = true)
     private Float catalogMag;
+
     /**
      * number of fluxes the object has in the database
      */
-
     @JsonProperty(value = "fluxesCount", required = true)
     private int numberOfFluxes;
 

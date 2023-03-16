@@ -29,6 +29,7 @@ public class Flux   {
 
   @JsonProperty(value = "addedBy", required = true)
   @JsonView(ViewField.Public.class)
+  // username from User
   private String addedBy = null;
 
   @JsonProperty(value = "apAuto", required = true)
