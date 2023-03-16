@@ -134,6 +134,14 @@ public interface SpaceObjectApi {
             @Parameter() @Valid @RequestParam() String referenceId,
             @Parameter() @Valid @RequestParam(required = false) Catalog referenceCat);
 
+    /**
+     * Endpoint for uploading csv file genarated from sips software.
+     * More info in annotations.
+     *
+     * @param file csv file (from sips) with delimiter ';'
+     * @return info about uploading
+     * @throws IOException
+     */
     @Operation(summary = "Upload file", description = "uploads file", tags={ "SpaceObject", "Flux" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",

@@ -3,6 +3,7 @@ package cz.muni.aphos.services;
 import cz.muni.aphos.dao.UserRepo;
 import cz.muni.aphos.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,15 @@ public class UserService {
                 getContext().getAuthentication().getPrincipal();
         String userId = principal.getAttribute("sub");
         return userRepo.findByUserID(userId);
+    }
+
+
+    /**
+     * Get authentication from context
+     *
+     * @return authentication
+     */
+    public Authentication getAuth(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }

@@ -173,15 +173,13 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File not loaded");
         }
         try {
-            Authentication auth = SecurityContextHolder.
-                    getContext().getAuthentication();
+            //Authentication auth = userService.getAuth();
             User user;
-            if(auth != null && !auth.getPrincipal().toString().equals("anonymousUser")){
-                user =userService.getCurrentUser();
-            }else{
-                user = new User("7899871233215");
-                user.setUsername("Anonymous");
-            }
+            //if(auth != null){
+            //    user =userService.getCurrentUser();
+            //}else{
+                user = createAnonymousUser();
+            //}
             Path dirs = Paths.get("target/temp/parse/");
             Files.createDirectories(dirs);
             int append = 1;
@@ -195,15 +193,23 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             //Files.createTempFile(String.valueOf(dirs),filename);
             file.transferTo(path);
             fileHandlingService.parseAndPersist(path, user);
-            Files.deleteIfExists(path);
             return new ResponseEntity<>("File uploaded and data saved.", HttpStatus.OK);
+
         } catch (Exception e) {
+            log.error("Upload file exception", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file server problem");
+
+        }finally{
             if(path != null){
                 Files.deleteIfExists(path);
             }
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file server problem");
         }
 
+    }
+    private User createAnonymousUser(){
+        User user = new User("7899871233215");
+        user.setUsername("Anonymous");
+        return user;
     }
 
 }

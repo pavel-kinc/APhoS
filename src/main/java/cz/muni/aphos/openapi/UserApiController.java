@@ -84,6 +84,7 @@ public class UserApiController implements UserApi {
             }
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch(Exception e){
+            log.error(String.valueOf(e));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Logged user endpoint problem");
         }
 

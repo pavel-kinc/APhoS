@@ -61,6 +61,11 @@ public interface UserApi {
         method = RequestMethod.GET)
     ResponseEntity<User> getUserByUsername(@Parameter @PathVariable(name = "name") @NotBlank String username);
 
+    /**
+     * Gets currently logged user
+     *
+     * @return logged-in user or null in ResponseEntity
+     */
     @Operation(summary = "Get current logged-in user for session", description = "Returns a user or null", tags={ "User" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
