@@ -8,6 +8,7 @@ import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.dto.User;
+import cz.muni.aphos.exceptions.CsvContentException;
 import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.ComparisonObject;
@@ -195,9 +196,13 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             fileHandlingService.parseAndPersist(path, user);
             return new ResponseEntity<>("File uploaded and data saved.", HttpStatus.OK);
 
-        } catch (Exception e) {
+        }
+        catch (CsvContentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is not in correct format");
+        }
+        catch (Exception e) {
             log.error("Upload file exception", e);
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file server problem");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file problem, try uploading file in correct format");
 
         }finally{
             if(path != null){
