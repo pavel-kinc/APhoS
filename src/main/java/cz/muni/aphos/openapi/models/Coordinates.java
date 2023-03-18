@@ -28,12 +28,12 @@ public class Coordinates   {
   private static final ValidatorFactory fac = Validation.buildDefaultValidatorFactory();
   private static final Validator validator = fac.getValidator();
 
-  @Pattern(regexp="\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
+  @Pattern(regexp="\\d{1,2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   @NotBlank
   @JsonProperty(required = true)
   private String rightAsc = "";
 
-  @Pattern(regexp="[+-]?\\d{2}:\\d{2}:\\d{2}([.]\\d+)?|^$")
+  @Pattern(regexp="[+-]?\\d{1,3}:\\d{2}:\\d{2}([.]\\d+)?|^$")
   @NotBlank
   @JsonProperty(required = true)
   private String declination = "";
