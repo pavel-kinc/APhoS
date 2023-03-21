@@ -4,6 +4,7 @@ import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import cz.muni.aphos.mappers.ObjectFluxCountRowMapper;
 import cz.muni.aphos.mappers.SpaceObjectApiMapper;
+import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import cz.muni.aphos.mappers.SpaceObjectMapper;
@@ -139,7 +140,7 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
                 "FROM space_object WHERE catalog_id=?";
         List<ObjectFluxCount> res;
-        if(catalog != null && !catalog.isEmpty()){
+        if(catalog != null && !catalog.isEmpty() && !catalog.equals(Catalog.allValue)){
             query = query + " AND catalog=?";
 
             //resultsetextractor is also a way, or control flow with exceptions
@@ -154,10 +155,6 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         return res.get(0);
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public Long getSpaceObjectFluxCount(Long id) {
         return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM flux WHERE object_id=?", Long.class, id);

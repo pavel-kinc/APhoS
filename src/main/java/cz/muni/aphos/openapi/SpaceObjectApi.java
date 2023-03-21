@@ -154,8 +154,10 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class))) })
     //@RequestMapping(value = "/upload_file",
     //        method = RequestMethod.POST)
-    @PostMapping(path = "/upload_file",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(value = "/upload_file",
+            method=RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = { "application/json", "application/xml" })
     ResponseEntity<String> uploadCSV (@RequestParam(required = true) MultipartFile file) throws IOException;
 }
 
