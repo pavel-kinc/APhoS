@@ -45,10 +45,10 @@ public class UserApiController implements UserApi {
     private static final Logger log = LoggerFactory.getLogger(UserApiController.class);
 
     @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     // global handling cannot handle IllegalArgumentException it seems
     @ExceptionHandler

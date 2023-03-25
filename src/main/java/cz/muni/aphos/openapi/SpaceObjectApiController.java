@@ -64,11 +64,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
     private static final Logger log = LoggerFactory.getLogger(SpaceObjectApiController.class);
 
     @Autowired
-    FileHandlingService fileHandlingService;
+    private FileHandlingService fileHandlingService;
 
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private SpaceObjectDao spaceObjectDao;
