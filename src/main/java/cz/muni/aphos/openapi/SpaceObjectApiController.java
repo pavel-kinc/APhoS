@@ -1,6 +1,7 @@
 package cz.muni.aphos.openapi;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonParseException;
 import cz.muni.aphos.dao.FluxDao;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.FluxUserTime;
@@ -95,7 +96,8 @@ public class SpaceObjectApiController implements SpaceObjectApi {
                 ObjectMapper mapper = new ObjectMapper();
                 coords= mapper.readValue(coordinates, Coordinates.class);
                 if(!coords.isValid()){
-                    throw new ValidationException("Coordinates value not correct, use: " + Coordinates.class.getAnnotation(Schema.class).example());
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Coordinates value not correct, use: "
+                            + Coordinates.class.getAnnotation(Schema.class).example());
                 }
             } else{
                 coords = new Coordinates();
@@ -107,7 +109,15 @@ public class SpaceObjectApiController implements SpaceObjectApi {
                     catalog != null ? catalog.getValue() : "All catalogues", objectId != null ? objectId : "");
             return new ResponseEntity<>(res, HttpStatus.OK);
 
-        } catch (Exception e){
+        }
+        catch(ResponseStatusException e){
+            throw e;
+        }
+        catch (Exception e){
+            if(e.getClass() == JsonParseException.class){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Coordinates value not correct, use: "
+                        + Coordinates.class.getAnnotation(Schema.class).example());
+            }
             log.error("SpaceObject endpoint problem", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject endpoint problem");
         }

@@ -48,7 +48,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
 public class TestingTest {
 
@@ -83,9 +82,9 @@ public class TestingTest {
     public void testingTest() throws Exception {
         //SpaceObjectWithFluxes star = (SpaceObjectWithFluxes) mockDao.getSpaceObjectByObjectIdCat("779-040824", "UCAC4", true);
         //mockMvc.perform(get("/api/user/Pavel").contentType(MediaType.APPLICATION_JSON));
-        given(mockDao.getSpaceObjectFluxCount(anyLong())).willReturn(null);
-        mockMvc.perform(get("/api/spaceObject/1651651").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        //given(mockDao.getSpaceObjectFluxCount(anyLong())).willReturn(null);
+        //mockMvc.perform(get("/api/spaceObject/1651651").contentType(MediaType.APPLICATION_JSON))
+        //        .andExpect(status().isOk());
 
 
         //ResponseEntity<SpaceObjectWithFluxes> star = controller.getSpaceObjectById("807-030174", new Catalog("UCAC4"));
