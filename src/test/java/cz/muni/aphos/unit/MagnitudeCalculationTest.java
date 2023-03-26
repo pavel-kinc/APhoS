@@ -2,7 +2,7 @@ package cz.muni.aphos.unit;
 
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.helper.Night;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static cz.muni.aphos.utils.Conversions.calculateMagnitudeAndDeviation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
