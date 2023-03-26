@@ -16,7 +16,7 @@ import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import net.minidev.json.JSONObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -48,36 +48,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@SpringBootTest
+//@SpringBootTest
 public class TestingTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private SpaceObjectDaoImpl mockDao;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
     public final String PATH = "https://ip-147-251-21-104.flt.cloud.muni.cz/";
-
-    @BeforeAll
-    static void beforeAll() {
-    }
-
-    @AfterAll
-    static void afterAll() {
-    }
-
-    @BeforeEach
-    void beforeEach() {
-    }
-
-    @AfterEach
-    void afterEach() {
-    }
-
     @Test
     public void testingTest() throws Exception {
         //SpaceObjectWithFluxes star = (SpaceObjectWithFluxes) mockDao.getSpaceObjectByObjectIdCat("779-040824", "UCAC4", true);
