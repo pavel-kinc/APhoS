@@ -62,4 +62,26 @@ public class User {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (googleSub != null ? !googleSub.equals(user.googleSub) : user.googleSub != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (description != null ? !description.equals(user.description) : user.description != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = googleSub != null ? googleSub.hashCode() : 0;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
+    }
 }
