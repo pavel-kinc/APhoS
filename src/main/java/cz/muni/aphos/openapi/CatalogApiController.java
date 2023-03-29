@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/catalog")
-public class CatalogApiController implements CatalogApi{
+public class CatalogApiController implements CatalogApi {
     @Override
     public ResponseEntity<String[]> getCatalogs() {
         return new ResponseEntity<>(Catalog.getCatalogs(), HttpStatus.OK);

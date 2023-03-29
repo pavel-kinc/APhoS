@@ -34,6 +34,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +61,13 @@ public class UserApiController implements UserApi {
     public ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username")
                                                   @PathVariable(name = "name") @NotBlank String username) {
         User user;
-        try{
+        try {
             user = userRepo.findByUsername(username);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("User endpoint problem", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
-        if(user == null){
+        if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -74,16 +75,16 @@ public class UserApiController implements UserApi {
 
     @Override
     public ResponseEntity<User> getLoggedUser() {
-        try{
+        try {
             Authentication auth = SecurityContextHolder.
                     getContext().getAuthentication();
-            User user=null;
-            if(auth != null && !auth.getPrincipal().toString().equals("anonymousUser")){
-                user =userService.getCurrentUser();
+            User user = null;
+            if (auth != null && !auth.getPrincipal().toString().equals("anonymousUser")) {
+                user = userService.getCurrentUser();
 
             }
             return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error(String.valueOf(e));
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Logged user endpoint problem");
         }

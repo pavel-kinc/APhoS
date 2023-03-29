@@ -16,17 +16,17 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class SpaceObjectWithFluxes extends ObjectFluxCount {
 
-  /**
-   * Fluxes of the given space object
-   */
-  @JsonProperty(required = true)
-  private List<Flux> fluxes = null;
+    /**
+     * Fluxes of the given space object
+     */
+    @JsonProperty(required = true)
+    private List<Flux> fluxes = null;
 
-  public List<Flux> getFluxes() {
-    return fluxes;
-  }
+    public List<Flux> getFluxes() {
+        return fluxes;
+    }
 
-  public void setFluxes(List<Flux> fluxes) {
-    this.fluxes = fluxes;
-  }
+    public void setFluxes(List<Flux> fluxes) {
+        this.fluxes = fluxes;
+    }
 }

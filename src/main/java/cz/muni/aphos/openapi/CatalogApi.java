@@ -23,7 +23,7 @@ public interface CatalogApi {
      *
      * @return List of catalogs
      */
-    @Operation(summary = "Find all catalogs", description = "Returns catalogs", tags={ "Catalog" })
+    @Operation(summary = "Find all catalogs", description = "Returns catalogs", tags = {"Catalog"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Catalog.class)))),
@@ -35,7 +35,7 @@ public interface CatalogApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
     @RequestMapping(value = "/getCatalogs",
-            produces = { "application/json", "application/xml" },
+            produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<String[]> getCatalogs();
 }

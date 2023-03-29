@@ -88,18 +88,18 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates\n\n" + "Format: " + Coordinates.example) @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude" ,schema=@Schema(type="number", format="float", defaultValue="0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue="0") Float minMag, @DecimalMax("20")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude" ,schema=@Schema(type="number", format="float", defaultValue="15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue="15") Float maxMag) {
-        try{
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue = "0") Float minMag, @DecimalMax("20")
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue = "15") Float maxMag) {
+        try {
             Coordinates coords;
-            if(coordinates != null){
+            if (coordinates != null) {
                 ObjectMapper mapper = new ObjectMapper();
-                coords= mapper.readValue(coordinates, Coordinates.class);
-                if(!coords.isValid()){
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Coordinates value not correct, use: "
+                coords = mapper.readValue(coordinates, Coordinates.class);
+                if (!coords.isValid()) {
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coordinates value not correct, use: "
                             + Coordinates.class.getAnnotation(Schema.class).example());
                 }
-            } else{
+            } else {
                 coords = new Coordinates();
             }
 
@@ -109,13 +109,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
                     catalog != null ? catalog.getValue() : "All catalogues", objectId != null ? objectId : "");
             return new ResponseEntity<>(res, HttpStatus.OK);
 
-        }
-        catch(ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             throw e;
-        }
-        catch (Exception e){
-            if(e.getClass() == JsonParseException.class){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Coordinates value not correct, use: "
+        } catch (Exception e) {
+            if (e.getClass() == JsonParseException.class) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coordinates value not correct, use: "
                         + Coordinates.class.getAnnotation(Schema.class).example());
             }
             log.error("SpaceObject endpoint problem", e);
@@ -126,21 +124,21 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @Override
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
             @Valid Catalog catalog) {
-        try{
+        try {
             SpaceObjectWithFluxes spaceObject = (SpaceObjectWithFluxes) spaceObjectDao.getSpaceObjectByObjectIdCat
                     (spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue, true);
-            if(spaceObject == null){
+            if (spaceObject == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "SpaceObject not found");
             }
             spaceObject.setFluxes(fluxDao.getFluxesByObj(spaceObject.getId()));
             spaceObject.setNumberOfFluxes(spaceObject.getFluxes().size());
             return new ResponseEntity<>(spaceObject, HttpStatus.OK);
-        } catch(ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             throw e;
-        } catch(Exception e){
+        } catch (Exception e) {
             log.error("SpaceObject endpoint problem", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject internal server error");
         }
@@ -148,19 +146,19 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @Override
     public ResponseEntity<ComparisonObject> getComparisonByIdentificators(
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String originalId,
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam() String originalId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required=true) @Valid @RequestParam() String referenceId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat){
-        try{
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam() String referenceId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat) {
+        try {
             ObjectFluxCount original = spaceObjectDao.getSpaceObjectByObjectIdCat
                     (originalId, originalCat != null ? originalCat.getValue() : Catalog.defaultValue, false);
-            if(original == null){
+            if (original == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Original object not found");
             }
             ObjectFluxCount reference = spaceObjectDao.getSpaceObjectByObjectIdCat
                     (referenceId, referenceCat != null ? referenceCat.getValue() : Catalog.defaultValue, false);
-            if(reference == null){
+            if (reference == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Reference object not found");
             }
             List<FluxUserTime> data = fluxDao.getFluxesByObjId(original.getId(), reference.getId());
@@ -169,18 +167,18 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             reference.setNumberOfFluxes(Math.toIntExact(spaceObjectDao.getSpaceObjectFluxCount(reference.getId())));
 
             return new ResponseEntity<>(new ComparisonObject(original, reference, data), HttpStatus.OK);
-        }catch(ResponseStatusException e){
+        } catch (ResponseStatusException e) {
             throw e;
-        }catch(Exception e){
+        } catch (Exception e) {
             log.error("Comparison object endpoint error", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Comparison object endpoint error");
         }
     }
 
     @Override
-    public ResponseEntity<String> uploadCSV (@RequestParam(required = true) MultipartFile file) throws IOException {
+    public ResponseEntity<String> uploadCSV(@RequestParam(required = true) MultipartFile file) throws IOException {
         Path path = null;
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File not loaded");
         }
         try {
@@ -189,7 +187,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             //if(auth != null){
             //    user =userService.getCurrentUser();
             //}else{
-                user = createAnonymousUser();
+            user = createAnonymousUser();
             //}
             Path dirs = Paths.get("target/temp/parse/");
             Files.createDirectories(dirs);
@@ -197,7 +195,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             String filename = "file" + append + ".csv";
             String directory = dirs.toString();
             path = Paths.get(directory, filename);
-            while(Files.exists(path)){
+            while (Files.exists(path)) {
                 append++;
                 path = Paths.get(directory, "file" + append + ".csv");
             }
@@ -206,22 +204,21 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             fileHandlingService.parseAndPersist(path, user);
             return new ResponseEntity<>("File uploaded and data saved.", HttpStatus.OK);
 
-        }
-        catch (CsvContentException e){
+        } catch (CsvContentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is not in correct format");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Upload file exception", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file problem, try uploading file in correct format");
 
-        }finally{
-            if(path != null){
+        } finally {
+            if (path != null) {
                 Files.deleteIfExists(path);
             }
         }
 
     }
-    private User createAnonymousUser(){
+
+    private User createAnonymousUser() {
         User user = new User("7899871233215");
         user.setUsername("Anonymous");
         return user;

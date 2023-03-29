@@ -50,7 +50,7 @@ public class UserService {
      *
      * @return authentication
      */
-    public Authentication getAuth(){
+    public Authentication getAuth() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 }
