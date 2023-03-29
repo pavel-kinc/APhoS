@@ -36,10 +36,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = {ResponseStatusException.class})
     protected ResponseEntity<ErrorMessage> handleException(ResponseStatusException e) {
-        ErrorMessage error = new ErrorMessage(e.getReason());
-        if (e.getStatusCode() != HttpStatus.NOT_FOUND) {
-            log.error(error.getId() + error.getMessage());
-        }
+        log.error(e.getMessage());
         return new ResponseEntity<>(new ErrorMessage(e.getReason()), e.getStatusCode());
     }
 }

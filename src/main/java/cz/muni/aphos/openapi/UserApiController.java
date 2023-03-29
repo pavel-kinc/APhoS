@@ -64,7 +64,7 @@ public class UserApiController implements UserApi {
         try {
             user = userRepo.findByUsername(username);
         } catch (Exception e) {
-            log.error("User endpoint problem", e);
+            log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
         if (user == null) {
@@ -85,7 +85,7 @@ public class UserApiController implements UserApi {
             }
             return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
-            log.error(String.valueOf(e));
+            log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Logged user endpoint problem");
         }
 

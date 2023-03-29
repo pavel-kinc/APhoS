@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
  * Coordinates object for right ascension (hour, minute, second), declination (degrees), radius (degrees) with
  * regexp restrictions and validator.
  */
-@Schema(defaultValue = "", example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}")
+@Schema(example = "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":0.05}")
 @Validated
 public class Coordinates {
 
@@ -42,12 +42,16 @@ public class Coordinates {
     private Double radius = 0.0;
 
     public Coordinates() {
-
     }
 
 
-    public Coordinates(String coords) {
-
+    public Coordinates(String rightAsc, String declination, Double radius) {
+        this.rightAsc = rightAsc;
+        this.declination = declination;
+        this.radius = radius;
+        if(!validator.validate(this).isEmpty()){
+            throw new ConstraintViolationException(null);
+        }
     }
 
     /**
@@ -61,9 +65,6 @@ public class Coordinates {
         return rightAsc;
     }
 
-    public void setRightAsc(String rightAsc) {
-        this.rightAsc = rightAsc;
-    }
 
     public Coordinates declination(String declination) {
         this.declination = declination;
@@ -79,10 +80,6 @@ public class Coordinates {
 
     public String getDeclination() {
         return declination;
-    }
-
-    public void setDeclination(String declination) {
-        this.declination = declination;
     }
 
     public Coordinates radius(Double radius) {
@@ -102,6 +99,9 @@ public class Coordinates {
     }
 
     public void setRadius(Double radius) {
+        if(radius < 0){
+            throw new ValidationException("Radius must be positive");
+        }
         this.radius = radius;
     }
 

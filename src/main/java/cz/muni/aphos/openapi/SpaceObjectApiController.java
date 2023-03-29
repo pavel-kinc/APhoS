@@ -28,6 +28,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -95,10 +96,6 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             if (coordinates != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 coords = mapper.readValue(coordinates, Coordinates.class);
-                if (!coords.isValid()) {
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coordinates value not correct, use: "
-                            + Coordinates.class.getAnnotation(Schema.class).example());
-                }
             } else {
                 coords = new Coordinates();
             }
@@ -111,12 +108,11 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
         } catch (ResponseStatusException e) {
             throw e;
+        } catch (JsonParseException | ConstraintViolationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coordinates value not correct, use: "
+                    + Coordinates.class.getAnnotation(Schema.class).example());
         } catch (Exception e) {
-            if (e.getClass() == JsonParseException.class) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Coordinates value not correct, use: "
-                        + Coordinates.class.getAnnotation(Schema.class).example());
-            }
-            log.error("SpaceObject endpoint problem", e);
+            log.error(e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject endpoint problem");
         }
     }
@@ -139,7 +135,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            log.error("SpaceObject endpoint problem", e);
+            log.error("SpaceObject endpoint problem: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "SpaceObject internal server error");
         }
     }
@@ -170,7 +166,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         } catch (ResponseStatusException e) {
             throw e;
         } catch (Exception e) {
-            log.error("Comparison object endpoint error", e);
+            log.error("Comparison object endpoint error: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Comparison object endpoint error");
         }
     }
@@ -207,7 +203,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
         } catch (CsvContentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "File is not in correct format");
         } catch (Exception e) {
-            log.error("Upload file exception", e);
+            log.error("Upload file exception: " + e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Upload file problem, try uploading file in correct format");
 
         } finally {

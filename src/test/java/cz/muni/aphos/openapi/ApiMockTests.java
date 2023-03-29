@@ -38,7 +38,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.*;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -100,6 +101,16 @@ public class ApiMockTests {
     public void findByParams_badRequestTest() throws Exception {
         MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
                         .param("coordinates", "Random String"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.id").isNotEmpty())
+                .andExpect(jsonPath("$.message").isNotEmpty())
+                .andReturn();
+    }
+
+    @Test
+    public void findByParams_IllegalArgumentTest() throws Exception {
+        MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
+                        .param("minMag", "abcd"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.id").isNotEmpty())
                 .andExpect(jsonPath("$.message").isNotEmpty())
