@@ -59,9 +59,9 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) ->web.ignoring().requestMatchers("/swagger-ui/**", "/api-docs/**", "/api/spaceObject/upload_file");
-    }
+    //@Bean
+    //public WebSecurityCustomizer webSecurityCustomizer() {
+    //    return (web) ->web.ignoring().requestMatchers("/swagger-ui/**", "/api-docs/**", "/api/spaceObject/upload_file");
+    //}
 }
 
