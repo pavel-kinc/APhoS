@@ -4,6 +4,7 @@ import cz.muni.aphos.dao.UploadErrorMessagesDao;
 import cz.muni.aphos.dao.UploadLogsDao;
 import cz.muni.aphos.dto.User;
 import cz.muni.aphos.exceptions.CsvContentException;
+import cz.muni.aphos.exceptions.UnauthorizedAccessException;
 import cz.muni.aphos.services.FileHandlingService;
 import cz.muni.aphos.services.UserService;
 import org.apache.catalina.connector.ClientAbortException;
@@ -91,6 +92,9 @@ public class UploadController {
                     Path.of(System.getProperty("java.io.tmpdir")), "flux").toString();
         } else {
             path = dirName;
+            if(!path.matches("/tmp/flux[^/]*")){
+                throw new UnauthorizedAccessException();
+            }
         }
         File normalFile = new File(path +
                 "/" + file.getOriginalFilename());
@@ -124,8 +128,9 @@ public class UploadController {
                 if (!Files.isDirectory(Paths.get(pathToDir))) {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
+
 //                 Prevent getting path outside /tmp, comment in case of testing
-                if (!pathToDir.matches("/tmp/[^/]*")) {
+                if (!pathToDir.matches("/tmp/flux[^/]*")) {
                     throw new FileNotFoundException("Given path to the directory is not correct.");
                 }
                 try (Stream<Path> filePaths = Files.walk(Paths.get(pathToDir))) {
