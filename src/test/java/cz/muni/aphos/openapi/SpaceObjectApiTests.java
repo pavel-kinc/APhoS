@@ -103,6 +103,7 @@ public class SpaceObjectApiTests {
         assertTrue(entity.getStatusCode().is2xxSuccessful());
         List<ObjectFluxCount> stars = entity.getBody();
         assertTrue(stars.isEmpty());
+        assertEquals(2, 1);
     }
 
     @Test
