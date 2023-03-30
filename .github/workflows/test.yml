@@ -20,5 +20,8 @@ jobs:
           cache: 'maven'
 
       - name: "build and test with Maven"
-        run: mvn -B clean install
+        run: mvn -B -DskipTests clean install
+
+      - name: "test with Maven"
+        run: mvn clean test
 
