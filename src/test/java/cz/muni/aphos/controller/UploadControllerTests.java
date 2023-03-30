@@ -74,6 +74,9 @@ public class UploadControllerTests {
 
     @Test
     public void directoryWithFilesNotExisting() throws Exception {
+        User user = new User("1");
+        user.setUsername("name");
+        Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(get("/upload/parse")
                 .param("path-to-dir", "notexisting")
                 .param("file-count", "1"));
