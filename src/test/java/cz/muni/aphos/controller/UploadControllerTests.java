@@ -21,6 +21,7 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -29,7 +30,7 @@ import java.nio.file.Path;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -89,12 +90,13 @@ public class UploadControllerTests {
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         String testDataDir = "/tmp/flux123_correctfiles";
-        if(!Files.exists(Path.of(testDataDir))){
+        Path dir_path = Path.of(testDataDir);
+        if(!Files.exists(dir_path)){
             FileUtils.copyDirectory(new File("src/test/resources/correct_files"),
                     new File(testDataDir));
         }
 
-        mockMvc.perform(
+        MvcResult res= mockMvc.perform(
                         get("/upload/parse")
                                 .param("path-to-dir", testDataDir)
                                 .param("file-count", "1"))
@@ -103,7 +105,10 @@ public class UploadControllerTests {
                 .andExpect(request().asyncResult(nullValue()))
                 .andExpect(content().string(containsString(
                         "event:COMPLETED\n" +
-                        "data:0\n")));
+                        "data:0\n"))).andReturn();
+
+        Thread.sleep(200);
+        assertFalse(Files.exists(dir_path));
     }
 
     @Test

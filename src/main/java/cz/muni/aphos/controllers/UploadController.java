@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -177,6 +178,35 @@ public class UploadController {
                         new ArrayList<>());
                 log.error("emitter completed with error", e);
                 emitter.completeWithError(e);
+            }
+            finally{
+                if(pathToDir.matches("/tmp/flux[^/]*") && Files.exists(Path.of(pathToDir))){
+                    try {
+                        /*
+                        FileSystemUtils.deleteRecursively could be used too, symbolic links might be a problem though
+                         */
+                        boolean res;
+                        File directory = new File(pathToDir);
+                        if(!directory.isDirectory()){
+                            throw new Exception("Should always be directory.");
+                        }
+                        File[] files = directory.listFiles();
+                        if (files != null) {
+                            for (File file : files) {
+                                 res = file.delete();
+                                if(!res){
+                                    log.error("File not deleted: " + file.getName());
+                                }
+                            }
+                        }
+                        res = directory.delete();
+                        if(!res){
+                            log.error("File not deleted: " + directory.getName());
+                        }
+                    } catch (Exception e) {
+                        log.error("Files not deleted exception", e);
+                    }
+                }
             }
         });
         sseExecutor.shutdown();
