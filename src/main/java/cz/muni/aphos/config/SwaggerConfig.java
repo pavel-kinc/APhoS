@@ -20,7 +20,7 @@ import java.util.Arrays;
  */
 @OpenAPIDefinition(
         info = @Info(title = "APhoS",
-                version = "2.0.0",
+                version = "2.0.1",
                 description = """
                                 This is Amateur Photometric Survey (APhoS) Application Programming Interface.
                                 """,
@@ -29,8 +29,8 @@ import java.util.Arrays;
         ),
         servers = { @Server(description = "Developer server", url = "http://localhost:8009"),
         @Server(description = "Main server APhoS", url = "https://aphos.cerit-sc.cz/"),
-        @Server(description = "Test server (virtual machine) - CURRENT", url = "https://ip-147-251-21-104.flt.cloud.muni.cz/") },
-        tags = {@Tag(name = "SpaceObject", description = "Everything about space objects by cataloque info"),
+        @Server(description = "Test server (virtual machine)", url = "https://ip-147-251-21-104.flt.cloud.muni.cz/") },
+        tags = {@Tag(name = "SpaceObject", description = "Everything about space objects"),
                 @Tag(name = "Flux", description = "Data about a flux"),
                 @Tag(name="User", description = "User information")}
 )

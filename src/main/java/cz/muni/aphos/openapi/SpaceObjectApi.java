@@ -7,6 +7,7 @@ import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.*;
 import cz.muni.aphos.dto.SpaceObject;
 //import io.swagger.model.SpaceObjectWithFluxes;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -38,7 +39,7 @@ import java.util.Map;
  * Basic pathing is in @RequestMapping.
  */
 @Validated
-@RequestMapping("api/spaceObject")
+@RequestMapping("api/space-objects")
 public interface SpaceObjectApi {
 
     /**
@@ -64,7 +65,7 @@ public interface SpaceObjectApi {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
-    @RequestMapping(value = "/findByParams",
+    @RequestMapping(value = "/find-by-params",
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
@@ -113,7 +114,7 @@ public interface SpaceObjectApi {
      * @param referenceCat reference (comparison) catalog
      * @return Comparison object with data about stars and photos
      */
-    @Operation(summary = "Comparison object of 2 SpaceObjects", description = "Returns a fluxes comparison object, maximum fluxes count is 2000", tags = {"SpaceObject", "Flux"})
+    @Operation(summary = "Comparison object of 2 Space objects", description = "Returns a fluxes comparison object", tags = {"SpaceObject", "Flux"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = @Content(schema = @Schema(implementation = ComparisonObject.class))),
 
@@ -154,10 +155,11 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))})
     //@RequestMapping(value = "/upload_file",
     //        method = RequestMethod.POST)
-    @RequestMapping(value = "/upload_file",
+    @RequestMapping(value = "/upload-file",
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {"application/json", "application/xml"})
+    @Hidden
     ResponseEntity<String> uploadCSV(@RequestParam(required = true) MultipartFile file) throws IOException;
 }
 

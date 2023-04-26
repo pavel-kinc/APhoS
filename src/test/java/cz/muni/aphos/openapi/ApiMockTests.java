@@ -62,7 +62,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParamsXML_noParamsTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML))
@@ -75,7 +75,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_someParamsTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
                         .param("catalog", "UCAC4")
                         .param("coordinates", "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":1}")
                         .param("minMag", "6.1"))
@@ -99,7 +99,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_badRequestTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
                         .param("coordinates", "Random String"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.id").isNotEmpty())
@@ -109,7 +109,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_IllegalArgumentTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/spaceObject/findByParams")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
                         .param("minMag", "abcd"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.id").isNotEmpty())
@@ -119,14 +119,14 @@ public class ApiMockTests {
 
     @Test
     public void findUser_nonExistent() throws Exception {
-        mockMvc.perform(get("/api/user/NonExistentsas4891"))
+        mockMvc.perform(get("/api/users/NonExistentsas4891"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").isNotEmpty());
     }
 
     @Test
     public void noCatalog_getComparison() throws Exception {
-        mockMvc.perform(get("/api/spaceObject/comparison")
+        mockMvc.perform(get("/api/space-objects/comparison")
                         .param("originalId","779-040824")
                         .param("referenceId","801-032283"))
                 .andExpect(status().isOk())

@@ -32,7 +32,7 @@ import java.util.Map;
  * Basic pathing is in @RequestMapping.
  */
 @Validated
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public interface UserApi {
 
     /**

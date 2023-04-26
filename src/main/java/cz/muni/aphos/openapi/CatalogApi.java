@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Interface for Catalog with annotations for API controllers and swagger-ui.
  * Basic pathing is in @RequestMapping.
  */
+@RequestMapping("/api/catalogs")
 public interface CatalogApi {
 
     /**
@@ -34,7 +35,7 @@ public interface CatalogApi {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
-    @RequestMapping(value = "/getCatalogs",
+    @RequestMapping(value = "",
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<String[]> getCatalogs();
