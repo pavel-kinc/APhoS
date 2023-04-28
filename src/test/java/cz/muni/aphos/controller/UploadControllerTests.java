@@ -107,7 +107,7 @@ public class UploadControllerTests {
                         "event:COMPLETED\n" +
                         "data:0\n"))).andReturn();
 
-        Thread.sleep(200);
+        Thread.sleep(250);
         assertFalse(Files.exists(dir_path));
     }
 

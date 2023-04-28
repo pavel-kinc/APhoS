@@ -62,7 +62,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParamsXML_noParamsTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/search-by-params")
                         .accept(MediaType.APPLICATION_XML))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_XML))
@@ -75,7 +75,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_someParamsTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/search-by-params")
                         .param("catalog", "UCAC4")
                         .param("coordinates", "{\"rightAsc\":\"21:41:55.291\",\"declination\":\"71:18:41.12\",\"radius\":1}")
                         .param("minMag", "6.1"))
@@ -99,7 +99,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_badRequestTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/search-by-params")
                         .param("coordinates", "Random String"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.id").isNotEmpty())
@@ -109,7 +109,7 @@ public class ApiMockTests {
 
     @Test
     public void findByParams_IllegalArgumentTest() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/space-objects/find-by-params")
+        MvcResult result = mockMvc.perform(get("/api/space-objects/search-by-params")
                         .param("minMag", "abcd"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.id").isNotEmpty())

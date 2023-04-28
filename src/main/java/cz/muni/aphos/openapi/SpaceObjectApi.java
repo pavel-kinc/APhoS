@@ -65,7 +65,7 @@ public interface SpaceObjectApi {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
-    @RequestMapping(value = "/find-by-params",
+    @RequestMapping(value = "/search-by-params",
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
@@ -97,7 +97,7 @@ public interface SpaceObjectApi {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
-    @RequestMapping(value = "/find",
+    @RequestMapping(value = "/search",
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
@@ -155,7 +155,7 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))})
     //@RequestMapping(value = "/upload_file",
     //        method = RequestMethod.POST)
-    @RequestMapping(value = "/upload-file",
+    @RequestMapping(value = "/upload",
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {"application/json", "application/xml"})
