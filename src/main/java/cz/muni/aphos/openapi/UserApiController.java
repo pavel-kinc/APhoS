@@ -58,8 +58,7 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username")
-                                                  @PathVariable(name = "name") @NotBlank String username) {
+    public ResponseEntity<User> getUserByUsername(@PathVariable(name = "name") @NotBlank String username) {
         User user;
         try {
             user = userRepo.findByUsername(username);

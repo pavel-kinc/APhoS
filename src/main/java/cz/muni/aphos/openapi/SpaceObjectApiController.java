@@ -78,6 +78,7 @@ public class SpaceObjectApiController implements SpaceObjectApi {
     private FluxDao fluxDao;
 
 
+    // when user uses illegal argument for parameters, for example string "abc" where should be float
     @ExceptionHandler
     public ResponseEntity<ErrorMessage> handleException(IllegalArgumentException e) {
         return new ResponseEntity<>(new ErrorMessage(e.getLocalizedMessage() + " Illegal argument exception"), HttpStatus.BAD_REQUEST);
@@ -85,12 +86,12 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @Override
     public ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
-            @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
-            @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
-            @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates\n\n" + "Format: " + Coordinates.example) @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue = "0") Float minMag, @DecimalMax("20")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue = "15") Float maxMag) {
+            @Valid @RequestParam(value = "objectId", required = false) String objectId,
+            @Valid @RequestParam(required = false) Catalog catalog,
+            @Valid @RequestParam(value = "name", required = false) String name,
+            @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates,
+            @DecimalMin("0") @Valid @RequestParam(value = "minMag", required = false, defaultValue = "0") Float minMag,
+            @DecimalMax("20") @Valid @RequestParam(value = "maxMag", required = false, defaultValue = "15") Float maxMag) {
         try {
             Coordinates coords;
             if (coordinates != null) {
@@ -120,9 +121,8 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @Override
     public ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue)
-            @Valid Catalog catalog) {
+            @Valid @RequestParam(value = "spaceObjectId") String spaceObjectId,
+            @Valid @RequestParam(value = "catalog", required = false) Catalog catalog) {
         try {
             SpaceObjectWithFluxes spaceObject = (SpaceObjectWithFluxes) spaceObjectDao.getSpaceObjectByObjectIdCat
                     (spaceObjectId, catalog != null ? catalog.getValue() : Catalog.defaultValue, true);
@@ -142,10 +142,10 @@ public class SpaceObjectApiController implements SpaceObjectApi {
 
     @Override
     public ResponseEntity<ComparisonObject> getComparisonByIdentificators(
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam() String originalId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,
-            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return", required = true) @Valid @RequestParam() String referenceId,
-            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat) {
+            @Valid @RequestParam() String originalId,
+            @Valid @RequestParam(required = false) Catalog originalCat,
+            @Valid @RequestParam() String referenceId,
+            @Valid @RequestParam(required = false) Catalog referenceCat) {
         try {
             ObjectFluxCount original = spaceObjectDao.getSpaceObjectByObjectIdCat
                     (originalId, originalCat != null ? originalCat.getValue() : Catalog.defaultValue, false);

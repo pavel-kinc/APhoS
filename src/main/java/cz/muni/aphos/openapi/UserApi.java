@@ -60,7 +60,7 @@ public interface UserApi {
     @RequestMapping(value = "/{name}",
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
-    ResponseEntity<User> getUserByUsername(@Parameter @PathVariable(name = "name") @NotBlank String username);
+    ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username") @NotBlank String username);
 
     /**
      * Gets currently logged user

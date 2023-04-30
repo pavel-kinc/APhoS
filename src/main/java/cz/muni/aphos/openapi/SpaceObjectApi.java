@@ -21,6 +21,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Null;
 import net.minidev.json.JSONObject;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.MediaType;
@@ -69,12 +70,12 @@ public interface SpaceObjectApi {
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
-            @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid @RequestParam(value = "objectId", required = false) String objectId,
-            @Parameter() @Valid @RequestParam(required = false) Catalog catalog,
-            @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid @RequestParam(value = "name", required = false) String name,
-            @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates") @Nullable @Valid @RequestParam(value = "coordinates", required = false) String coordinates, @DecimalMin("0")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude", schema = @Schema(defaultValue = "0")) @Valid @RequestParam(value = "minMag", required = false, defaultValue = "0") Float minMag, @DecimalMax("20")
-            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude", schema = @Schema(defaultValue = "15")) @Valid @RequestParam(value = "maxMag", required = false, defaultValue = "15") Float maxMag);
+            @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid String objectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
+            @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid String name,
+            @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates\n\n" + "Format: " + Coordinates.example) @Nullable @Valid String coordinates,
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "0")) @DecimalMin("0") @Valid Float minMag,
+            @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "15")) @DecimalMax("20") @Valid Float maxMag);
 
     /**
      * Find space object by object id and catalog.
@@ -101,8 +102,8 @@ public interface SpaceObjectApi {
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
-            @Parameter() @Valid @RequestParam() String spaceObjectId,
-            @Parameter() @Valid @RequestParam(required = false) Catalog catalog);
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return") @Valid String spaceObjectId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.defaultValue) @Valid Catalog catalog);
 
     /**
      * Get ComparisonObject data by id and catalog of 2 space objects.
@@ -130,10 +131,10 @@ public interface SpaceObjectApi {
             produces = {"application/json", "application/xml"},
             method = RequestMethod.GET)
     ResponseEntity<ComparisonObject> getComparisonByIdentificators(
-            @Parameter() @Valid @RequestParam() String originalId,
-            @Parameter() @Valid @RequestParam(required = false) Catalog originalCat,
-            @Parameter() @Valid @RequestParam() String referenceId,
-            @Parameter() @Valid @RequestParam(required = false) Catalog referenceCat);
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return") @Valid String originalId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog originalCat,
+            @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return") @Valid String referenceId,
+            @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return") @Valid Catalog referenceCat);
 
     /**
      * Endpoint for uploading csv file genarated from sips software.
@@ -160,6 +161,6 @@ public interface SpaceObjectApi {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {"application/json", "application/xml"})
     @Hidden
-    ResponseEntity<String> uploadCSV(@RequestParam(required = true) MultipartFile file) throws IOException;
+    ResponseEntity<String> uploadCSV(@Parameter(description = "File to upload")MultipartFile file) throws IOException;
 }
 
