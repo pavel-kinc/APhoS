@@ -76,6 +76,9 @@ public class SpaceObjectApiController implements SpaceObjectApi {
             if (coordinates != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 coords = mapper.readValue(coordinates, Coordinates.class);
+                if(!coords.isValid()){
+                    throw new ConstraintViolationException(null);
+                }
             } else {
                 coords = new Coordinates();
             }

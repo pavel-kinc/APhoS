@@ -18,6 +18,7 @@ import java.util.Objects;
  */
 @Validated
 //@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2022-12-23T18:56:03.993Z[GMT]")
+//generated in early stages of project by swagger, changed a lot since then
 public class Flux {
     @JsonProperty(value = "rightAsc", required = true)
     @JsonView(ViewField.Public.class)
