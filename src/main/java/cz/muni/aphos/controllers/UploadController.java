@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -41,24 +40,19 @@ import java.util.stream.Stream;
 @RequestMapping("/upload")
 public class UploadController {
 
-    @Autowired
-    FileHandlingService fileHandlingService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    UploadLogsDao uploadLogsDao;
-
-    @Autowired
-    UploadErrorMessagesDao uploadErrorMessagesDao;
-
-    private static final Logger log = LoggerFactory.getLogger(UploadController.class);
-
     /**
      * The Timeout for the SSEmitter.
      */
     static final long TIMEOUT_INFINITY = -1L;
+    private static final Logger log = LoggerFactory.getLogger(UploadController.class);
+    @Autowired
+    FileHandlingService fileHandlingService;
+    @Autowired
+    UserService userService;
+    @Autowired
+    UploadLogsDao uploadLogsDao;
+    @Autowired
+    UploadErrorMessagesDao uploadErrorMessagesDao;
 
     /**
      * Show the upload form.
@@ -93,7 +87,7 @@ public class UploadController {
                     Path.of(System.getProperty("java.io.tmpdir")), "flux").toString();
         } else {
             path = dirName;
-            if(!path.matches("/tmp/flux[^/]*")){
+            if (!path.matches("/tmp/flux[^/]*")) {
                 throw new UnauthorizedAccessException();
             }
         }
@@ -152,8 +146,7 @@ public class UploadController {
                             // The Exception arises when the user closes the page, so we just stop
                             // sending the updates, but keep the parsing going
                             uploadPageOpened = false;
-                        }
-                        catch (IOException | CsvContentException e) {
+                        } catch (IOException | CsvContentException e) {
                             log.error(file.getFileName() + " could not be parsed", e);
                             unsuccessfulCount.getAndIncrement();
                             fileErrorMessagePairsList.add(Pair.of(
@@ -178,29 +171,28 @@ public class UploadController {
                         new ArrayList<>());
                 log.error("emitter completed with error", e);
                 emitter.completeWithError(e);
-            }
-            finally{
-                if(pathToDir.matches("/tmp/flux[^/]*") && Files.exists(Path.of(pathToDir))){
+            } finally {
+                if (pathToDir.matches("/tmp/flux[^/]*") && Files.exists(Path.of(pathToDir))) {
                     try {
                         /*
                         FileSystemUtils.deleteRecursively could be used too, symbolic links might be a problem though
                          */
                         boolean res;
                         File directory = new File(pathToDir);
-                        if(!directory.isDirectory()){
+                        if (!directory.isDirectory()) {
                             throw new Exception("Should always be directory.");
                         }
                         File[] files = directory.listFiles();
                         if (files != null) {
                             for (File file : files) {
-                                 res = file.delete();
-                                if(!res){
+                                res = file.delete();
+                                if (!res) {
                                     log.error("File not deleted: " + file.getName());
                                 }
                             }
                         }
                         res = directory.delete();
-                        if(!res){
+                        if (!res) {
                             log.error("File not deleted: " + directory.getName());
                         }
                     } catch (Exception e) {
@@ -217,10 +209,10 @@ public class UploadController {
     /**
      * Save information about upload results to the database for user to later see.
      *
-     * @param uploadingUser uploading sser
-     * @param uploadTime the time of the upload
-     * @param numOfFiles number of files
-     * @param numOfErrors number of errors
+     * @param uploadingUser             uploading sser
+     * @param uploadTime                the time of the upload
+     * @param numOfFiles                number of files
+     * @param numOfErrors               number of errors
      * @param fileErrorMessagePairsList List of pairs: (filename, error message for that file)
      */
     private void logUploadData(User uploadingUser, Timestamp uploadTime, int numOfFiles,

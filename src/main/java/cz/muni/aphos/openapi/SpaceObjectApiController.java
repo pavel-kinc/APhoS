@@ -1,63 +1,42 @@
 package cz.muni.aphos.openapi;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.dao.FluxDao;
 import cz.muni.aphos.dao.SpaceObjectDao;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
-import cz.muni.aphos.dto.SpaceObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.muni.aphos.dto.User;
 import cz.muni.aphos.exceptions.CsvContentException;
-import cz.muni.aphos.helper.ViewField;
 import cz.muni.aphos.openapi.models.Catalog;
 import cz.muni.aphos.openapi.models.ComparisonObject;
 import cz.muni.aphos.openapi.models.Coordinates;
 import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
+import cz.muni.aphos.services.FileHandlingService;
 import cz.muni.aphos.services.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.annotation.Nullable;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.xml.bind.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import cz.muni.aphos.services.FileHandlingService;
-
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @RestController
 public class SpaceObjectApiController implements SpaceObjectApi {

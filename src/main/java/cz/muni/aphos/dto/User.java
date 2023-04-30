@@ -3,11 +3,12 @@ package cz.muni.aphos.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.annotation.Nullable;
-import org.springframework.validation.annotation.Validated;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Objects;
 
 /**
  * The Hibernate entity representing a user.
@@ -70,11 +71,9 @@ public class User {
 
         User user = (User) o;
 
-        if (googleSub != null ? !googleSub.equals(user.googleSub) : user.googleSub != null) return false;
-        if (username != null ? !username.equals(user.username) : user.username != null) return false;
-        if (description != null ? !description.equals(user.description) : user.description != null) return false;
-
-        return true;
+        if (!Objects.equals(googleSub, user.googleSub)) return false;
+        if (!Objects.equals(username, user.username)) return false;
+        return Objects.equals(description, user.description);
     }
 
     @Override

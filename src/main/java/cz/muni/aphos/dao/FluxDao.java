@@ -1,7 +1,7 @@
 package cz.muni.aphos.dao;
 
-import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.Flux;
+import cz.muni.aphos.dto.FluxUserTime;
 
 import java.util.List;
 

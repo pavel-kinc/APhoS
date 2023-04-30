@@ -4,8 +4,6 @@ package cz.muni.aphos.openapi.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.Arrays;
-
 /**
  * Object used as enum(mainly for swagger-ui) with some allowable values in one field
  */

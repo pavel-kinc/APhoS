@@ -4,16 +4,13 @@ import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import cz.muni.aphos.mappers.ObjectFluxCountRowMapper;
 import cz.muni.aphos.mappers.SpaceObjectApiMapper;
-import cz.muni.aphos.openapi.models.Catalog;
-import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
-import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import cz.muni.aphos.mappers.SpaceObjectMapper;
-import jakarta.annotation.Nullable;
+import cz.muni.aphos.openapi.models.Catalog;
+import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
@@ -141,16 +138,16 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
                 "name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
                 "FROM space_object WHERE catalog_id=?";
         List<ObjectFluxCount> res;
-        if(catalog != null && !catalog.isEmpty() && !catalog.equals(Catalog.allValue)){
+        if (catalog != null && !catalog.isEmpty() && !catalog.equals(Catalog.allValue)) {
             query = query + " AND catalog=?";
 
             //resultsetextractor is also a way, or control flow with exceptions
             res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id, catalog);
-        }else{
+        } else {
             res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id);
         }
 
-        if(res.isEmpty()){
+        if (res.isEmpty()) {
             return null;
         }
         return res.get(0);

@@ -3,10 +3,9 @@ package cz.muni.aphos.openapi.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.muni.aphos.dto.Flux;
 import cz.muni.aphos.dto.ObjectFluxCount;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-
-import org.springframework.validation.annotation.Validated;
 
 
 /**

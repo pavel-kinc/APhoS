@@ -1,17 +1,15 @@
 package cz.muni.aphos.openapi.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.Objects;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Nullable;
-import jakarta.validation.*;
-import jakarta.validation.constraints.*;
-import org.aspectj.lang.annotation.RequiredTypes;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Coordinates object for right ascension (hour, minute, second), declination (degrees), radius (degrees) with
@@ -49,7 +47,7 @@ public class Coordinates {
         this.rightAsc = rightAsc;
         this.declination = declination;
         this.radius = radius;
-        if(!validator.validate(this).isEmpty()){
+        if (!validator.validate(this).isEmpty()) {
             throw new ConstraintViolationException(null);
         }
     }
@@ -99,7 +97,7 @@ public class Coordinates {
     }
 
     public void setRadius(Double radius) {
-        if(radius < 0){
+        if (radius < 0) {
             throw new ValidationException("Radius must be positive");
         }
         this.radius = radius;

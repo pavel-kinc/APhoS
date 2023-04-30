@@ -1,39 +1,33 @@
 package cz.muni.aphos.openapi;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.dto.ObjectFluxCount;
-import cz.muni.aphos.helper.ViewField;
-import cz.muni.aphos.openapi.models.*;
-import cz.muni.aphos.dto.SpaceObject;
-//import io.swagger.model.SpaceObjectWithFluxes;
+import cz.muni.aphos.openapi.models.Catalog;
+import cz.muni.aphos.openapi.models.ComparisonObject;
+import cz.muni.aphos.openapi.models.Coordinates;
+import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Null;
-import net.minidev.json.JSONObject;
 import org.springdoc.api.ErrorMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Interface for SpaceObject with annotations for API controllers and swagger-ui.
@@ -73,6 +67,7 @@ public interface SpaceObjectApi {
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid String objectId,
             @Parameter(in = ParameterIn.QUERY, description = "Catalog of space object to return \n\nDefault is " + Catalog.allValue) @Valid Catalog catalog,
             @Parameter(in = ParameterIn.QUERY, description = "Find object by it's name") @Valid String name,
+            // coordinates could be in response body, with RequestMapping consumes, but there were problems with python client
             @Parameter(in = ParameterIn.QUERY, description = "Filter by coordinates\n\n" + "Format: " + Coordinates.example) @Nullable @Valid String coordinates,
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on min magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "0")) @DecimalMin("0") @Valid Float minMag,
             @Parameter(in = ParameterIn.QUERY, description = "Find objects based on max magnitude", schema = @Schema(type = "number", format = "float", defaultValue = "15")) @DecimalMax("20") @Valid Float maxMag);
@@ -161,6 +156,6 @@ public interface SpaceObjectApi {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {"application/json", "application/xml"})
     @Hidden
-    ResponseEntity<String> uploadCSV(@Parameter(description = "File to upload")MultipartFile file) throws IOException;
+    ResponseEntity<String> uploadCSV(@Parameter(description = "File to upload") MultipartFile file) throws IOException;
 }
 

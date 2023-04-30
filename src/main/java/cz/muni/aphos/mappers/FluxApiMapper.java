@@ -1,7 +1,7 @@
 package cz.muni.aphos.mappers;
 
-import cz.muni.aphos.dto.PhotoProperties;
 import cz.muni.aphos.dto.Flux;
+import cz.muni.aphos.dto.PhotoProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -34,7 +34,7 @@ public class FluxApiMapper implements RowMapper<Flux> {
         photo.setExposureEnd(rs.getTimestamp("exposure_end"));
         flux.setPhoto(photo);
         flux.setApAutoDev(rs.getDouble("ap_auto_dev"));
-        if(rs.getArray("aperture_devs") != null){
+        if (rs.getArray("aperture_devs") != null) {
             Double[] apertureDevs = (Double[]) rs.getArray("aperture_devs").getArray();
             flux.setApertureDevs(List.of(apertureDevs));
         }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 /**
  * The SpaceObjectApi mapper. Maps the rows from the space_object table
- *  to the SpaceObject object with all necessary data.
+ * to the SpaceObject object with all necessary data.
  */
 public class SpaceObjectApiMapper implements RowMapper<ObjectFluxCount> {
 
@@ -23,9 +23,9 @@ public class SpaceObjectApiMapper implements RowMapper<ObjectFluxCount> {
     @Override
     public ObjectFluxCount mapRow(ResultSet rs, int rowNum) throws SQLException {
         ObjectFluxCount spaceObject;
-        if(withFluxes){
+        if (withFluxes) {
             spaceObject = new SpaceObjectWithFluxes();
-        }else{
+        } else {
             spaceObject = new ObjectFluxCount();
         }
         spaceObject.setId(rs.getLong("obj_id"));

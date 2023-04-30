@@ -2,7 +2,6 @@ package cz.muni.aphos.dao;
 
 import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
-import cz.muni.aphos.openapi.models.SpaceObjectWithFluxes;
 
 import java.util.List;
 
@@ -65,8 +64,8 @@ public interface SpaceObjectDao {
     /**
      * Gets space object (ObjectFluxCount or SpaceObjectWithFluxes based on withFluxes) by id, catalog
      *
-     * @param id object id of space object
-     * @param catalog catalog
+     * @param id         object id of space object
+     * @param catalog    catalog
      * @param withFluxes with 1 more field fluxes or not
      * @return space object
      */

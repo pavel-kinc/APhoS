@@ -1,9 +1,9 @@
 package cz.muni.aphos.dao;
 
+import cz.muni.aphos.dto.Flux;
 import cz.muni.aphos.dto.FluxUserTime;
 import cz.muni.aphos.mappers.FluxApiMapper;
 import cz.muni.aphos.mappers.FluxRowMapper;
-import cz.muni.aphos.dto.Flux;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -66,11 +66,11 @@ public class FluxDaoImpl implements FluxDao {
         String query = "SELECT rec, dec, OF.ap_auto, OF.apertures, RF.ap_auto ref_ap_auto, " +
                 "OF.ap_auto_dev, OF.aperture_devs, RF.ap_auto_dev ref_ap_auto_dev, RF.aperture_devs ref_ap_devs, " +
                 "RF.apertures ref_apertures, username, exposure_begin, exposure_end, google_sub FROM " +
-               "(SELECT * FROM flux WHERE object_id=?) AS OF INNER JOIN " +
-        "(SELECT ap_auto, apertures, ap_auto_dev, aperture_devs, photo_properties_id " +
+                "(SELECT * FROM flux WHERE object_id=?) AS OF INNER JOIN " +
+                "(SELECT ap_auto, apertures, ap_auto_dev, aperture_devs, photo_properties_id " +
                 "FROM flux WHERE object_id=?) AS RF " +
-        "ON OF.photo_properties_id=RF.photo_properties_id INNER JOIN users ON users.google_sub=user_id " +
-        "INNER JOIN photo_properties on OF.photo_properties_id=photo_properties.id";
+                "ON OF.photo_properties_id=RF.photo_properties_id INNER JOIN users ON users.google_sub=user_id " +
+                "INNER JOIN photo_properties on OF.photo_properties_id=photo_properties.id";
         return jdbcTemplate.query(query, new FluxRowMapper(), originalObjectId, referenceObjectId);
     }
 
