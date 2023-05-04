@@ -61,11 +61,11 @@ public class ApiMockTests {
     MockMvc mockMvc;
 
     @Test
-    public void findByParamsXML_noParamsTest() throws Exception {
+    public void findByParamsJSON_noParamsTest() throws Exception {
         MvcResult result = mockMvc.perform(get("/api/space-objects/search-by-params")
-                        .accept(MediaType.APPLICATION_XML))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_XML))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         List<ObjectFluxCount> star = spaceDao.queryObjects("","","",
                 "","0", "15","All catalogues","");
