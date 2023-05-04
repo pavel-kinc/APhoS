@@ -19,8 +19,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
                 contact = @Contact(name = "Pavel Kinc", email = "pavelkinc230@gmail.com"),
                 license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0.html")
         ),
-        servers = {@Server(description = "Developer server", url = "http://localhost:8009"),
-                @Server(description = "Main server APhoS", url = "https://aphos.cerit-sc.cz/"),
+        servers = {@Server(description = "Main server APhoS", url = "https://aphos.cerit-sc.cz/"),
+                @Server(description = "Developer server", url = "http://localhost:8009"),
                 @Server(description = "Test server (virtual machine)", url = "https://ip-147-251-21-104.flt.cloud.muni.cz/")},
         tags = {@Tag(name = "SpaceObject", description = "Everything about space objects"),
                 @Tag(name = "Flux", description = "Data about a flux"),

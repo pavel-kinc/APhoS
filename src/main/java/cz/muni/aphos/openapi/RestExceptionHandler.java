@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * Global exception handler for API to make correct return values and objects.
+ * ResponseEntityExceptionHandler handles exceptions from Spring MVC exceptions
  */
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
