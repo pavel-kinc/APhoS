@@ -36,7 +36,7 @@ public interface CatalogApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
     @RequestMapping(value = "",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<String[]> getCatalogs();
 }

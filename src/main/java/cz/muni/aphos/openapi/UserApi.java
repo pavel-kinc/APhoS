@@ -48,7 +48,7 @@ public interface UserApi {
 
     })
     @RequestMapping(value = "/{name}",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<User> getUserByUsername(@Parameter(description = "Find user by username") @NotBlank String username);
 
@@ -67,7 +67,7 @@ public interface UserApi {
 
     })
     @RequestMapping(value = "/current",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<User> getLoggedUser();
 

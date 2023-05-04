@@ -61,7 +61,7 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
     @RequestMapping(value = "/search-by-params",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<List<ObjectFluxCount>> findSpaceObjectsByParams(
             @Parameter(in = ParameterIn.QUERY, description = "Find object based on it's ID in given catalog") @Valid String objectId,
@@ -94,7 +94,7 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))
     })
     @RequestMapping(value = "/search",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SpaceObjectWithFluxes> getSpaceObjectById(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return") @Valid String spaceObjectId,
@@ -123,7 +123,7 @@ public interface SpaceObjectApi {
                     content = @Content(schema = @Schema(implementation = ErrorMessage.class)))})
 
     @RequestMapping(value = "/comparison",
-            produces = {"application/json", "application/xml"},
+            produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<ComparisonObject> getComparisonByIdentificators(
             @Parameter(in = ParameterIn.QUERY, description = "ID of space object to return") @Valid String originalId,
@@ -154,7 +154,7 @@ public interface SpaceObjectApi {
     @RequestMapping(value = "/upload",
             method = RequestMethod.POST,
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = {"application/json", "application/xml"})
+            produces = {"application/json"})
     @Hidden
     ResponseEntity<String> uploadCSV(@Parameter(description = "File to upload") MultipartFile file) throws IOException;
 }
