@@ -11,10 +11,10 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
   version: 2.0.1
 servers:
-  - url: http://localhost:8009
-    description: Developer server
   - url: https://aphos.cerit-sc.cz/
     description: Main server APhoS
+  - url: http://localhost:8009
+    description: Developer server
   - url: https://ip-147-251-21-104.flt.cloud.muni.cz/
     description: Test server (virtual machine)
 tags:
@@ -40,40 +40,28 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "400":
-          description: Invalid username supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
         "500":
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid username supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: User not found
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /api/users/current:
@@ -84,24 +72,18 @@ paths:
       description: Returns a user or null
       operationId: getLoggedUser
       responses:
-        "200":
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/User'
         "500":
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/User'
   /api/space-objects/search:
     get:
       tags:
@@ -128,31 +110,10 @@ paths:
               - UCAC4
               - USNO-B1.0
       responses:
-        "400":
-          description: Invalid catalog or ID supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
         "500":
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-        "404":
-          description: Space object not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
         "200":
@@ -161,9 +122,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SpaceObjectWithFluxes'
-            application/xml:
+        "404":
+          description: Space object not found
+          content:
+            application/json:
               schema:
-                $ref: '#/components/schemas/SpaceObjectWithFluxes'
+                $ref: '#/components/schemas/ErrorMessage'
+        "400":
+          description: Invalid catalog or ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
   /api/space-objects/search-by-params:
     get:
       tags:
@@ -222,6 +192,12 @@ paths:
             format: float
             default: 15
       responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
         "200":
           description: Successful operation
           content:
@@ -230,27 +206,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/SpaceObject'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/SpaceObject'
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
         "400":
           description: Invalid values
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /api/space-objects/comparison:
@@ -295,22 +254,10 @@ paths:
               - UCAC4
               - USNO-B1.0
       responses:
-        "400":
-          description: Invalid catalogs or ID supplied
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
         "500":
           description: Internal server error
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
         "200":
@@ -319,16 +266,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ComparisonObject'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ComparisonObject'
         "404":
           description: Space object not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
+        "400":
+          description: Invalid catalogs or ID supplied
+          content:
+            application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
   /api/catalogs:
@@ -339,15 +286,6 @@ paths:
       description: Returns catalogs
       operationId: getCatalogs
       responses:
-        "500":
-          description: Internal server error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
         "200":
           description: Successful operation
           content:
@@ -360,26 +298,28 @@ paths:
                     - All catalogues
                     - UCAC4
                     - USNO-B1.0
-            application/xml:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  enum:
-                    - All catalogues
-                    - UCAC4
-                    - USNO-B1.0
+                $ref: '#/components/schemas/ErrorMessage'
         "400":
           description: Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
     User:
       required:
         - description
@@ -389,14 +329,6 @@ components:
         username:
           type: string
         description:
-          type: string
-    ErrorMessage:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        message:
           type: string
     Flux:
       required:
