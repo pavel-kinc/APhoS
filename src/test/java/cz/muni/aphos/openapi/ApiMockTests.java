@@ -70,7 +70,8 @@ public class ApiMockTests {
         List<ObjectFluxCount> star = spaceDao.queryObjects("","","",
                 "","0", "15","All catalogues","");
         assertTrue(result.getResponse().getContentAsString().contains
-                ("<item><id>807-030174</id><catalog>UCAC4</catalog><name>Name</name><rightAsc>21h41m55.291s</rightAsc>"));
+                ("{\"id\":\"807-030174\",\"catalog\":\"UCAC4\",\"name\":\"Name\",\"rightAsc\":\"21h41m55.291s\"")
+        );
     }
 
     @Test
