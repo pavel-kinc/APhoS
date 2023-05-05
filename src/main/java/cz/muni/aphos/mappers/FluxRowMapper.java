@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import static cz.muni.aphos.utils.Conversions.DEV_CONSTANT;
+
 
 /**
  * The Flux row mapper. Handles the mapping of the rows from the query for fluxes of the given objects.
@@ -73,11 +75,29 @@ public class FluxRowMapper implements RowMapper<FluxUserTime> {
         try {
             Night night = new Night(rs.getTimestamp("exposure_begin"),
                     fluxUserTime.getUsername());
+            night.setApToBeUsed("auto");
+            night.setRefApToBeUsed("auto");
             fluxUserTime.setNight(night);
         } catch (ParseException e) {
             log.error("Night date was unable to be parsed", e);
         }
         fluxUserTime.setUserId(rs.getString("google_sub"));
+        if(fluxUserTime.getApAuto().equals("saturated") || fluxUserTime.getRefApAuto().equals("saturated")){
+            fluxUserTime.setMagnitude(Float.NEGATIVE_INFINITY);
+        }else{
+            //System.out.println(fluxUserTime.getApAuto() + " " + fluxUserTime.getRefApAuto());
+            fluxUserTime.setMagnitude((float) (-2.5 *
+                    Math.log10(Double.parseDouble(fluxUserTime.getApAuto()) /
+                            Double.parseDouble(fluxUserTime.getRefApAuto()))));
+            if(fluxUserTime.getApAutoDev() == 0 || fluxUserTime.getRefApAutoDev() == 0){
+                fluxUserTime.setDeviation(0F);
+            } else{
+                double a = fluxUserTime.getApAutoDev() / Double.parseDouble(fluxUserTime.getApAuto());
+                double b = fluxUserTime.getRefApAutoDev() / Double.parseDouble(fluxUserTime.getRefApAuto());
+                fluxUserTime.setDeviation((float) (DEV_CONSTANT * Math.sqrt(a * a + b * b)));
+            }
+        }
+
         return fluxUserTime;
     }
 }

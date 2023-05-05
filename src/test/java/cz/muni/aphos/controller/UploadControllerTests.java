@@ -6,7 +6,9 @@ import cz.muni.aphos.dao.SpaceObjectDaoImpl;
 import cz.muni.aphos.dto.User;
 import cz.muni.aphos.services.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +18,32 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @Sql({"/sql/schema.sql", "/sql_test_data/test-data-user-only.sql"})
 @AutoConfigureEmbeddedDatabase(provider = ZONKY,
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
-class UploadControllerTests {
+public class UploadControllerTests {
 
     @Autowired
     MockMvc mockMvc;
@@ -68,6 +75,9 @@ class UploadControllerTests {
 
     @Test
     public void directoryWithFilesNotExisting() throws Exception {
+        User user = new User("1");
+        user.setUsername("name");
+        Mockito.when(userService.getCurrentUser()).thenReturn(user);
         mockMvc.perform(get("/upload/parse")
                 .param("path-to-dir", "notexisting")
                 .param("file-count", "1"));
@@ -79,16 +89,26 @@ class UploadControllerTests {
         User user = new User("1");
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
-        mockMvc.perform(
+        String testDataDir = "/tmp/flux123_correctfiles";
+        Path dir_path = Path.of(testDataDir);
+        if(!Files.exists(dir_path)){
+            FileUtils.copyDirectory(new File("src/test/resources/correct_files"),
+                    new File(testDataDir));
+        }
+
+        MvcResult res= mockMvc.perform(
                         get("/upload/parse")
-                                .param("path-to-dir", "src/test/resources/correct_files")
+                                .param("path-to-dir", testDataDir)
                                 .param("file-count", "1"))
                 .andExpect(request().asyncStarted())
                 .andExpect(status().isOk())
                 .andExpect(request().asyncResult(nullValue()))
                 .andExpect(content().string(containsString(
                         "event:COMPLETED\n" +
-                        "data:0\n")));
+                        "data:0\n"))).andReturn();
+
+        Thread.sleep(250);
+        assertFalse(Files.exists(dir_path));
     }
 
     @Test
@@ -97,9 +117,15 @@ class UploadControllerTests {
         User user = new User("1");
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
+        String testDataDir = "/tmp/flux123_wrongfiles";
+        if(!Files.exists(Path.of(testDataDir))){
+            FileUtils.copyDirectory(new File("src/test/resources/incorrect_files"),
+                    new File(testDataDir));
+        }
+
         mockMvc.perform(
                         get("/upload/parse")
-                                .param("path-to-dir", "src/test/resources/incorrect_files")
+                                .param("path-to-dir", testDataDir)
                                 .param("file-count", "2"))
                 .andExpect(request().asyncStarted())
                 .andExpect(status().isOk())

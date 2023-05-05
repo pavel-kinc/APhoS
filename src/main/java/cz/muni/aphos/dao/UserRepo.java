@@ -21,6 +21,16 @@ public interface UserRepo extends CrudRepository<User, String> {
     User findByUserID(String userID);
 
     /**
+     * Find user by username
+     *
+     * @param username the username of a user
+     * @return the user if there is one
+     */
+    @Query(nativeQuery = true, value =
+            "SELECT * FROM users where username = ?1")
+    User findByUsername(String username);
+
+    /**
      * Check if the user with given username exists.
      *
      * @param username the username

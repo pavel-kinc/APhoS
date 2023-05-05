@@ -3,8 +3,10 @@ package cz.muni.aphos.dao;
 import cz.muni.aphos.dto.ObjectFluxCount;
 import cz.muni.aphos.dto.SpaceObject;
 import cz.muni.aphos.mappers.ObjectFluxCountRowMapper;
-import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
+import cz.muni.aphos.mappers.SpaceObjectApiMapper;
 import cz.muni.aphos.mappers.SpaceObjectMapper;
+import cz.muni.aphos.openapi.models.Catalog;
+import cz.muni.aphos.setters.SpaceObjectPreparedStatementSetter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -128,6 +130,32 @@ public class SpaceObjectDaoImpl implements SpaceObjectDao {
         String query = "SELECT catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
                 "FROM space_object WHERE id=?";
         return jdbcTemplate.queryForObject(query, new SpaceObjectMapper(), id);
+    }
+
+    @Override
+    public ObjectFluxCount getSpaceObjectByObjectIdCat(String id, String catalog, boolean withFluxes) {
+        String query = "SELECT space_object.id AS obj_id, " +
+                "name, catalog, catalog_id, catalog_rec, catalog_dec, catalog_mag " +
+                "FROM space_object WHERE catalog_id=?";
+        List<ObjectFluxCount> res;
+        if (catalog != null && !catalog.isEmpty() && !catalog.equals(Catalog.allValue)) {
+            query = query + " AND catalog=?";
+
+            //resultsetextractor is also a way, or control flow with exceptions
+            res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id, catalog);
+        } else {
+            res = jdbcTemplate.query(query, new SpaceObjectApiMapper(withFluxes), id);
+        }
+
+        if (res.isEmpty()) {
+            return null;
+        }
+        return res.get(0);
+    }
+
+    @Override
+    public Long getSpaceObjectFluxCount(Long id) {
+        return jdbcTemplate.queryForObject("SELECT COUNT(*) FROM flux WHERE object_id=?", Long.class, id);
     }
 
     @Override

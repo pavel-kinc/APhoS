@@ -1,0 +1,520 @@
+openapi: 3.0.1
+info:
+  title: APhoS
+  description: |
+    This is Amateur Photometric Survey (APhoS) Application Programming Interface.
+  contact:
+    name: Pavel Kinc
+    email: pavelkinc230@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 2.0.1
+servers:
+  - url: https://aphos.cerit-sc.cz/
+    description: Main server APhoS
+  - url: http://localhost:8009
+    description: Developer server
+  - url: https://ip-147-251-21-104.flt.cloud.muni.cz/
+    description: Test server (virtual machine)
+tags:
+  - name: SpaceObject
+    description: Everything about space objects
+  - name: Flux
+    description: Data about a flux
+  - name: User
+    description: User information
+paths:
+  /api/users/{name}:
+    get:
+      tags:
+        - User
+      summary: Find user by username
+      description: Returns a user
+      operationId: getUserByUsername
+      parameters:
+        - name: name
+          in: path
+          description: Find user by username
+          required: true
+          schema:
+            type: string
+      responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Invalid username supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/users/current:
+    get:
+      tags:
+        - User
+      summary: Get current logged-in user for session
+      description: Returns a user or null
+      operationId: getLoggedUser
+      responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /api/space-objects/search:
+    get:
+      tags:
+        - SpaceObject
+        - Flux
+      summary: Find space object by ID and catalog
+      description: "Returns a space object with fluxes, maximum fluxes count is 2000"
+      operationId: getSpaceObjectById
+      parameters:
+        - name: spaceObjectId
+          in: query
+          description: ID of space object to return
+          required: true
+          schema:
+            type: string
+        - name: catalog
+          in: query
+          description: "Catalog of space object to return \n\nDefault is UCAC4"
+          required: false
+          schema:
+            type: string
+            enum:
+              - All catalogues
+              - UCAC4
+              - USNO-B1.0
+      responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpaceObjectWithFluxes'
+        "404":
+          description: Space object not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "400":
+          description: Invalid catalog or ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/space-objects/search-by-params:
+    get:
+      tags:
+        - SpaceObject
+      summary: Finds space objects by multiple data
+      description: "No additional data is mandatory, but maximum object count is 100"
+      operationId: findSpaceObjectsByParams
+      parameters:
+        - name: objectId
+          in: query
+          description: Find object based on it's ID in given catalog
+          required: false
+          schema:
+            type: string
+        - name: catalog
+          in: query
+          description: "Catalog of space object to return \n\nDefault is All catalogues"
+          required: false
+          schema:
+            type: string
+            enum:
+              - All catalogues
+              - UCAC4
+              - USNO-B1.0
+        - name: name
+          in: query
+          description: Find object by it's name
+          required: false
+          schema:
+            type: string
+        - name: coordinates
+          in: query
+          description: |-
+            Filter by coordinates
+            
+            Format: {"rightAsc":"21:41:55.291","declination":"71:18:41.12","radius":0.05}
+          required: false
+          schema:
+            type: string
+        - name: minMag
+          in: query
+          description: Find objects based on min magnitude
+          required: false
+          schema:
+            minimum: 0.0
+            type: number
+            format: float
+            default: 0
+        - name: maxMag
+          in: query
+          description: Find objects based on max magnitude
+          required: false
+          schema:
+            maximum: 20.0
+            type: number
+            format: float
+            default: 15
+      responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SpaceObject'
+        "400":
+          description: Invalid values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/space-objects/comparison:
+    get:
+      tags:
+        - SpaceObject
+        - Flux
+      summary: Comparison object of 2 Space objects
+      description: Returns a fluxes comparison object
+      operationId: getComparisonByIdentificators
+      parameters:
+        - name: originalId
+          in: query
+          description: ID of space object to return
+          required: true
+          schema:
+            type: string
+        - name: originalCat
+          in: query
+          description: Catalog of space object to return
+          required: false
+          schema:
+            type: string
+            enum:
+              - All catalogues
+              - UCAC4
+              - USNO-B1.0
+        - name: referenceId
+          in: query
+          description: ID of space object to return
+          required: true
+          schema:
+            type: string
+        - name: referenceCat
+          in: query
+          description: Catalog of space object to return
+          required: false
+          schema:
+            type: string
+            enum:
+              - All catalogues
+              - UCAC4
+              - USNO-B1.0
+      responses:
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComparisonObject'
+        "404":
+          description: Space object not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "400":
+          description: Invalid catalogs or ID supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+  /api/catalogs:
+    get:
+      tags:
+        - Catalog
+      summary: Find all catalogs
+      description: Returns catalogs
+      operationId: getCatalogs
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - All catalogues
+                    - UCAC4
+                    - USNO-B1.0
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        "400":
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+components:
+  schemas:
+    ErrorMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+    User:
+      required:
+        - description
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+        description:
+          type: string
+    Flux:
+      required:
+        - addedBy
+        - apAuto
+        - apAutoDev
+        - apertureDevs
+        - apertures
+        - declination
+        - photo
+        - rightAsc
+      type: object
+      properties:
+        rightAsc:
+          type: string
+        declination:
+          type: string
+        addedBy:
+          type: string
+        apAuto:
+          type: number
+          format: double
+        apertures:
+          type: array
+          items:
+            type: number
+            format: double
+        photo:
+          $ref: '#/components/schemas/PhotoProperties'
+        apAutoDev:
+          type: number
+          format: double
+        apertureDevs:
+          type: array
+          items:
+            type: number
+            format: double
+    PhotoProperties:
+      required:
+        - exposureBegin
+        - exposureEnd
+      type: object
+      properties:
+        exposureBegin:
+          type: string
+          format: date-time
+        exposureEnd:
+          type: string
+          format: date-time
+    SpaceObjectWithFluxes:
+      required:
+        - catalog
+        - declination
+        - fluxes
+        - fluxesCount
+        - id
+        - magnitude
+        - name
+        - rightAsc
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/SpaceObject'
+        - type: object
+          properties:
+            fluxes:
+              type: array
+              items:
+                $ref: '#/components/schemas/Flux'
+    SpaceObject:
+      required:
+        - catalog
+        - declination
+        - fluxesCount
+        - id
+        - magnitude
+        - name
+        - rightAsc
+      type: object
+      properties:
+        id:
+          type: string
+        catalog:
+          type: string
+        name:
+          type: string
+        rightAsc:
+          type: string
+        declination:
+          type: string
+        magnitude:
+          type: number
+          format: float
+        fluxesCount:
+          type: integer
+          format: int32
+    ComparisonObject:
+      required:
+        - comparison
+        - data
+        - variable
+      type: object
+      properties:
+        variable:
+          $ref: '#/components/schemas/SpaceObject'
+        comparison:
+          $ref: '#/components/schemas/SpaceObject'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FluxData'
+    FluxData:
+      required:
+        - apAuto
+        - apAutoDev
+        - apertureDevs
+        - apertures
+        - cmpApAuto
+        - cmpApAutoDev
+        - cmpApertureDevs
+        - cmpApertures
+        - dec
+        - deviation
+        - expMiddle
+        - magnitude
+        - night
+        - rightAsc
+        - username
+      type: object
+      properties:
+        rightAsc:
+          type: string
+        dec:
+          type: string
+        apAuto:
+          type: string
+        apAutoDev:
+          type: number
+          format: float
+        apertures:
+          type: array
+          items:
+            type: string
+        apertureDevs:
+          type: array
+          items:
+            type: number
+            format: double
+        magnitude:
+          type: number
+          format: float
+        deviation:
+          type: number
+          format: float
+        username:
+          type: string
+        night:
+          $ref: '#/components/schemas/Night'
+        expMiddle:
+          type: string
+        cmpApAuto:
+          type: string
+        cmpApAutoDev:
+          type: number
+          format: double
+        cmpApertures:
+          type: array
+          items:
+            type: string
+        cmpApertureDevs:
+          type: array
+          items:
+            type: number
+            format: double
+    Night:
+      required:
+        - apToBeUsed
+        - cmpApToBeUsed
+        - firstDateOfTheNight
+        - secondDateOfTheNight
+      type: object
+      properties:
+        firstDateOfTheNight:
+          type: string
+        secondDateOfTheNight:
+          type: string
+        apToBeUsed:
+          type: string
+        cmpApToBeUsed:
+          type: string

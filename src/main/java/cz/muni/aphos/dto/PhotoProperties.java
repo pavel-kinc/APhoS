@@ -1,5 +1,10 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
+import cz.muni.aphos.helper.ViewField;
+
 import java.sql.Timestamp;
 
 /**
@@ -7,14 +12,19 @@ import java.sql.Timestamp;
  */
 public class PhotoProperties {
 
+    @JsonIgnore
     private long id;
     /**
      * When the photo exposition started
      */
+    @JsonView(ViewField.Public.class)
+    @JsonProperty(required = true)
     private Timestamp exposureBegin;
     /**
      * When the photo exposition ended
      */
+    @JsonView(ViewField.Public.class)
+    @JsonProperty(required = true)
     private Timestamp exposureEnd;
 
     public PhotoProperties() {
