@@ -33,8 +33,8 @@ public class SecurityConfig {
                                 "/search", "/", "/about", "/reference/**", "/reference/js/**",
                                 "/object/**", "/object/download", "/object/aperture",
                                 "/js/**", "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/api-docs", "/api/**", "/swagger-ui/**", "/swagger-ui.html",
-                                "/swagger-resources/**", "/swagger-ui", "/api-docs.yaml", "/api-docs/**"
+                                "/openapi","/openapi.yaml", "/api/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/swagger-resources/**", "/swagger-ui"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -53,9 +53,5 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-    //@Bean
-    //public WebSecurityCustomizer webSecurityCustomizer() {
-    //    return (web) ->web.ignoring().requestMatchers("/swagger-ui/**", "/api-docs/**", "/api/spaceObject/upload_file");
-    //}
 }
 
