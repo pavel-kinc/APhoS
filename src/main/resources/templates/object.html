@@ -2,10 +2,10 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout :: head"></head>
+<head th:replace="~{layout :: head}"></head>
 
 <body class="bg-light d-flex flex-column min-vh-100 bg-light">
-<nav th:replace="layout :: navbar"></nav>
+<nav th:replace="~{layout :: navbar}"></nav>
 <main class="flex-fill">
     <div class="container-fluid">
         <div class="row my-4">
@@ -223,7 +223,7 @@
     </div>
 </main>
 <div class="container-fluid">
-    <footer th:replace="layout :: footer"></footer>
+    <footer th:replace="~{layout :: footer}"></footer>
 </div>
 
 <script type="text/javascript" th:src="@{/webjars/js-cookie/js.cookie.js}"></script>

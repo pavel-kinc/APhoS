@@ -2,10 +2,10 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout :: head"></head>
+<head th:replace="~{layout :: head}"></head>
 
 <body class="bg-light d-flex flex-column min-vh-100">
-<nav th:replace="layout :: navbar"></nav>
+<nav th:replace="~{layout :: navbar}"></nav>
 <main class="flex-fill">
     <div class="container-fluid">
         <div class="mb-4 mt-3">
@@ -145,7 +145,7 @@
     </div>
 </main>
 <div class="container-fluid">
-    <footer th:replace="layout :: footer"></footer>
+    <footer th:replace="~{layout :: footer}"></footer>
 </div>
 <script th:src="@{/js/table-sort.js}"></script>
 <script th:src="@{/js/magnitude-sliders.js}"></script>

@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 "/search", "/", "/about", "/reference/**", "/reference/js/**",
                                 "/object/**", "/object/download", "/object/aperture",
                                 "/js/**", "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/openapi","/openapi.yaml", "/api/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/openapi","/openapi.yaml", "/openapi/**", "/api/**", "/swagger-ui/**", "/swagger-ui.html",
                                 "/swagger-resources/**", "/swagger-ui"
                         ).permitAll()
                         .anyRequest().authenticated()

@@ -2,10 +2,10 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout :: head"></head>
+<head th:replace="~{layout :: head}"></head>
 
 <body class="bg-light </main>">
-<nav th:replace="layout :: navbar"></nav>
+<nav th:replace="~{layout :: navbar}"></nav>
 <main class="flex-fill">
     <div class="container-fluid about-heading">
         <div class="p-4 p-md-5 mb-4 mt-2 text-white rounded bg-dark">
@@ -173,7 +173,7 @@
     </div>
 </main>
 <div class="container-fluid">
-    <footer th:replace="layout :: footer"></footer>
+    <footer th:replace="~{layout :: footer}"></footer>
 </div>
 <script th:src="@{js/highlight-active.js}"></script>
 

@@ -2,11 +2,11 @@
 
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="layout :: head">
+<head th:replace="~{layout :: head}">
 </head>
 
 <body class="bg-light">
-<nav id="navbar" th:replace="layout :: navbar"></nav>
+<nav id="navbar" th:replace="~{layout :: navbar}"></nav>
 <div class="container-fluid">
     <div class="row justify-content-center border border-white rounded-2">
         <div class="col-8 md-5 p-5 bg-dark">
