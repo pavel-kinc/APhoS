@@ -6,18 +6,15 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
 import static java.lang.Math.*;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.*;
 
 @ExtendWith(SpringExtension.class)
@@ -35,7 +32,7 @@ public class SpaceObjectDaoIntegrationTests {
         SpaceObject expectedObject = new SpaceObject("801-033364", "", "UCAC4",
                 "+70°07'57.26\"", "22h10m38.791s", 6.81F);
         AssertionsForClassTypes.assertThat(spaceObjectDao.queryObjects("", "", "", "",
-                "0", "15", "UCAC4", "801-033364").get(0))
+                        "0", "15", "UCAC4", "801-033364").get(0))
                 .usingRecursiveComparison()
                 .ignoringFields("id", "fluxes", "numberOfFluxes")
                 .isEqualTo(expectedObject);
@@ -46,7 +43,7 @@ public class SpaceObjectDaoIntegrationTests {
         SpaceObject expectedObject = new SpaceObject("801-033364", "", "UCAC4",
                 "+70°07'57.26\"", "22h10m38.791s", 6.81F);
         AssertionsForClassTypes.assertThat(spaceObjectDao.queryObjects("", "", "", "",
-                "6.8", "6.9", "UCAC4", "801-033364").get(0))
+                        "6.8", "6.9", "UCAC4", "801-033364").get(0))
                 .usingRecursiveComparison()
                 .ignoringFields("id", "fluxes", "numberOfFluxes")
                 .isEqualTo(expectedObject);
@@ -69,7 +66,7 @@ public class SpaceObjectDaoIntegrationTests {
         SpaceObject expectedObject = new SpaceObject("805-031770", "GK Cep", "UCAC4",
                 "+70°49'23.58\"", "21h30m59.150s", 8.42F);
         AssertionsForClassTypes.assertThat(spaceObjectDao.queryObjects("", "", "", "GK Cep",
-                "0", "15", "UCAC4", "").get(0))
+                        "0", "15", "UCAC4", "").get(0))
                 .usingRecursiveComparison()
                 .ignoringFields("id", "fluxes", "numberOfFluxes")
                 .isEqualTo(expectedObject);
@@ -80,7 +77,7 @@ public class SpaceObjectDaoIntegrationTests {
         SpaceObject expectedObject = new SpaceObject("805-031770", "GK Cep", "UCAC4",
                 "+70°49'23.58\"", "21h30m59.150s", 8.42F);
         AssertionsForClassTypes.assertThat(spaceObjectDao.queryObjects("21:30:59.150", "70:49:23.58", "0.0001", "GK Cep",
-                "0", "15", "UCAC4", "").get(0))
+                        "0", "15", "UCAC4", "").get(0))
                 .usingRecursiveComparison()
                 .ignoringFields("id", "fluxes", "numberOfFluxes")
                 .isEqualTo(expectedObject);
@@ -124,7 +121,7 @@ public class SpaceObjectDaoIntegrationTests {
         SpaceObject expectedObject = new SpaceObject("801-0", "", "UCAC4",
                 "+70°01'57.26\"", "21h10m38.791s", 6.81F);
         AssertionsForClassTypes.assertThat(spaceObjectDao.queryObjects("21:10:38.791", "70:01:57.26", "0.001", "",
-                "0", "15", "UCAC4", "").get(0))
+                        "0", "15", "UCAC4", "").get(0))
                 .usingRecursiveComparison()
                 .ignoringFields("id", "fluxes", "numberOfFluxes")
                 .isEqualTo(expectedObject);
@@ -136,16 +133,16 @@ public class SpaceObjectDaoIntegrationTests {
         // helper method to determine angular distance between two points on a sphere
         raRef = raRef.replace('h', ':');
         raRef = raRef.replace('m', ':');
-        raRef = raRef.substring(0, raRef.length()-1);
+        raRef = raRef.substring(0, raRef.length() - 1);
         decRef = decRef.replace('°', ':');
         decRef = decRef.replace('\'', ':');
-        decRef = decRef.substring(0, decRef.length()-1);
+        decRef = decRef.substring(0, decRef.length() - 1);
         float raFloat = Conversions.hourAngleToDegrees(ra);
         float decFloat = Conversions.angleToFloatForm(dec);
         float raRefFloat = Conversions.hourAngleToDegrees(raRef);
         float decRefFloat = Conversions.angleToFloatForm(decRef);
-        double distance = acos(sin(decFloat)*sin(decRefFloat)+
-                cos(decFloat)*cos(decRefFloat)*cos(raFloat-raRefFloat));
+        double distance = acos(sin(decFloat) * sin(decRefFloat) +
+                cos(decFloat) * cos(decRefFloat) * cos(raFloat - raRefFloat));
         return distance < radius;
     }
 }

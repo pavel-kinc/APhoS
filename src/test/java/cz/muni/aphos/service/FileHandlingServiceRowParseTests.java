@@ -11,13 +11,11 @@ import cz.muni.aphos.services.UserService;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.util.HashMap;
@@ -35,22 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class FileHandlingServiceRowParseTests {
 
-    @Autowired
-    SpaceObjectDaoImpl spaceObjectDao;
-
-    @Autowired
-    FluxDaoImpl fluxDao;
-
-    @Autowired
-    FileHandlingService fileHandlingService;
-
-    @MockBean
-    UserService userService;
-
     private final User sampleUser = new User("1");
-
     private final PhotoProperties photoProperties = new PhotoProperties(0);
-
     private final Map<String, String> defaultRow = Stream.of(new String[][]{
             {"Name", "GK Cep"},
             {"RA", "21 41 55.318"},
@@ -75,6 +59,14 @@ public class FileHandlingServiceRowParseTests {
             {"Ap5Dev", "184859.687"},
             {"Ap6Dev", ""}
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
+    @Autowired
+    SpaceObjectDaoImpl spaceObjectDao;
+    @Autowired
+    FluxDaoImpl fluxDao;
+    @Autowired
+    FileHandlingService fileHandlingService;
+    @MockBean
+    UserService userService;
 
     @Test()
     public void correctRowNoExceptionIsThrown() throws ParseException {
@@ -85,7 +77,7 @@ public class FileHandlingServiceRowParseTests {
     public void correctRowNoAperturesNoExceptionIsThrown() throws ParseException {
         Map<String, String> rowWithoutApertures = new HashMap<>(defaultRow);
         for (int i = 1; i < 7; i++) {
-            rowWithoutApertures.remove("Ap"+i);
+            rowWithoutApertures.remove("Ap" + i);
         }
         fileHandlingService.parseAndSaveRow(rowWithoutApertures, photoProperties, sampleUser);
     }

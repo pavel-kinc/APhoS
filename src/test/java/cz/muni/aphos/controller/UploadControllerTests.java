@@ -9,7 +9,6 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
@@ -29,11 +27,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static io.zonky.test.db.AutoConfigureEmbeddedDatabase.DatabaseProvider.ZONKY;
-import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -91,12 +89,12 @@ public class UploadControllerTests {
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         String testDataDir = "/tmp/flux123_correctfiles";
         Path dir_path = Path.of(testDataDir);
-        if(!Files.exists(dir_path)){
+        if (!Files.exists(dir_path)) {
             FileUtils.copyDirectory(new File("src/test/resources/correct_files"),
                     new File(testDataDir));
         }
 
-        MvcResult res= mockMvc.perform(
+        MvcResult res = mockMvc.perform(
                         get("/upload/parse")
                                 .param("path-to-dir", testDataDir)
                                 .param("file-count", "1"))
@@ -105,7 +103,7 @@ public class UploadControllerTests {
                 .andExpect(request().asyncResult(nullValue()))
                 .andExpect(content().string(containsString(
                         "event:COMPLETED\n" +
-                        "data:0\n"))).andReturn();
+                                "data:0\n"))).andReturn();
 
         Thread.sleep(250);
         assertFalse(Files.exists(dir_path));
@@ -118,7 +116,7 @@ public class UploadControllerTests {
         user.setUsername("name");
         Mockito.when(userService.getCurrentUser()).thenReturn(user);
         String testDataDir = "/tmp/flux123_wrongfiles";
-        if(!Files.exists(Path.of(testDataDir))){
+        if (!Files.exists(Path.of(testDataDir))) {
             FileUtils.copyDirectory(new File("src/test/resources/incorrect_files"),
                     new File(testDataDir));
         }
