@@ -12,15 +12,12 @@ import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
-
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -36,22 +33,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
         refresh = AutoConfigureEmbeddedDatabase.RefreshMode.AFTER_EACH_TEST_METHOD)
 public class FileHandlingServiceFileParseTests {
 
+    private final User sampleUser = new User("1");
     @Autowired
     SpaceObjectDaoImpl spaceObjectDao;
-
     @Autowired
     FluxDaoImpl fluxDao;
-
     @Autowired
     PhotoPropertiesDaoImpl photoPropertiesDao;
-
     @Autowired
     FileHandlingService fileHandlingService;
-
     @MockBean
     UserService userService;
-
-    private final User sampleUser = new User("1");
 
     @Before
     public void mockUserService() {
