@@ -43,7 +43,7 @@ public class SwaggerTests {
 
     @Test
     public void openapiDocsAccessibleTest() throws Exception {
-        mockMvc.perform(get("/api-docs"))
+        mockMvc.perform(get("/openapi"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString
                         ("This is Amateur Photometric Survey (APhoS) Application Programming Interface.")));
