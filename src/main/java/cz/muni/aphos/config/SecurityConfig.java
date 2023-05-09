@@ -26,8 +26,6 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-//                .csrf(c -> c
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(
                                 "/search", "/", "/about", "/reference/**", "/reference/js/**",
