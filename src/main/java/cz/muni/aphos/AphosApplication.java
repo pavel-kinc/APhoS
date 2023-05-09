@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @EnableRetry
 @SpringBootApplication
-@RestController
 public class AphosApplication {
 
     public static void main(String[] args) {

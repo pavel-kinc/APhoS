@@ -1,13 +1,16 @@
 package cz.muni.aphos.controllers;
 
-import cz.muni.aphos.dao.*;
-import cz.muni.aphos.dto.FluxUserTime;
-import cz.muni.aphos.dto.SpaceObject;
-import cz.muni.aphos.helper.Night;
 import com.fasterxml.jackson.databind.SequenceWriter;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import cz.muni.aphos.dao.FluxDao;
+import cz.muni.aphos.dao.SpaceObjectDao;
+import cz.muni.aphos.dao.UserRepo;
+import cz.muni.aphos.dto.FluxUserTime;
+import cz.muni.aphos.dto.SpaceObject;
+import cz.muni.aphos.helper.Night;
 import cz.muni.aphos.utils.Conversions;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -27,9 +29,10 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- *  The Object controller handles the displaying of the results, the light curve  , and allows for downloading of the data.
- *
- */ /**
+ * The Object controller handles the displaying of the results, the light curve  , and allows for downloading of the data.
+ */
+
+/**
  * The Object controller handles the displaying of the results, the light curve
  * , and allows for downloading of the data.
  */
@@ -127,7 +130,7 @@ public class ObjectController {
                 .stream()
                 .filter(flux ->
                         !unwantedUsersList.contains(flux.getUsername())
-                && !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
+                                && !flux.getMagnitude().equals(Float.NEGATIVE_INFINITY))
                 .collect(Collectors.toList());
         CsvMapper mapper = new CsvMapper();
         final CsvSchema schema = mapper.schemaFor(FluxUserTime.class)

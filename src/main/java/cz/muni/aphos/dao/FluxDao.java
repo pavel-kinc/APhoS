@@ -1,5 +1,6 @@
 package cz.muni.aphos.dao;
 
+import cz.muni.aphos.dto.Flux;
 import cz.muni.aphos.dto.FluxUserTime;
 
 import java.util.List;
@@ -45,6 +46,14 @@ public interface FluxDao {
      * @return the id if the object exists
      */
     long fluxExists(Long id);
+
+    /**
+     * Get list of fluxes of space object based on id
+     *
+     * @param id database id
+     * @return list of fluxes of given space object
+     */
+    List<Flux> getFluxesByObj(Long id);
 
     /**
      * Gets a statistical estimate of the number of space_objects in the database.

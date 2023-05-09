@@ -7,16 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 
 /**
  * The Security configuration of the app.
  * Redirect after login: -username setting for new user
- *                       -profile page for existing user
+ * -profile page for existing user
  */
 @EnableWebSecurity
 @Configuration
@@ -35,7 +32,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/search", "/", "/about", "/reference/**", "/reference/js/**",
                                 "/object/**", "/object/download", "/object/aperture",
-                                "/js/**", "/css/**", "/js/**", "/images/**", "/webjars/**"
+                                "/js/**", "/css/**", "/js/**", "/images/**", "/webjars/**",
+                                "/api-docs", "/api/**", "/swagger-ui/**", "/swagger-ui.html",
+                                "/swagger-resources/**", "/swagger-ui", "/api-docs.yaml", "/api-docs/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -54,5 +53,9 @@ public class SecurityConfig {
                 );
         return http.build();
     }
+    //@Bean
+    //public WebSecurityCustomizer webSecurityCustomizer() {
+    //    return (web) ->web.ignoring().requestMatchers("/swagger-ui/**", "/api-docs/**", "/api/spaceObject/upload_file");
+    //}
 }
 

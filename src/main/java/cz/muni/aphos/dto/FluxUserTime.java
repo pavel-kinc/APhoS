@@ -1,43 +1,63 @@
 package cz.muni.aphos.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import cz.muni.aphos.helper.Night;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.annotation.Nullable;
 
 /**
  * The Data Transfer Object for storing the information about a flux value, the night
  * and the time of the exposition, along with the user uploading it.
  */
-@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
+//@JsonPropertyOrder({"expMiddle", "magnitude", "deviation"})
+    @Schema(name="FluxData")
 public class FluxUserTime {
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     String rightAsc;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     String dec;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     String apAuto;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     Float apAutoDev;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     String[] apertures;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     Double[] apertureDevs;
-    @JsonIgnore
+    @JsonProperty(value = "cmpApAuto",required = true)
+    //@JsonIgnore
     String refApAuto;
-    @JsonIgnore
+    @JsonProperty(value = "cmpApAutoDev",required = true)
+    //@JsonIgnore
     Float refApAutoDev;
-    @JsonIgnore
+    @JsonProperty(value = "cmpApertures",required = true)
+    //@JsonIgnore
     String[] refApertures;
-    @JsonIgnore
+    @JsonProperty(value = "cmpApertureDevs",required = true)
+    //@JsonIgnore
     Double[] refApertureDevs;
+    @JsonProperty(required = true)
     Float magnitude;
+    @JsonProperty(required = true)
+    @Nullable
     Float deviation;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     String username;
     @JsonIgnore
     String userId;
-    @JsonIgnore
+    @JsonProperty(required = true)
+    //@JsonIgnore
     Night night;
+    @JsonProperty(required = true)
     String expMiddle;
 
     public FluxUserTime() {

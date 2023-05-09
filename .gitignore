@@ -7,7 +7,7 @@ target/
 out/
 /src/main/resources/application_secret.properties
 application_secret.properties
-
+application.properties
 
 
 
